@@ -6,8 +6,7 @@
     "version": "6.11.5",
     "private": true,
     "scripts": {
-        "start": "nodemon ./bin/www",
-        "deploy": "gcloud app deploy"
+        "start": "node ./bin/www"
     },
     "dependencies": {
         "body-parser": "^1.18.2",
