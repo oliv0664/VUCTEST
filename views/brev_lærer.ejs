@@ -1,0 +1,74 @@
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+
+    <script src="/jquery/jquery-3.2.1.min.js"></script>
+    <script src="/js/letter_teacher.js"></script>
+    <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+
+    <script>
+        $(function() {
+            $('#form').bind('submit', function(event) {
+                event.preventDefault();
+
+                var user = sessionStorage.getItem('currentUser');
+                user = JSON.parse(user);
+                user.teacherModules.shift();
+                sessionStorage.setItem('currentUser', JSON.stringify(user));
+                $('#data').val(JSON.stringify(user));
+
+                $(this).unbind('submit').submit();
+            });
+
+        });
+    </script>
+</head>
+
+<body>
+
+    <div id="header">
+        <img class="header" id="head_1" src="images/VUC_logo.png" height="100">
+        <h3 class="header" id="head_2">NIVEAUAFKLARINGSTEST</h3>
+        <h3 class="header" id="head_3">VUC FYN ODENSE</h3>
+    </div>
+
+    <form id="form" method="post" action="/brev" enctype="multipart/form-data">
+
+        <div id="section">
+            <h1 class="title" id="h1_1">BREV</h1>
+            <p>
+                Indsæt lydfil der beskriver opgaven
+                <input type="file" name="file" class="h2size" accept="audio/*" onchange="readURL(this)" required>
+            </p>
+            <p>
+                Indsæt dokument der beskriver opgaven
+                <b>
+                (kan kun acceptere ren tekstdokumenter) 
+            </b>
+                <input type="file" name="descriptiopn" class="h2size" accept="application/pdf" onchange="readURL(this)" required>
+            </p>
+
+            <!--            <br> Indsæt hvor lang tid testen varer (hh:mm:ss)-->
+            <!--            <input class="h2size" type="time" id="time" name="time" step="1">-->
+        </div>
+
+
+        <!-- her er alt brødteksten -->
+        <div id="subsection"></div>
+
+        <div id="subsubsection"></div>
+
+
+        <div id="bottom">
+            <input type="hidden" id="content" name="content">
+            <input type="hidden" id="data" name="data">
+            <input class="submit" type="submit" value="Gem/Videre">
+        </div>
+
+    </form>
+
+</body>
+
+</html>

@@ -1,0 +1,68 @@
+<style>
+    .blockDiv {
+        margin-bottom: 30px;
+        height: 30px;
+    }
+
+    .audDiv,
+    .contentDiv {
+        display: inline;
+    }
+
+    .contentDiv {
+        position: absolute;
+        left: 80px;
+    }
+
+    .aud {
+        background-image: url('images/audio.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 30px 30px;
+        width: 50px;
+        height: 30px;
+    }
+
+</style>
+
+<script>
+    $(function() {
+        formSetup();
+    });
+    var a = 0;
+
+    function playAudio(index) {
+        var d = document.getElementById("d" + index);
+        var audBut = document.getElementById("audBut" + index);
+        var sound = document.getElementById("file" + index);
+        if (sound.paused) {
+            sound.load();
+            sound.play();
+            if (a > 0) {
+                d.removeChild(audBut);
+                a = 0;
+            } else {
+                a++;
+            }
+        }
+    }
+
+</script>
+
+<form id="form" method="post" action="/vrøvleord_answer" enctype="multipart/form-data">
+
+    <% for(var i=0; i<content.length; i++) { %>
+        <div class="blockDiv">
+            <div id="<%= 'd'+i %>" class="audDiv">
+                <input class="aud" id="<%= 'audBut'+i %>" type="button" onclick="playAudio(<%= i %>)">
+            </div>
+
+            <div class="contentDiv">
+                <audio id="<%= 'file'+i %>" src="<%= audioFiles[i] %>"></audio>
+                <input type="text" name="<%= 'answer_'+i %>" placeholder="Skriv ordet her">
+            </div>
+        </div>
+        <% } %>
+
+            <input type="submit">
+</form>

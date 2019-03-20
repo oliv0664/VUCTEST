@@ -1,0 +1,370 @@
+<html>
+
+<head>
+    <title>Startside</title>
+    <script src="/jquery/jquery-3.2.1.min.js"></script>
+    <script src="/js/startpage.js"></script>
+    <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+
+</head>
+
+<body>
+
+    <div id="header">
+        <img class="header" id="head_1" src="images/VUC_logo.png" height="100">
+        <div id="test1" class="header">
+            <h1 class="header" id="head_2">FVU Screening</h1>
+        </div>
+        <div id="test2" class="header">
+            <h1 class="header" id="head_3">HF & VUC FYN</h1>
+        </div>
+    </div>
+
+
+    <form id="form" method="post" action="/startpage_addinfo">
+
+        <div class="section">
+            <div class="fullwidth">
+                <h2 class="title" id="h1_1">1. PERSONLIG OPLYSNING OG SPROGLIG BAGGRUND</h2>
+                
+                <div class="fullwidth">
+                    <h3 class="h3size">Navn:</h3>
+                    <input class="h3size" type="text" name="firstname" placeholder="Fornavn(e)">
+                    <input class="h3size" type="text" name="lastname" placeholder="Efternavn">
+                </div>
+
+                <div class="fullwidth">
+                    <h3 class="h3size">Alder:</h3>
+                    <input class="h3size" type="number" name="age" placeholder="Antal">
+                    <h3 class="h3size">År</h3>
+                </div>
+
+                <div class="fullwidth checkIfYes">
+                    <h3 class="h3size">Har du et andet sprog end dansk som modersmål?</h3>
+                    <select class="h3size" id="mothertong_dk" name="mothertong_dk" form="form" >
+                        <option value="" selected="true" disabled="disabled">-</option>
+                        <option value="Ja">Ja</option>
+                        <option value="Nej">Nej</option>
+                    </select>
+
+                    <div class="fullwidth showIfYes">
+                        <h3 class="h3size">Hvad er dit modersmål:</h3>
+                        <input class="h3size" type="text" id="tong_input" name="tong_input" placeholder="Indtast">
+                    </div>
+                </div>
+
+
+                <div class="fullwidth">
+                    <h3 class="h3size">Hvor længe har du boet i danmark?</h3>
+                    <input class="h3size" type="number" name="years_in_dk" placeholder="Antal år">
+                    <h3 class="h3size">År</h3>
+                </div>
+            
+                <div class="fullwidth">
+                    <h3 class="h3size">Har du fået undervisning i dansk?</h3>
+                    <select class="h3size" id="edu_in_dk" name="edu_in_dk" form="form" >
+                        <option value="" selected="true" disabled="disabled">-</option>
+                        <option value="Ja">Ja</option>
+                        <option value="Nej">Nej</option>
+                    </select>
+                </div>
+
+                <div class="fullwidth checkIfYes">
+                    <h3 class="h3size">Har du bestået nogen prøver?</h3>
+                    <select class="h3size" id="pass_test" name="pass_test" form="form" >
+                        <option value="" selected="true" disabled="disabled">-</option>
+                        <option value="Ja">Ja</option>
+                        <option value="Nej">Nej</option>
+                    </select>
+
+                    <div class="fullwidth showIfYes">
+                        <h3 class="h3size">Evt. hvilke(n)?</h3>
+                        <input class="h3size" type="text" id="eg_test" name="eg_test" placeholder="Indtast">
+                    </div>
+                </div>
+
+                
+
+            </div>
+
+            <div class="fullwidth">
+                <h2 class="title" id="h1_1">2. Læse- og stavevanskeligheder</h2>
+
+                <div class="fullwidth">
+                    <h3 class="h3size">Har du modtaget specialundervisning i skolen?</h3>
+                    <select class="h3size" id="speciel_edu" name="speciel_edu" form="form" >
+                        <option value="" selected="true" disabled="disabled">-</option>
+                        <option value="Ja">Ja</option>
+                        <option value="Nej">Nej</option>
+                    </select>
+                </div>
+
+                <div class="fullwidth">
+                    <h3 class="h3size">Har du modtaget specialundervisning som voksen?</h3>
+                    <select class="h3size" id="speciel_edu_adult" name="speciel_edu_adult" form="form" >
+                        <option value="" selected="true" disabled="disabled">-</option>
+                        <option value="Ja">Ja</option>
+                        <option value="Nej">Nej</option>
+                    </select>
+                </div>
+
+                <div class="fullwidth">
+                    <h3 class="h3size">Evt. i hvilke(t) fag og hvor længe?</h3><br>
+                    <!-- <input class="h3size" type="text" id="eg_edu" name="eg_edu" placeholder="Indtast"> -->
+                    <textarea class="h3size textarea" placeholder="Indtast"></textarea>
+                    <input type="hidden" id="ed_edu" name="eg_edu">
+                </div>
+            </div>
+
+            <div class="fullwidth">
+                <h2 class="title" id="h1_1">3. Skolegang, uddannelse og job</h2>
+
+                <div class="fullwidth">
+                    <h2 class="h3size">Skolegang</h2>
+                </div>
+
+                <div class="fullwidth">
+                    <h3 class="h3size">Hvor længe har du gået i skole?</h3>
+                    <input class="h3size" type="number" name="years_in_edu" placeholder="Antal år">
+                    <h3 class="h3size">År</h3>
+                </div>
+
+                <div class="fullwidth">
+                    <h3 class="h3size">Hvor længe har du gået i skole i dit hjemland?</h3>
+                    <input class="h3size" type="number" name="years_in_edu_home" placeholder="Antal år">
+                    <h3 class="h3size">År</h3>
+                </div>
+
+                <div class="fullwidth">
+                    <h2 class="h3size" id="h1_2">Uddannelse</h2>
+                </div>
+
+                <div class="fullwidth checkIfYes">
+                    <h3 class="h3size">Har du afsluttende eksamen fra din skole?</h3>
+                    <select class="h3size" id="exam_finish" name="exam_finish" form="form" >
+                        <option value="" selected="true" disabled="disabled">-</option>
+                        <option value="Ja">Ja</option>
+                        <option value="Nej">Nej</option>
+                    </select>
+
+                    <div class="fullwidth showIfYes">
+                        <h3 class="h3size">Evt. i hvilke(n)? fra hvilket land?</h3>
+                        <input class="h3size" type="text" id="eg_exam" name="eg_exam" placeholder="Hvilken eksamen?">
+                        <input class="h3size" type="text" id="eg_exam_country" name="eg_exam_country" placeholder="Hvilket land?">
+                    </div>
+                </div>
+
+
+                <div class="fullwidth checkIfYes">
+                    <h3 class="h3size">Har du en uddannelse?</h3>
+                    <select class="h3size" id="edu_finish" name="edu_finish" form="form" >
+                        <option value="" selected="true" disabled="disabled">-</option>
+                        <option value="Ja">Ja</option>
+                        <option value="Nej">Nej</option>
+                    </select>
+
+                    <div class="fullwidth showIfYes">
+                        <h3 class="h3size">Evt. i hvilke(n)? fra hvilket land?</h3>
+                        <input class="h3size" type="text" id="eg_edu_finish" name="eg_edu_finish" placeholder="Hvilken uddannelse?">
+                        <input class="h3size" type="text" id="eg_edu_finish_country" name="eg_edu_finish_country" placeholder="Hvilket land?">
+                    </div>
+                </div>
+                
+
+                <div class="fullwidth checkIfYes">
+                    <h3 class="h3size">Har dine læse- og stavevanskeligheder haft betydning for skole og uddannelse?</h3>
+                    <select class="h3size" id="read_write_con" name="read_write_con" form="form" >
+                        <option value="" selected="true" disabled="disabled">-</option>
+                        <option value="Ja">Ja</option>
+                        <option value="Nej">Nej</option>
+                    </select>
+
+                    <div class="fullwidth showIfYes">
+                        <h3 class="h3size">Evt. på hvilken måde?</h3><br>
+                        <!-- <input style="height: 100px;" class="h3size" type="text" id="eg_con" name="eg_con" placeholder="Indtast"> -->
+                        <textarea class="h3size textarea" placeholder="Indtast"></textarea>
+                        <input type="hidden" id="eg_con" name="eg_con">
+                    </div>
+                </div>
+
+
+                <div class="fullwidth">
+                    <h2 class="h3size" id="h1_2">Job</h2>
+                </div>
+
+                <div class="fullwidth checkIfYes">
+                    <h3 class="h3size">Er du i job?</h3>
+                    <select class="h3size" id="in_job" name="in_job" form="form" >
+                        <option value="" selected="true" disabled="disabled">-</option>
+                        <option value="Ja">Ja</option>
+                        <option value="Nej">Nej</option>
+                    </select>
+
+                    <div class="fullwidth showIfYes">
+                        <h3 class="h3size">Evt. hvilket?</h3>
+                        <input class="h3size" type="text" id="eg_job" name="eg_job" placeholder="Indtast">
+                    </div>
+                </div>
+
+
+                <div class="fullwidth checkIfYes">
+                    <h3 class="h3size">Indgår der læsning eller skrivning i dit job?</h3>
+                    <select class="h3size" id="read_write_in_job" name="read_write_in_job" form="form" >
+                        <option value="" selected="true" disabled="disabled">-</option>
+                        <option value="Ja">Ja</option>
+                        <option value="Nej">Nej</option>
+                    </select>
+
+                    <div class="fullwidth showIfYes">
+                        <h3 class="h3size">Evt. på hvilken måde?</h3><br>
+                        <!-- <input class="h3size" type="text" id="eg_read_write_in_job" name="eg_read_write_in_job" placeholder="Indtast"> -->
+                        <textarea class="h3size textarea" placeholder="Indtast"></textarea>
+                        <input type="hidden" id="eg_read_write_in_job" name="eg_read_write_in_job">
+                    </div>
+                </div>
+
+
+                <div class="fullwidth">
+                    <h3 class="h3size">Hvordan klarer du at læse på jobbet?</h3>
+                    <select class="h3size" id="read_in_job" name="read_in_job" form="form" >
+                        <option value="" selected="true" disabled="disabled">-</option>
+                        <option value="dårligt">Dårligt</option>
+                        <option value="ikke så godt">Ikke så godt</option>
+                        <option value="middel">Middel</option>
+                        <option value="temmelig godt">Temmelig godt</option>
+                        <option value="virkelig godt">Virkelig godt</option>
+                    </select>
+                </div>
+
+                <div class="fullwidth">
+                    <h3 class="h3size">Hvordan klarer du at skrive på jobbet?</h3>
+                    <select class="h3size" id="write_in_job" name="write_in_job" form="form" >
+                        <option value="" selected="true" disabled="disabled">-</option>
+                        <option value="dårligt">Dårligt</option>
+                        <option value="ikke så godt">Ikke så godt</option>
+                        <option value="middel">Middel</option>
+                        <option value="temmelig godt">Temmelig godt</option>
+                        <option value="virkelig godt">virkelig godt</option>
+                    </select>
+                </div>
+
+                <div class="fullwidth">
+                    <h3 class="h3size"><i>Særligt for tosprogede:</i></h3>
+                </div>
+
+                <div class="fullwidth">
+                    <h3 class="h3size">Hvilket sprog taler du mest på dit job?</h3>
+                    <input class="h3size" type="text" id="lang_in_job" name="lang_in_job" placeholder="Indtast">
+                </div>
+            </div>
+
+            <div class="fullwidth">
+                <h2 class="title" id="h1_1">4. Begrundelse for henvendelse</h2>
+
+                <div class="fullwidth">
+                    <h3 class="h3size">Hvorfor vil du gerne gå til FVU-læsning?</h3><br>
+                    <!-- <input class="h3size" type="text" id="why_fvu" name="why_fvu" placeholder="Indtast"> -->
+                    <textarea class="h3size textarea" placeholder="Indtast"></textarea>
+                    <input type="hidden" id="why_fvu" name="why_fvu">
+                </div>
+            </div>
+
+            <div class="fullwidth">
+                <h2 class="title" id="h1_1">5. Personlige mål med FVU</h2>
+
+                <div class="fullwidth">
+                    <h3 class="h3size">Har du bestemte planer for din fremtid (fx nyt job, uddannelse eller andet?)</h3>
+                </div>
+
+                <div class="fullwidth">
+                    <h3 class="h3size">Hvad vil du gerne blive bedre til?</h3><br>
+                    <input type="checkbox" id="improve1" name="improvement" value="at forstå det, du læser">
+                    <label for="improve1">At forstå det, du læser</label><br>
+                    <input type="checkbox" id="improve2"name="improvement" value="at læse hurtigt">
+                    <label for="improve2">At læse hurtigt</label><br>
+                    <input type="checkbox" id="improve3"name="improvement" value="at skrive">
+                    <label for="improve3">At skrive</label><br>
+                    <input type="checkbox" id="improve4"name="improvement" value="at stave">
+                    <label for="improve4">At stave</label><br>
+                    <input type="checkbox" id="improve5"name="improvement" value="grammatik">
+                    <label for="improve5">Grammatik</label><br>
+                    <input size="50" class="h3size" type="text" id="eg_improvement" name="eg_improvement" placeholder="Andet?">
+                </div>
+            </div>
+
+        </div>
+
+       <!--  
+        TEMPLATES
+
+        HEADLINE
+        <h2 class="title" id="h1_1">1. Personlig oplysninger og sproglig baggrund</h2>
+
+        TEXT INPUT
+        <div class="fullwidth">
+            <h3 class="h3size">HVAD ER DIT MODERSMÅL:</h3>
+            <input class="h3size" type="text" id="tong_input" name="tong_input" placeholder="Indtast">
+        </div>
+
+        SELECT INPUT
+        <div class="fullwidth">
+            <h3 class="h3size">HAR DU FÅET UNDERVISNING I DANSK?</h3>
+            <select class="h3size" id="edu_in_dk" name="edu_in_dk" form="form" >
+                <option value="" selected="true" disabled="disabled">-</option>
+                <option value="Ja">Ja</option>
+                <option value="Nej">Nej</option>
+            </select>
+        </div> 
+    
+        
+        FORM VALUES 
+            firstname
+            lastname
+            age
+            mothertong_dk
+            tong_input
+            years_in_dk
+            edu_in_dk
+            pass_test
+            eg_test
+
+            speciel_edu
+            speciel_edu_adult
+            eg_edu
+
+            years_in_edu
+            years_in_edu_home
+            exam_finish
+            eg_exam
+            eg_exam_country
+            edu_finish
+            eg_edu_finish
+            eg_edu_finish_country
+            read_write_con
+            eg_con
+
+            in_job
+            eg_job
+            read_write_in_job
+            eg_read_write_in_job
+            read_in_job
+            write_in_job
+            lang_in_job
+
+            why_fvu
+
+            improvement
+            eg_improvement
+        -->
+
+
+        <div id="bottom">
+            <input class="h3size" type="submit" value="Næste">
+        </div>
+
+    </form>
+
+
+</body>
+
+</html>
