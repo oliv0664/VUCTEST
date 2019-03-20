@@ -1,0 +1,112 @@
+<html>
+
+<head>
+    <script src="/jquery/jquery-3.2.1.min.js"></script>
+    <script src="/js/test_create.js"></script>
+    <!-- <script src="/js/handleSession.js"></script> -->
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+
+    <script>
+        $(function() {
+            $('#teacher_data').bind('submit', function(event) {
+                event.preventDefault();
+
+                var user = sessionStorage.getItem('currentUser');
+                user = JSON.parse(user);
+                var teacherModules = [];
+
+                var checkboxes = $('#teacher_data input:checkbox');
+
+                for (var i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i].checked) {
+                        teacherModules.push(checkboxes[i].id);
+                    }
+                }
+                teacherModules.push('nextpage');
+
+                user.teacherModules = teacherModules;
+                sessionStorage.setItem('currentUser', JSON.stringify(user));
+
+                $('#data').val(JSON.stringify(user));
+
+                $(this).unbind('submit').submit();
+            });
+
+        });
+    </script>
+</head>
+
+<body>
+	<header>
+        <% include header %>
+    </header>
+
+<!--
+    <div id="header">
+        <img class="header" id="head_1" src="images/VUC_logo.png" height="100">
+        <h3 class="header" id="head_2">NIVEAUAFKLARINGSTEST</h3>
+        <h3 class="header" id="head_3">VUC FYN ODENSE</h3>
+    </div>
+-->
+
+
+    <form id="teacher_data" class="form" method="post" action="/index_addinfo" enctype="multipart/form-data">
+
+        <div id="section">
+            <h1 class="title" id="h1_1">NIVEAUAFKLARINGSTEST</h1>
+          
+        </div>
+
+
+        <div id="subsection">
+            <h2 class="inline">
+                <ol>
+
+                    <li>TILPAS OPSÆTNING AF MODULER I DIN TEST</li>
+                    <li>TRYK VIDERE FOR AT OPRETTE EN TEST</li>
+
+                </ol>
+            </h2>
+            <br/>
+            <!--            <input class="h2size" class="inline" type="text" id="initials" id="initials" placeholder="Indtast initialer" required>-->
+        </div>
+
+        <div id="bottom">
+            <table>
+                <tr>
+                    <td>Ordblind data: </td>
+                    <td><input class="test_options" type="checkbox" id="kursistinfo_lærer"></td>
+                </tr>
+                <tr>
+                    <td>Orddiktat: </td>
+                    <td><input class="test_options" type="checkbox" id="orddiktat_lærer"></td>
+                </tr>
+                <tr>
+                    <td>Vrøvlediktat: </td>
+                    <td><input class="test_options" type="checkbox" id="vrøvleord_lærer"></td>
+                </tr>
+                <tr>
+                    <td>Clozetest: </td>
+                    <td><input class="test_options" type="checkbox" id="clozetest_lærer"></td>
+                </tr>
+                <tr>
+                    <td>Tekstforståelse (multiplechoice): </td>
+                    <td><input class="test_options" type="checkbox" id="tekstforståelse_lærer"></td>
+                </tr>
+                <tr>
+                    <td>Brev: </td>
+                    <td><input class="test_options" type="checkbox" id="brev_lærer"></td>
+                </tr>
+
+            </table>
+            <input type="hidden" id="data" name="data">
+            <input class="submit" type="submit" value="Gem/Videre">
+        </div>
+
+    </form>
+
+
+</body>
+
+</html>

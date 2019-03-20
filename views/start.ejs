@@ -1,0 +1,106 @@
+<html>
+
+<head>
+    <script src="/jquery/jquery-3.2.1.min.js"></script>
+    <script src="/js/handle_login.js"></script>
+    <script src="/js/test.js"></script>
+    <script>
+        $(function() {
+
+            var cookieValue = document.cookie;
+            console.log(cookieValue);
+
+
+
+            var username = cookieValue.split(';');
+            
+            console.log(username); 
+
+            for(var i=0; i<username.length; i++) { 
+                var key = username[i].split("=");
+                console.log(key);  
+                if(key[0].trim() == "username") {
+                    username = key[1];
+                    console.log(username);  
+                    break; 
+                } 
+            }
+
+            var obj = {
+                'username': username
+            };
+            sessionStorage.setItem('currentUser', JSON.stringify(obj));
+
+            var initials = handleLogin();
+
+            $('#form').bind('submit', function(event) {
+                event.preventDefault();
+
+                $('#data').val(initials);
+
+                $(this).unbind('submit').submit();
+            });
+        });
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+</head>
+
+<body>
+
+
+	<header>
+        <% include header %>		
+	</header>
+<!--
+    <div id="header">
+        <img class="header" id="head_1" src="images/VUC_logo.png" height="100">
+        <h3 class="header" id="head_2">Test og quizmodul
+        </h3>
+        <h3 class="header" id="head_3">HF & VUC FYN ODENSE</h3>
+    </div>
+-->
+
+    <h4>Velkommen til HF & VUC FYNs quizmodul. Her kan du oprette en række forskellige quizzer. Du kan vælge om du vil lave enkelte quizzer, eller kombinere en række forskellige quizmoduler til en samlet quiz. Du kan vælge mellem disse moduler:
+
+
+    </h4>
+    <ul>
+        <li>Orddiktat</li>
+        <li>Vrøvlediktat</li>
+        <li>Clozetest</li>
+        <li>Tekstforståelse (multiplechoice) </li>
+        <li>Brev</li>
+    </ul>
+
+    <ol>
+        <li><button type="button" onclick="newTest()">Lav ny test</button></li>
+        <li>
+            <form id="form" method="post" action="/oversigt_info">
+                <input type="hidden" id="data" name="data">
+                <input id="searc_init" type="submit" value="Oversigt over dine test ">
+            </form>
+        </li>
+        <li class="MMR" style="display: none;">
+            <form method="post" action="/addUser">
+                <label for="createUser">
+		<input id="createUser" name="createUser" type="text" placeholder="Initaler til ny">
+		<input type="submit" value="Opret ny bruger">
+		</label>
+            </form>
+        </li>
+        <li class="MMR" style="display: none;">
+            <form method="post" action="/sendUser">
+                <label for="sendUser">
+		<input id="sendUser" name="sendUser" type="text" placeholder="Initaler på bruger">
+		<input type="submit" value="Send mail om brugeroplysninger">
+		</label>
+            </form>
+        </li>
+    </ol>
+
+
+
+</body>
+
+</html>

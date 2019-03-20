@@ -1,0 +1,32 @@
+{
+    "name": "nodetest1",
+    "engines": {
+        "node": "^9.2.0"
+    },
+    "version": "6.11.5",
+    "private": true,
+    "scripts": {
+        "start": "nodemon ./bin/www",
+        "deploy": "gcloud app deploy"
+    },
+    "dependencies": {
+        "body-parser": "^1.18.2",
+        "cookie-parser": "~1.4.3",
+        "debug": "^3.1.0",
+        "ejs": "^2.5.8",
+        "empty-folder": "^2.0.1",
+        "express": "^4.16.2",
+        "formidable": "^1.1.1",
+        "generate-password": "^1.4.1",
+        "gridfs-stream": "^1.1.1",
+        "jade": "~1.11.0",
+        "mongodb": "^2.2.35",
+        "mongoose": "^4.12.3",
+        "monk": "^6.0.5",
+        "morgan": "^1.9.1",
+        "nodemailer": "^4.4.2",
+        "serve-favicon": "~2.4.2",
+        "url": "^0.11.0",
+        "utf8": "^3.0.0"
+    }
+}

@@ -1,0 +1,73 @@
+<style>
+    .blockDiv {
+        margin-bottom: 30px; 
+        height: 30px;
+    }
+
+    .audDiv, .contentDiv {
+        display:inline; 
+    }
+
+    .contentDiv {
+        position: absolute; 
+        left: 80px; 
+    }
+
+    .aud {
+        background-image: url('images/audio.png'); 
+        background-repeat: no-repeat; 
+        background-position: center; 
+        background-size: 30px 30px; 
+        width: 50px; 
+        height: 30px;
+    }
+</style>
+
+<script>
+    $(function(){     
+    formSetup();
+    });
+    var a = 0; 
+
+    //TO DO
+    //knapper må kun kunne trykkes på 2 gange
+
+    function playAudio(index) {
+        var ind = index.id.slice(6);
+        var d = document.getElementById("d" + ind);
+        var audBut = document.getElementById("audBut" + ind);
+        var sound = document.getElementById("file" + ind);
+        if(sound.paused) {
+            sound.load();  
+            sound.play();
+            if(count[ind]>0) { 
+                d.removeChild(audBut);  
+            } else { 
+                count[ind]++; 
+            }
+        }
+    }
+</script>
+
+<form id="form" method="post" action="/orddiktat_answer" enctype="multipart/form-data">
+
+    <% for(var i=0; i<content.length; i++) { %> 
+        <div class="blockDiv">    
+            <div id="<%= 'd'+i %>" class="audDiv"> 
+                <input class="aud" id="<%= 'audBut'+i %>" type="button" onclick="playAudio(this)">
+                <span id="<%= 's'+i %>" hidden>0</span>
+            </div>
+            
+            <div class="contentDiv">    
+                <audio id="<%= 'file'+i %>" src="<%= audioFiles[i] %>"></audio>
+                <span><%= content[i].line1 %></span>
+                <input type="text" name="<%= 'answer_' + i %>" placeholder="Skriv ordet her">
+                <span><%= content[i].line2 %></span>
+            </div>
+        </div>
+        
+    <% } %> 
+    
+    <input type="submit">
+
+</form>

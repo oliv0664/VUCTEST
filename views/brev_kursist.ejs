@@ -1,0 +1,33 @@
+<style>
+    .blockDiv {
+        display: block;
+    }
+
+    .blockDiv embed,
+    textarea {
+        display: block;
+        margin-bottom: 30px;
+        width: 50%;
+    }
+
+    textarea {
+        height: 300px;
+    }
+
+</style>
+<script>
+    $(function() {
+        formSetup();
+    });
+
+</script>
+<form id="form" method="post" action="/brev_answer" enctype="multipart/form-data">
+
+    <div class="blockDiv">
+        <embed src="<%= content %>" height="100%">
+        <textarea name="<%= 'answer' %>" placeholder="Skriv dit brev her"></textarea>
+    </div>
+
+    <input type="submit">
+
+</form>

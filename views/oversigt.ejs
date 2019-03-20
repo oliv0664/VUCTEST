@@ -1,0 +1,77 @@
+<html>
+
+<head>
+	<script src="/jquery/jquery-3.2.1.min.js"></script>
+	<script src="/js/test.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+	<link rel="stylesheet" type="text/css" href="stylesheets/oversigt.css">
+
+</head>
+
+<body>
+
+	
+		<header>
+        <% include header %>
+    </header>
+
+<!--
+	<div id="header">
+		<img class="header" id="head_1" src="images/VUC_logo.png" height="100">
+		<h3 class="header" id="head_2">NIVEAUAFKLARINGSTEST</h3>
+		<h3 class="header" id="head_3">VUC FYN ODENSE</h3>
+	</div>
+-->
+
+	<h2>Velkommen <%=content.initials%></h2>
+
+	<form id="form" method="post" action="/show_answers">
+	<table border="1" cellpadding="30">
+		<thead>
+			<tr>
+				<td colspan="4">
+					<h3>Du har<%= content.totalTests %> quiz(zer). Her kan du se en oversigt over dine quizzer: </h4>
+				</td>
+			</tr>
+			<tr>
+				<td> Dato for oprindelse</td>
+				<td> Links </td>
+				<td> Antal svar</td>
+				<td> Quiz data</td>
+			</tr>
+		</thead>
+
+		<% for(var i=0; i < content.totalTests; i++) { %>
+		<tbody>
+		<tr>
+			<td>
+				<button type="button" class="ul_btn">+</button> Quiz <%=i+1%><%=content.tests[i].date.toLocaleString()%>:
+				<ul class="ul_show" style="display: none">
+					<% for(var j=0; j < content.tests[i].totalModules; j++) { %>
+						<li>
+							<%=content.tests[i].modules[j].moduleType %>
+						</li>
+						<% } %>
+					</ul>
+				</td>
+				<td>
+					<a href="/welcome<%= content.tests[i]._id %>">link</a>
+				</td>
+				<td>
+					<%= content.tests[i].totalTestTaken %>
+				</td>
+				<td>
+					<input type="submit" class="seeAnswer" value="Se svar" name="<%= content.tests[i]._id %>">
+					<!-- <input type="hidden" name="<%= content.tests[i]._id %>"> -->
+				</td>
+			</tr>
+		</tbody>	
+		<% } %>
+
+	</table>
+	</form>
+
+</body>
+
+</html>

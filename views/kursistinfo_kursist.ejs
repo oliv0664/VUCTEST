@@ -1,0 +1,87 @@
+<style>
+    .blockDiv {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    text_input {
+        margin-left: 5vw;
+        width: 40vw;
+    }
+
+</style>
+
+<script>
+    var element = document.getElementById('descAud');
+    element.parentNode.removeChild(element);
+
+    $(function() {
+        formSetup(kursistInfo);
+    });
+    function kursistInfo() {
+        var val = $('#check_1').val();
+        console.log(val);
+
+        var checkboxes = $('#form input:checkbox');
+
+        for (var i = 0; i < checkboxes.length; i++) {
+
+            var id = checkboxes[i].id;
+            console.log(id);
+            if ($('#' + id).is(':checked')) {
+                console.log(id + " is " + true);
+                var ids = id.split('_');
+                console.log(ids[1]);
+                var val = $('#check_' + ids[1]).val();
+                console.log(val);
+                val += $('#' + id).val() + ", ";
+                console.log(val);
+                $('#check_' + ids[1]).val(val);
+                console.log($('#check_' + ids[1]).val());
+            }
+        }
+
+        console.log($('#check_1').val());
+    }
+
+</script>
+
+<form id="form" method="post" action="/kursistinfo_answer" enctype="multipart/form-data">
+
+    <% for(var i=0; i<content.length; i++) { %>
+        <% if(content[i].type == 'text') { %>
+            <div class="blockDiv">
+                <span><%= content[i].input %></span>
+                <input class="text_input" type="text" name="<%= 'answer_' + i %>" placeholder="Skriv svar her">
+            </div>
+            <% } else if(content[i].type == 'checkbox') { %>
+                <div class="blockDiv">
+                    <span><%= content[i].input %></span><br>
+                    <% for(var j=0; j<content[i].choices.length; j++) { %>
+                        <input type="checkbox" id="<%= 'checkbox_' + i + '_' + j %>" value="<%= content[i].choices[j] %>">
+                        <span><%= content[i].choices[j] %></span>
+                        <% } %>
+                            <input type="hidden" name="<%= 'answer_' + i %>" id="<%= 'check_' + i %>" value="">
+                </div>
+                <% } else if(content[i].type == 'radio') { %>
+                    <div class="blockDiv">
+                        <span><%= content[i].input %></span><br>
+                        <% for(var j=0; j<content[i].choices.length; j++) { %>
+                            <input type="radio" name="<%= 'answer_' + i %>" value="<%= content[i].choices[j] %>">
+                            <span><%= content[i].choices[j] %></span>
+                            <% } %>
+                    </div>
+                    <% } else if(content[i].type == 'dropdown') { %>
+                        <div class="blockDiv">
+                            <span><%= content[i].input %></span><br>
+                            <select name="<%= 'answer_' + i %>">
+                    <% for(var j=0; j<content[i].choices.length; j++) { %>
+                        <option value="<%= content[i].choices[j] %>"><%= content[i].choices[j] %></option>        
+                    <% } %>
+                </select>
+                        </div>
+                        <% } %>
+                            <% } %>
+
+                                <input id="submit" type="submit">
+</form>

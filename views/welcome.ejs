@@ -1,0 +1,74 @@
+<html>
+
+<head>
+    <title>Velkommen</title>
+    <script src="/jquery/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+
+    <script>
+        $(function() {
+
+
+            $('#form').bind('submit', function(event) {
+                event.preventDefault();
+
+                var user = sessionStorage.getItem('currentUser');
+                user = JSON.parse(user);
+
+                var testID = $('#hidden').val();
+                $('#hidden').val("");
+
+                var username = user.username;
+                $('#hidden').val(JSON.stringify(testID));
+
+                var studentID = $('#studentID').val();
+                user.studentID = studentID;
+                user.testID = testID;
+
+                sessionStorage.setItem('currentUser', JSON.stringify(user));
+
+                $(this).unbind('submit').submit();
+            });
+        });
+    </script>
+</head>
+
+<body>
+
+	<header>
+        <% include header %>
+    </header>
+	<!--
+
+    <div id="header">
+        <img class="header" id="head_1" src="images/VUC_logo.png" height="100">
+        <div id="test1" class="header">
+            <h1 class="header" id="head_2">FVU Screening</h1>
+        </div>
+        <div id="test2" class="header">
+            <h1 class="header" id="head_3">HF & VUC FYN</h1>
+        </div>
+    </div>
+-->
+
+
+    <form id="form" method="post" action="/welcome_addinfo">
+        <div>
+            <div class="fullwidth">
+                <h1 class="title" id="h1_2">Indtast kursistnummer:</h1>
+                <input id="studentID" class="h1size" type="text" name="id" placeholder="Nr.">
+            </div>
+        </div>
+
+
+        <div id="bottom">
+            <input type="hidden" id="hidden" name="data" value="<%= username %>">
+            <input class="h3size" type="submit" value="NÆSTE">
+        </div>
+
+    </form>
+
+
+</body>
+
+</html>

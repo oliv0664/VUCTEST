@@ -1,0 +1,75 @@
+<style>
+    .audDiv {
+        display: inline;
+    }
+
+    .aud {
+        background-image: url('images/audio.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 30px 30px;
+        width: 50px;
+        height: 30px;
+    }
+
+    .contentDiv {
+        margin-top: 30px;
+    }
+
+</style>
+
+<script>
+    $(function() {
+        formSetup();
+    });
+    var a = 0;
+
+    function playAudio(index) {
+        var d = document.getElementById("d" + index);
+        var audBut = document.getElementById("audBut" + index);
+        var sound = document.getElementById("file" + index);
+        if (sound.paused) {
+            sound.load();
+            sound.play();
+            if (a > 0) {
+                d.removeChild(audBut);
+                a = 0;
+            } else {
+                a++;
+            }
+        }
+    }
+
+</script>
+
+<form id="form" method="post" action="/tekstforståelse_answer" enctype="multipart/form-data">
+
+    <div class="textDiv">
+        <% for(var i=0; i<content.texts.length; i++) { %>
+            <div id="<%= 'd'+i %>" class="audDiv">
+                <input class="aud" id="<%= 'audBut'+i %>" type="button" onclick="playAudio(<%= i %>)">
+            </div>
+            <audio id="<%= 'file'+i %>" src="<%= audioFiles[i] %>"></audio>
+            <div>
+                <%= content.texts[i].text %>
+            </div>
+            <% } %>
+    </div>
+
+    <div class="contentDiv">
+        <% for(var j=0; j<content.questions.length; j++) { %>
+            <div>
+                <%= content.questions[j].question %>
+            </div>
+
+            <% for(var k=0; k<content.questions[j].options.length; k++) { %>
+                <input type="radio" name="<%= j %>" value="<%= content.questions[j].options[k] %>">
+                <span><%= content.questions[j].options[k] %></span>
+                <br>
+                <% } %>
+                    <% } %>
+    </div>
+
+    <input type="submit">
+
+</form>

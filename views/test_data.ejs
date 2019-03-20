@@ -1,0 +1,114 @@
+<html>
+
+<head>
+    <script src="/jquery/jquery-3.2.1.min.js"></script>
+    <script src="/js/getData.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/oversigt.css">
+
+    <style>
+
+		#sidebar {
+			float: left;
+			border: 1px solid black; 
+			margin-left: 50px; 
+			margin-right: 10px;
+			width: 20%; 
+			padding: 10px;
+		}
+
+		#navbar {
+			overflow: hidden;
+			width: 70%; 
+		}
+
+		.nav {
+			border: 1px black solid; 
+			display: inline-block;
+			padding-left: 10px;
+			padding-right: 10px;
+			margin-right: 0.5vw; 
+		}
+
+		#main-content {
+			overflow: hidden;
+			border: 1px solid black;
+			margin-left: 10px; 
+			margin-right: 1px; 
+			width: 70%; 
+			padding: 10px;
+		}
+
+		#content-table {
+			width: 100%; 
+		}
+
+        .contentDiv {
+			display: inline-block; 
+			margin-right: 2vw; 
+			margin-bottom: 2vh;
+			margin-top: 2vh;
+		}
+
+		.studentData {
+			display: inline-block; 
+			margin-left: 2vw; 
+		}
+
+		#rightContent {
+			float: right; 
+			margin-right: 10vw; 
+		}
+    </style>
+
+</head>
+
+<body onload="readyPage('<%= JSON.stringify(content.studentIDs)%>', '<%=content.idTeacher%>')">
+
+    <header>
+        <% include header %>
+    </header>
+
+    <h2>Dette er datasiden for test med id'et:
+        <%=content.idTeacher %>
+    </h2>
+
+
+	<!--
+		CODE TO DO..
+		CHANGE LAYOUT OF CONTENT
+	-->
+
+	<div id="sidebar">
+		<div class="overview">Oversigt</div>
+		
+		<% for(var i=0; i<content.studentIDs.length; i++) { %>
+			<div id="<%= 's'+i %>"><%=content.studentIDs[i]%></div>
+		<% } %>
+	</div>
+
+	<div id="navbar">
+		<div class="overview nav">Oversigt</div>
+	</div>
+	
+	<div id="main-content"></div>
+
+
+
+	<!--
+		
+		<% for(var i=0; i<content.studentIDs.length; i++) { %>
+			<div id="<%= 's'+i %>" class="contentDiv">Kursist ID:
+				<%=content.studentIDs[i]%>
+			</div>
+			<button id="<%= 'b'+i %>" onclick="getStudentData('<%=content.studentIDs[i]%>', '<%=content.idTeacher%>', this)">+</button>
+			<button id="<%= 'r'+i %>" onclick="removeAnswers(this)" hidden>-</button>
+			<div id="<%= 'd'+i %>"></div>
+			<% } %>
+			
+		-->
+
+</body>
+
+</html>
