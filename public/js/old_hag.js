@@ -1,17 +1,29 @@
   function formSetup(myFunc) {
       $('#form').bind('submit', function (event) {
           event.preventDefault();
-          // ORDDIKTAT ER DU NÅET TIL
           if (confirm('Hvis du går videre kan du ikke komme tilbage')) {
               $('#form input[type = submit]').remove();
               //this will prevent the default submit
-              console.log('running form setup', myFunc);
+              console.log('If !undefined, extra code will run: ', myFunc);
 
               if (myFunc) {
                   myFunc();
               }
-          $(this).unbind('submit').submit(); // continue the submit unbind preventDefault
+              // handle session for teacher site
+              sessionTeacher();
+              $(this).unbind('submit').submit(); // continue the submit unbind preventDefault
           }
 
       });
+  }
+
+  function sessionTeacher() {
+
+      var user = sessionStorage.getItem('currentUser');
+      user = JSON.parse(user);
+      if (user) {
+          user.teacherModules.shift();
+          sessionStorage.setItem('currentUser', JSON.stringify(user));
+          $('#data').val(JSON.stringify(user));
+      }
   }

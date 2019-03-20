@@ -43,6 +43,7 @@
 		</thead>
 
 		<% for(var i=0; i < content.totalTests; i++) { %>
+        <%if(content.tests[i]) {%>
 		<tbody>
 		<tr>
 			<td>
@@ -50,7 +51,9 @@
 				<ul class="ul_show" style="display: none">
 					<% for(var j=0; j < content.tests[i].totalModules; j++) { %>
 						<li>
+                            <%if(content.tests[i].modules[j]){%>
 							<%=content.tests[i].modules[j].moduleType %>
+                            <%}%>
 						</li>
 						<% } %>
 					</ul>
@@ -66,7 +69,8 @@
 					<!-- <input type="hidden" name="<%= content.tests[i]._id %>"> -->
 				</td>
 			</tr>
-		</tbody>	
+		</tbody>
+       <% }%>
 		<% } %>
 
 	</table>
