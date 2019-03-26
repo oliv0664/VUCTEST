@@ -23,12 +23,28 @@
         height: 30px;
     }
 
+    #stop_time:hover {
+        cursor: pointer; 
+    }
 </style>
 
 <script>
-    var a = 0;
     $(function() {
         formSetup();
+    });
+    var a = 0;
+
+    $(document).ready(function() {
+        var startTime = new Date().getTime(); 
+
+        $('#stop_time').click(function() {
+            var stopTime = new Date().getTime(); 
+            var time = stopTime-startTime; 
+            $('#time').val(time); 
+
+            $('#stop_time').hide();
+            $('input[type=submit]').show();  
+        }); 
     });
 
     function playAudio(index) {
@@ -64,7 +80,9 @@
                 <span><%= content[i].lineText2 %></span>
             </div>
         </div>
-        <% } %>
+    <% } %>
+    <input id="time" name="time" value="" hidden>
+    <div id="stop_time">Gem</div>
 
-            <input type="submit">
+    <input type="submit" hidden>
 </form>

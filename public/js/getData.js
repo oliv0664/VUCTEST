@@ -34,7 +34,7 @@ function getStudentData(studentIDs, teacherID, btnID) {
     })
     .done(function (dataStr) {
         var data = JSON.parse(dataStr);
-        console.log(data); 
+        console.log("YOOOO ", data); 
         getSidebarView(data); 
     });
 }
@@ -53,7 +53,8 @@ function getSidebarView(data) {
         var $div1 = $('<div>').append($btn1, $btn2).attr('class', 'contentDiv');
         var $div2 = $('<div>'+data[i].type+'</div>').attr('class', 'contentDiv');
         //CODE TO DO
-        //ved clozetest og brev skal output være i form af tid kursisten har brugt 
+        //Er gået igang med at indsætte tiden. Så nu ligger tiden i objected 'data' 
+        //Men det skal lige styles så den kun viser tiden 1 gang pr. elev, pr. test 
 
         var $br = $('<br>').attr('id', 'br'+i); //add break
 
@@ -70,12 +71,27 @@ function showMoreStudentInfo(btnID, data) {
     for(var i=0; i<data[id].answers.length; i++) {
         var $div1 = $('<div>').attr('id','div'+id+'-'+i); 
         var $div2 = $('<div>Kursist svar: '+data[id].answers[i].student_answer+'</div>').attr('class', 'studentData');
-        var $div3 = $('<div>Korrekt svar: '+data[id].answers[i].correct_answer+'</div>').attr('class', 'studentData');
+        var $div3 = $('<div>Korrekt svar: '+data[id].answers[i].correct_answer+'</div>').attr({class: 'studentData'});
         var $div4 = $('<div>Point: '+data[id].answers[i].point+'</div>').attr({class: 'studentData', id: 'rightContent'});
-        
-        if(i==0) $div1.append($div2, $div3, $div4).insertAfter($('#br'+id)); 
-        else $div1.append($div2, $div3, $div4).insertAfter($('#div'+id+'-'+(i-1)));
+        var time = calculateMinutesAndSeconds(data[id].time);
+        var $div5 = $('<div>Tid: '+time[0]+'min. og '+time[1]+'s.</div>').attr({class: 'studentData', id: 'rightContent'}); 
+
+        if(i==0) $div1.append($div2, $div3, $div4, $div5).insertAfter($('#br'+id)); 
+        else $div1.append($div2, $div3, $div4, $div5).insertAfter($('#div'+id+'-'+(i-1)));
     }
+}
+
+function calculateMinutesAndSeconds(timeInMilliseconds) {
+    var time = [];
+    var seconds = timeInMilliseconds/1000; 
+
+    var minutes = Math.floor(seconds/60);
+    time.push(minutes); 
+
+    var secondsLeft = Math.floor(((seconds/60) % 1) * 60);
+    time.push(secondsLeft);  
+
+    return time; 
 }
 
 //this function minimizes the - button and the student info 
@@ -161,7 +177,7 @@ function setWorddictateView(data, studentData, id) {
         var totalScore = calculateCorrectAnswers(data, studentData, id, i); 
 
         var $div5 = $('<div>'+totalScore+' ud af '+studentData.length+'</div>').attr({class: 'studentData', id: 'rightContent'});
-        
+
         if(i==0) $div1.append($div2, $div3, $div4, $div5).insertAfter($('#br'+id)); 
         else $div1.append($div2, $div3, $div4, $div5).insertAfter($('#div'+id+'-'+(i-1)));
     }

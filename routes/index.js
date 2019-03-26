@@ -1232,15 +1232,18 @@ router.post(encodeURI('/orddiktat_answer'), function(req, res) {
     // parse the request and handle fields data
 
     form.parse(req, function(err, fields, files) {
-
+        
         inputAnswers = [];
         var temp = Object.keys(fields);
-        for (i = 0; i < temp.length; i++) {
+        console.log("OLIVER TESTER HER ALTSÅ: ", fields[temp[temp.length-1]]);
+        var time = fields[temp[temp.length-1]]; 
+        for (i = 0; i < temp.length-1; i++) {
             inputAnswers.push(fields[temp[i]]);
         }
         var mod = {
             moduleType: 'Orddiktat',
-            answers: inputAnswers
+            answers: inputAnswers,
+            time: time
         }
 
         studentClass.findOneAndUpdate({
@@ -1253,7 +1256,8 @@ router.post(encodeURI('/orddiktat_answer'), function(req, res) {
             if (err) {
                 res.send(err);
             } else {
-                console.log("STUDENT: " + student);
+                console.log("STUDENT OP: " + student);
+                
                 student.modules.push(mod);
 
                 student.save(function(err) {
@@ -1354,12 +1358,14 @@ router.post(encodeURI('/vrøvleord_answer'), function(req, res) {
 
         inputAnswers = [];
         var temp = Object.keys(fields);
-        for (i = 0; i < temp.length; i++) {
+        var time = fields[temp[temp.length-1]];
+        for (i = 0; i < temp.length-1; i++) {
             inputAnswers.push(fields[temp[i]]);
         }
         var mod = {
             moduleType: 'Vrølveord',
-            answers: inputAnswers
+            answers: inputAnswers,
+            time: time
         }
 
         studentClass.findOneAndUpdate({
@@ -1476,12 +1482,14 @@ router.post(encodeURI('/clozetest_answer'), function(req, res) {
 
         inputAnswers = [];
         var temp = Object.keys(fields);
-        for (i = 0; i < temp.length; i++) {
+        var time = fields[temp[temp.length-1]];
+        for (i = 0; i < temp.length-1; i++) {
             inputAnswers.push(fields[temp[i]]);
         }
         var mod = {
             moduleType: 'Clozetest',
-            answers: inputAnswers
+            answers: inputAnswers,
+            time: time
         }
 
         studentClass.findOneAndUpdate({
@@ -1596,13 +1604,15 @@ router.post(encodeURI('/tekstforståelse_answer'), function(req, res) {
 
         inputAnswers = [];
         var temp = Object.keys(fields);
-        for (i = 0; i < temp.length; i++) {
+        var time = fields[temp[temp.length-1]]; 
+        for (i = 0; i < temp.length-1; i++) {
             inputAnswers.push(fields[temp[i]]);
         }
 
         var mod = {
             moduleType: 'Tekstforståelse',
-            answers: inputAnswers
+            answers: inputAnswers,
+            time: time
         }
 
         studentClass.findOneAndUpdate({
@@ -1710,12 +1720,14 @@ router.post('/brev_answer', function(req, res) {
 
         inputAnswers = [];
         var temp = Object.keys(fields);
-        for (i = 0; i < temp.length; i++) {
+        var time = fields[temp[temp.length-1]]; 
+        for (i = 0; i < temp.length-1; i++) {
             inputAnswers.push(fields[temp[i]]);
         }
         var mod = {
             moduleType: 'Brev',
-            answers: inputAnswers
+            answers: inputAnswers,
+            time: time
         }
 
         studentClass.findOneAndUpdate({
@@ -1982,6 +1994,8 @@ function evaluateScore(testIndex, student, teacher) {
         module_score.type = module_type;
         var module_answers = [];
 
+        if(j>0) module_score.time = student.modules[j].time; 
+
         for (var k = 0; k < student.modules[j].answers.length; k++) {
             var point = 0;
             var student_answer = student.modules[j].answers[k];
@@ -2007,6 +2021,7 @@ function evaluateScore(testIndex, student, teacher) {
             });
         }
         module_score.answers = module_answers;
+          
         final_score.push(module_score);
     }
     return final_score;
