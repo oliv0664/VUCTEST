@@ -41,7 +41,8 @@ function getStudentData(studentIDs, teacherID, btnID) {
 
 function getSidebarView(data) {
     var $div1 = $('<div>'+data[1]+'</div>'); 
-    $('#main-content').empty().append($div1); 
+
+    $('#main-content').empty().append($div1, $div2); 
 
     for(var i=2; i<data.length; i++) {
         if(data[i].type == "kursistinfo") continue; 
@@ -52,13 +53,15 @@ function getSidebarView(data) {
 
         var $div1 = $('<div>').append($btn1, $btn2).attr('class', 'contentDiv');
         var $div2 = $('<div>'+data[i].type+'</div>').attr('class', 'contentDiv');
+        var time = calculateMinutesAndSeconds(data[i].time);
+        var $div3 = $('<div>Tid: '+time[0]+'min. og '+time[1]+'s.</div>').attr('class', 'contentDiv'); 
         //CODE TO DO
         //Er gået igang med at indsætte tiden. Så nu ligger tiden i objected 'data' 
         //Men det skal lige styles så den kun viser tiden 1 gang pr. elev, pr. test 
 
         var $br = $('<br>').attr('id', 'br'+i); //add break
 
-        $('#main-content').append($div1, $div2, $br); 
+        $('#main-content').append($div1, $div2, $div3, $br); 
     }
 }
 
@@ -73,11 +76,9 @@ function showMoreStudentInfo(btnID, data) {
         var $div2 = $('<div>Kursist svar: '+data[id].answers[i].student_answer+'</div>').attr('class', 'studentData');
         var $div3 = $('<div>Korrekt svar: '+data[id].answers[i].correct_answer+'</div>').attr({class: 'studentData'});
         var $div4 = $('<div>Point: '+data[id].answers[i].point+'</div>').attr({class: 'studentData', id: 'rightContent'});
-        var time = calculateMinutesAndSeconds(data[id].time);
-        var $div5 = $('<div>Tid: '+time[0]+'min. og '+time[1]+'s.</div>').attr({class: 'studentData', id: 'rightContent'}); 
-
-        if(i==0) $div1.append($div2, $div3, $div4, $div5).insertAfter($('#br'+id)); 
-        else $div1.append($div2, $div3, $div4, $div5).insertAfter($('#div'+id+'-'+(i-1)));
+        
+        if(i==0) $div1.append($div2, $div3, $div4).insertAfter($('#br'+id)); 
+        else $div1.append($div2, $div3, $div4).insertAfter($('#div'+id+'-'+(i-1)));
     }
 }
 
