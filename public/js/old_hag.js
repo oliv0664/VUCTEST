@@ -1,6 +1,9 @@
   function formSetup(myFunc) {
       $('#form').bind('submit', function (event) {
           event.preventDefault();
+
+          $(document.body).css('cursor', 'wait'); 
+
           if (confirm('Hvis du går videre kan du ikke komme tilbage')) {
               $('#form input[type = submit]').remove();
               //this will prevent the default submit

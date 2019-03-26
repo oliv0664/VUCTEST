@@ -218,6 +218,10 @@ function setupStudentModules(modulesArray) {
     return tempArray;
 }
 
+router.setupModules = function(array) {
+    return setupStudentModules(array); 
+}
+
 function getId() {
     var id = '5a785e4b3867e72b94b2baba';
     console.log('getID is running');
@@ -283,6 +287,7 @@ router.post('/welcome_addinfo', function(req, res) {
                                     modules: []
                                 });
                                 console.log("STUDENT: ", kursistModules);
+ 
 
                                 student.save(function(err) {
                                     if (err) {
@@ -1123,7 +1128,7 @@ router.post(encodeURI('/kursistinfo_answer'), function(req, res) {
 
                 student.save(function(err) {
                     if (err) console.log(err);
-                    res.redirect(kursistModules[0]);
+                    res.redirect(kursistModules[0]); 
                     kursistModules.shift();
                 });
             }
@@ -1140,6 +1145,8 @@ router.get(encodeURI('/orddiktat_kursist'), function(req, res) {
 
     // teacherID = JSON.stringify(teacherID); 
     // %%% Skal hentes fra sessionStorage
+
+
     console.log("TEACHER ID: " + typeof JSON.stringify(teacherID));
 
 
@@ -1211,7 +1218,6 @@ router.post(encodeURI('/orddiktat_answer'), function(req, res) {
     // %%% Skal hentes fra sessionStorage
     HandleTestCounter(teacherID);
 
-
     //det første der sker, er at 'writeTo' mappen tømmes 
     folderHandler();
 
@@ -1252,8 +1258,7 @@ router.post(encodeURI('/orddiktat_answer'), function(req, res) {
 
                 student.save(function(err) {
                     if (err) console.log(err);
-                    //					isThisLastModule(kursistModules);
-                    res.redirect(kursistModules[0]);
+                    res.redirect(kursistModules[0]); 
                     kursistModules.shift();
                 });
             }

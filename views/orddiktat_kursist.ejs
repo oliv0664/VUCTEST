@@ -25,9 +25,24 @@
 
 <script>
     $(function(){     
-    formSetup();
+        formSetup();
     });
     var a = 0; 
+
+    $(document).ready(function() {
+        var startTime = new Date().getTime(); 
+
+        $('#stop_time').click(function() {
+            var stopTime = new Date().getTime(); 
+            var time = stopTime-startTime; 
+            console.log(startTime);
+            console.log(stopTime);
+            console.log(time/1000);
+
+            $('#stop_time').hide();
+            $('input[type=submit]').show();  
+        }); 
+    });
 
     //TO DO
     //knapper må kun kunne trykkes på 2 gange
@@ -68,6 +83,9 @@
         
     <% } %> 
     
-    <input type="submit">
+    <input id="time" name="time" value="" hidden>
+    <div id="stop_time">Gem</div>
+
+    <input type="submit" hidden>
 
 </form>

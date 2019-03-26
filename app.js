@@ -105,9 +105,16 @@ checkIdInUrl = function(req, res, next) {
                         app.set('idTeacher', idTeacher);
                         match = true;
                         console.log('there is a match, now redirecting to the correct page');
+                        
+                        var index = require('./routes/index.js'); 
+                        var kursistModules = index.setupModules(docs[i].tests[j].modules); 
+                        console.log('KURSIST MODULES FRA APP.JS', kursistModules); 
+
                         res.render('welcome', {
                             title: 'main page',
-                            username: idTeacher
+                            userid: idTeacher,
+                            username: docs[i].initials,
+                            modules: kursistModules
                         });
                         //                   next();
                     }
