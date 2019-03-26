@@ -19,12 +19,7 @@ var mongoose = require('mongoose');
 // %%% Skal gemmes i sessionStorage
 var teacherID;
 var studentID;
-var initials;
-var teacherModules = [];
-var studentModules = [];
 var kursistModules = [];
-// denne variabel er navngivet dårligt, men den holder på samme data som initials. 
-var tjek;
 
 /* GET home page. */
 
