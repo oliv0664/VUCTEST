@@ -55,9 +55,6 @@ function getSidebarView(data) {
         var $div2 = $('<div>'+data[i].type+'</div>').attr('class', 'contentDiv');
         var time = calculateMinutesAndSeconds(data[i].time);
         var $div3 = $('<div>Tid: '+time[0]+'min. og '+time[1]+'s.</div>').attr('class', 'contentDiv'); 
-        //CODE TO DO
-        //Er gået igang med at indsætte tiden. Så nu ligger tiden i objected 'data' 
-        //Men det skal lige styles så den kun viser tiden 1 gang pr. elev, pr. test 
 
         var $br = $('<br>').attr('id', 'br'+i); //add break
 
