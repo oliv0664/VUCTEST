@@ -16,10 +16,8 @@ var mongoose = require('mongoose');
 var Grid = require('gridfs-stream');
 var http = require("http");
 
-var mongoDB = 'mongodb://localhost/vucfyntest';
-//var mongoDB = 'mongodb://vucfyntest:test@ds237475.mlab.com:37475/vucfyntestdb';
-
-
+// var mongoDB = 'mongodb://localhost/vucfyntest';
+var mongoDB = 'mongodb://vucfyntest:test@ds237475.mlab.com:37475/vucfyntestdb';
 
 var fs = require('fs');
 
@@ -67,7 +65,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+
 app.use(cookieParser());
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function(req, res, next) {
@@ -109,6 +109,12 @@ checkIdInUrl = function(req, res, next) {
                         var index = require('./routes/index.js'); 
                         var kursistModules = index.setupModules(docs[i].tests[j].modules); 
                         console.log('KURSIST MODULES FRA APP.JS', kursistModules); 
+
+                        var progression = {
+                            modules: kursistModules,
+                            progression: 0
+                        }
+                        res.cookie('user', progression); 
 
                         res.render('welcome', {
                             title: 'main page',

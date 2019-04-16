@@ -287,15 +287,15 @@ router.post('/welcome_addinfo', function(req, res) {
                                     modules: []
                                 });
                                 console.log("STUDENT: ", kursistModules);
- 
 
                                 student.save(function(err) {
                                     if (err) {
                                         console.log(err);
                                     }
 
-                                    res.redirect(kursistModules[0]);
-                                    kursistModules.shift();
+                                    var index = req.cookies.user.progression; 
+                                    res.redirect(kursistModules[index]);
+                                    //kursistModules.shift();
                                 });
                             } else {
                                 res.send('ID ER TAGET!');
@@ -1063,7 +1063,8 @@ router.get(encodeURI('/kursistinfo_kursist'), function(req, res) {
                 if (id_db == id_serv) {
                     var totalLen = teacher[0].tests[i].totalModules;
                     var currentLen = kursistModules.length;
-                    var index = totalLen - currentLen;
+                    //var index = totalLen - currentLen;
+                    var index = req.cookies.user.progression; 
                     var content = teacher[0].tests[i].modules[index].content; //0 = orddiktat
                     var moduleType = teacher[0].tests[i].modules[index].moduleType;
 
@@ -1085,7 +1086,7 @@ router.get(encodeURI('/kursistinfo_kursist'), function(req, res) {
 
 router.post(encodeURI('/kursistinfo_answer'), function(req, res) {
 
-
+    console.log("TEEEST"); 
     // %%% Skal hentes fra sessionStorage
     HandleTestCounter(teacherID);
 
@@ -1123,13 +1124,24 @@ router.post(encodeURI('/kursistinfo_answer'), function(req, res) {
             if (err) {
                 res.send(err);
             } else {
-                console.log("STUDENT: " + student);
+                console.log("STUDENT LÆÆÆÆR: ", kursistModules);
                 student.modules.push(mod);
+
+                //CODE TO DO..
+                //HELE DETTE POST VIRKER IKKE 
+
+                var progression = req.cookies.user.progression; 
+                progression++; 
+                var progression = {
+                    modules: kursistModules,
+                    progression: progression
+                }
+                res.cookie('user', progression); 
 
                 student.save(function(err) {
                     if (err) console.log(err);
-                    res.redirect(kursistModules[0]); 
-                    kursistModules.shift();
+                    res.redirect(kursistModules[progression]); 
+                    // kursistModules.shift();
                 });
             }
         });

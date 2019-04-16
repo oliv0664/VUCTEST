@@ -202,9 +202,7 @@ function setClozetestView(data, studentData, id) {
         var $div3 = $('<div> _____ </div>').attr('class', 'studentData');
         var $div4 = $('<div>'+data[id].content[i].lineText2+'</div>').attr('class', 'studentData');
         
-        var totalScore = calculateCorrectAnswers(data, studentData, id, i); 
-
-        var $div5 = $('<div>'+totalScore+' ud af '+studentData.length+'</div>').attr({class: 'studentData', id: 'rightContent'});
+        var $div5 = $('<div>Ingen point</div>').attr({class: 'studentData', id: 'rightContent'});
         
         if(i==0) $div1.append($div2, $div3, $div4, $div5).insertAfter($('#br'+id)); 
         else $div1.append($div2, $div3, $div4, $div5).insertAfter($('#div'+id+'-'+(i-1)));
@@ -351,9 +349,9 @@ function setView(scoreData, ids) {
         //add moduletype and average
         var $div1 = $('<div>').append($btn1, $btn2).attr('class', 'contentDiv'); 
         var $div2 = $('<div>'+scoreData[i].moduleType+'</div>').attr('class', 'contentDiv');
-        var $div3 = $('<div>Gennemsnit: '+scoreData[i].averageScore+' ud af '+scoreData[i].totalPoints+'</div>').attr({class: 'contentDiv', id: 'rightContent'});
+        var $div3 = $('<div>Gennemsnits point: '+scoreData[i].averageScore+' ud af '+scoreData[i].totalPoints+'</div>').attr({class: 'contentDiv', id: 'rightContent'});
         var time = calculateMinutesAndSeconds(scoreData[i].averageTime); 
-        var $div4 = $('<div>Tid: '+time[0]+'min. og '+time[1]+'s.</div>').attr({class: 'contentDiv', id: 'rightContent'}); 
+        var $div4 = $('<div>Gennemsnits tid: '+time[0]+'min. og '+time[1]+'s.</div>').attr({class: 'contentDiv', id: 'rightContent'}); 
 
         var $br = $('<br>').attr('id', 'br'+i); //add break
 
