@@ -29,13 +29,26 @@
 
                 sessionStorage.setItem('currentUser', JSON.stringify(user));
 
+                // window.history.replaceState({}, 'welcome', '/welcome'); 
+
                 $(this).unbind('submit').submit();
             });
         });
+
+        function w_redirect() {
+            var url = window.location.pathname; 
+            var user = sessionStorage.getItem('currentUser'); 
+            user = JSON.parse(user); 
+            if(user) {
+                if(url.slice(1) != user.teacherModules[0]) {
+                    location.replace(user.teacherModules[0]); 
+                } 
+            }
+        }
     </script>
 </head>
 
-<body>
+<body onload="w_redirect()">
 
 	<header>
         <% include header %>

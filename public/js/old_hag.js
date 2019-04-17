@@ -13,7 +13,8 @@
                   myFunc();
               }
               // handle session for teacher site
-              sessionTeacher();
+              sessionTeacher();  
+              
               $(this).unbind('submit').submit(); // continue the submit unbind preventDefault
           }
 
@@ -29,4 +30,14 @@
           sessionStorage.setItem('currentUser', JSON.stringify(user));
           $('#data').val(JSON.stringify(user));
       }
+  }
+
+
+  function redirect() {
+      var url = window.location.pathname; 
+      var user = sessionStorage.getItem('currentUser'); 
+      user = JSON.parse(user);  
+      if(decodeURI(url.slice(1)) != user.teacherModules[0]) {
+          location.replace(user.teacherModules[0]); 
+      } 
   }

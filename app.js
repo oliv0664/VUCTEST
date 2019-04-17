@@ -107,20 +107,20 @@ checkIdInUrl = function(req, res, next) {
                         console.log('there is a match, now redirecting to the correct page');
                         
                         var index = require('./routes/index.js'); 
-                        var kursistModules = index.setupModules(docs[i].tests[j].modules); 
-                        console.log('KURSIST MODULES FRA APP.JS', kursistModules); 
+                        var modulesArray = index.setupModules(docs[i].tests[j].modules); 
+                        console.log('KURSIST MODULES FRA APP.JS', modulesArray); 
 
-                        var progression = {
-                            modules: kursistModules,
+                        var user = {
+                            modules: modulesArray,
                             progression: 0
                         }
-                        res.cookie('user', progression); 
+                        res.cookie('user', user); 
 
                         res.render('welcome', {
                             title: 'main page',
                             userid: idTeacher,
                             username: docs[i].initials,
-                            modules: kursistModules
+                            modules: modulesArray
                         });
                         //                   next();
                     }

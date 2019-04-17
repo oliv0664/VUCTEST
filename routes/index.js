@@ -76,7 +76,7 @@ router.post('/signin', function(req, res, next) {
                         //ved get start skal der laves
                         // var user = req.query.user;
 
-                        res.cookie('username', user);
+                        // res.cookie('username', user);
                         res.redirect('start');
                     }
 
@@ -270,7 +270,7 @@ router.post('/welcome_addinfo', function(req, res) {
                 var id_db = JSON.stringify(teacher[0].tests[i]._id);
                 if (id_db == id_serv) {
 
-                    kursistModules = setupStudentModules(teacher[0].tests[i].modules);
+                    //kursistModules = setupStudentModules(teacher[0].tests[i].modules);
 
                     studentClass.findOneAndUpdate({
                         studentID: studentID
@@ -286,15 +286,16 @@ router.post('/welcome_addinfo', function(req, res) {
                                     studentinfo: {},
                                     modules: []
                                 });
-                                console.log("STUDENT: ", kursistModules);
+                                //console.log("STUDENT: ", kursistModules);
 
                                 student.save(function(err) {
                                     if (err) {
                                         console.log(err);
                                     }
 
-                                    var index = req.cookies.user.progression; 
-                                    res.redirect(kursistModules[index]);
+                                    var modulesArray = req.cookies.user.modules; 
+                                    var progression = req.cookies.user.progression;  
+                                    res.redirect(modulesArray[progression]);
                                     //kursistModules.shift();
                                 });
                             } else {
@@ -1061,8 +1062,8 @@ router.get(encodeURI('/kursistinfo_kursist'), function(req, res) {
                 var id_db = JSON.stringify(teacher[0].tests[i]._id);
 
                 if (id_db == id_serv) {
-                    var totalLen = teacher[0].tests[i].totalModules;
-                    var currentLen = kursistModules.length;
+                    //var totalLen = teacher[0].tests[i].totalModules;
+                    //var currentLen = kursistModules.length;
                     //var index = totalLen - currentLen;
                     var index = req.cookies.user.progression; 
                     var content = teacher[0].tests[i].modules[index].content; //0 = orddiktat
@@ -1124,23 +1125,21 @@ router.post(encodeURI('/kursistinfo_answer'), function(req, res) {
             if (err) {
                 res.send(err);
             } else {
-                console.log("STUDENT LÆÆÆÆR: ", kursistModules);
+                //console.log("STUDENT LÆÆÆÆR: ", kursistModules);
                 student.modules.push(mod);
 
-                //CODE TO DO..
-                //HELE DETTE POST VIRKER IKKE 
-
-                var progression = req.cookies.user.progression; 
+                var progression = req.cookies.user.progression;
                 progression++; 
-                var progression = {
-                    modules: kursistModules,
+                var modulesArray = req.cookies.user.modules;  
+                var user = {
+                    modules: modulesArray,
                     progression: progression
                 }
-                res.cookie('user', progression); 
+                res.cookie('user', user); 
 
                 student.save(function(err) {
                     if (err) console.log(err);
-                    res.redirect(kursistModules[progression]); 
+                    res.redirect(modulesArray[progression]); 
                     // kursistModules.shift();
                 });
             }
@@ -1185,10 +1184,11 @@ router.get(encodeURI('/orddiktat_kursist'), function(req, res) {
                 if (id_db == id_serv) {
                     var audio_files = [];
                     var promises = [];
-                    var totalLen = teacher[0].tests[i].totalModules;
-                    var currentLen = kursistModules.length;
-                    console.log("TOTAL LEN: " + totalLen + ", CURR LEN: " + currentLen);
-                    var index = totalLen - currentLen;
+                    // var totalLen = teacher[0].tests[i].totalModules;
+                    // var currentLen = kursistModules.length;
+                    // console.log("TOTAL LEN: " + totalLen + ", CURR LEN: " + currentLen);
+                    // var index = totalLen - currentLen;
+                    var index = req.cookies.user.progression;
                     var content = teacher[0].tests[i].modules[index].content; //0 = orddiktat
                     var moduleType = teacher[0].tests[i].modules[index].moduleType;
 
@@ -1272,10 +1272,19 @@ router.post(encodeURI('/orddiktat_answer'), function(req, res) {
                 
                 student.modules.push(mod);
 
+                var progression = req.cookies.user.progression;
+                progression++;  
+                var modulesArray = req.cookies.user.modules; 
+                var user = {
+                    progression: progression,
+                    modules: modulesArray 
+                }
+                res.cookie('user', user); 
+
                 student.save(function(err) {
                     if (err) console.log(err);
-                    res.redirect(kursistModules[0]); 
-                    kursistModules.shift();
+                    res.redirect(modulesArray[progression]); 
+                    // kursistModules.shift();
                 });
             }
         });
@@ -1310,10 +1319,11 @@ router.get(encodeURI('/vrøvleord_kursist'), function(req, res) {
                 if (id_db == id_serv) {
                     var audio_files = [];
                     var promises = [];
-                    var totalLen = teacher[0].tests[i].totalModules;
-                    var currentLen = kursistModules.length;
-                    console.log("TOTAL LEN: " + totalLen + ", CURR LEN: " + currentLen);
-                    var index = totalLen - currentLen;
+                    // var totalLen = teacher[0].tests[i].totalModules;
+                    // var currentLen = kursistModules.length;
+                    // console.log("TOTAL LEN: " + totalLen + ", CURR LEN: " + currentLen);
+                    // var index = totalLen - currentLen;
+                    var index = req.cookies.user.progression; 
                     var content = teacher[0].tests[i].modules[index].content; //0 = orddiktat
                     var moduleType = teacher[0].tests[i].modules[index].moduleType;
 
@@ -1393,11 +1403,20 @@ router.post(encodeURI('/vrøvleord_answer'), function(req, res) {
                 console.log("STUDENT: " + student);
                 student.modules.push(mod);
 
+                var progression = req.cookies.user.progression;
+                progression++;  
+                var modulesArray = req.cookies.user.modules;
+                var user = {
+                    modules: modulesArray,
+                    progression: progression
+                } 
+                res.cookie('user', user); 
+
                 student.save(function(err) {
                     if (err) console.log(err);
                     //					isThisLastModule(kursistModules);
-                    res.redirect(kursistModules[0]);
-                    kursistModules.shift();
+                    res.redirect(modulesArray[progression]);
+                    // kursistModules.shift();
                 });
             }
         });
@@ -1433,10 +1452,11 @@ router.get(encodeURI('/clozetest_kursist'), function(req, res) {
                 if (id_db == id_serv) {
                     var audio_files = [];
                     var promises = [];
-                    var totalLen = teacher[0].tests[i].totalModules;
-                    var currentLen = kursistModules.length;
-                    console.log("TOTAL LEN: " + totalLen + ", CURR LEN: " + currentLen);
-                    var index = totalLen - currentLen;
+                    // var totalLen = teacher[0].tests[i].totalModules;
+                    // var currentLen = kursistModules.length;
+                    // console.log("TOTAL LEN: " + totalLen + ", CURR LEN: " + currentLen);
+                    // var index = totalLen - currentLen;
+                    var index = req.cookies.user.progression; 
                     var content = teacher[0].tests[i].modules[index].content; //0 = orddiktat
                     var moduleType = teacher[0].tests[i].modules[index].moduleType;
 
@@ -1517,10 +1537,19 @@ router.post(encodeURI('/clozetest_answer'), function(req, res) {
                 console.log("STUDENT: " + student);
                 student.modules.push(mod);
 
+                var progression = req.cookies.user.progression; 
+                progression++; 
+                var modulesArray = req.cookies.user.modules; 
+                var user = {
+                    modules: modulesArray,
+                    progression: progression
+                }
+                res.cookie('user', user); 
+
                 student.save(function(err) {
                     if (err) console.log(err);
-                    res.redirect(kursistModules[0]);
-                    kursistModules.shift();
+                    res.redirect(modulesArray[progression]);
+                    // kursistModules.shift();
                 });
             }
         });
@@ -1555,10 +1584,11 @@ router.get(encodeURI('/tekstforståelse_kursist'), function(req, res) {
                 if (id_db == id_serv) {
                     var audio_files = [];
                     var promises = [];
-                    var totalLen = teacher[0].tests[i].totalModules;
-                    var currentLen = kursistModules.length;
-                    console.log("TOTAL LEN: " + totalLen + ", CURR LEN: " + currentLen);
-                    var index = totalLen - currentLen;
+                    // var totalLen = teacher[0].tests[i].totalModules;
+                    // var currentLen = kursistModules.length;
+                    // console.log("TOTAL LEN: " + totalLen + ", CURR LEN: " + currentLen);
+                    // var index = totalLen - currentLen;
+                    var index = req.cookies.user.progression; 
                     var content = teacher[0].tests[i].modules[index].content; //0 = orddiktat
                     var inputQuestions = teacher[0].tests[i].modules[index].inputQuestions;
                     var moduleType = teacher[0].tests[i].modules[index].moduleType;
@@ -1640,10 +1670,19 @@ router.post(encodeURI('/tekstforståelse_answer'), function(req, res) {
                 console.log("STUDENT: " + student);
                 student.modules.push(mod);
 
+                var progression = req.cookies.user.progression; 
+                progression++; 
+                var modulesArray = req.cookies.user.modules; 
+                var user = {
+                    modules: modulesArray,
+                    progression: progression
+                }
+                res.cookie('user', user); 
+
                 student.save(function(err) {
                     if (err) console.log(err);
-                    res.redirect(kursistModules[0]);
-                    kursistModules.shift();
+                    res.redirect(modulesArray[progression]);
+                    // kursistModules.shift();
                 });
             }
         });
@@ -1676,10 +1715,11 @@ router.get('/brev_kursist', function(req, res) {
                 if (id_db == id_serv) {
                     var audio_files = [];
                     var promises = [];
-                    var totalLen = teacher[0].tests[i].totalModules;
-                    var currentLen = kursistModules.length;
-                    console.log("TOTAL LEN: " + totalLen + ", CURR LEN: " + currentLen);
-                    var index = totalLen - currentLen;
+                    // var totalLen = teacher[0].tests[i].totalModules;
+                    // var currentLen = kursistModules.length;
+                    // console.log("TOTAL LEN: " + totalLen + ", CURR LEN: " + currentLen);
+                    // var index = totalLen - currentLen;
+                    var index = req.cookies.user.progression; 
                     var moduleType = teacher[0].tests[i].modules[index].moduleType;
 
                     promises.push(mongo.readFromDB('descriptionAudio.mp3', teacher[0].tests[i].modules[index].audio.file_id));
@@ -1755,10 +1795,19 @@ router.post('/brev_answer', function(req, res) {
                 console.log("STUDENT: " + student);
                 student.modules.push(mod);
 
+                var progression = req.cookies.user.progression; 
+                progression++; 
+                var modulesArray = req.cookies.user.modules; 
+                var user = {
+                    modules: modulesArray,
+                    progression: progression
+                }
+                res.cookie('user', user); 
+
                 student.save(function(err) {
                     if (err) console.log(err);
-                    res.redirect(kursistModules[0]);
-                    kursistModules.shift();
+                    res.redirect(modulesArray[progression]);
+                    // kursistModules.shift();
                 });
             }
         });
