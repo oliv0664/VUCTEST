@@ -4,10 +4,10 @@
         margin-bottom: 20px;
     }
 
-    text_input {
+    /* .text_input {
         margin-left: 5vw;
         width: 40vw;
-    }
+    } */
 
 </style>
 
@@ -54,34 +54,34 @@
                 <span><%= content[i].input %></span>
                 <input class="text_input" type="text" name="<%= 'answer_' + i %>" placeholder="Skriv svar her">
             </div>
-            <% } else if(content[i].type == 'checkbox') { %>
-                <div class="blockDiv">
-                    <span><%= content[i].input %></span><br>
-                    <% for(var j=0; j<content[i].choices.length; j++) { %>
-                        <input type="checkbox" id="<%= 'checkbox_' + i + '_' + j %>" value="<%= content[i].choices[j] %>">
-                        <span><%= content[i].choices[j] %></span>
-                        <% } %>
-                            <input type="hidden" name="<%= 'answer_' + i %>" id="<%= 'check_' + i %>" value="">
-                </div>
-                <% } else if(content[i].type == 'radio') { %>
-                    <div class="blockDiv">
-                        <span><%= content[i].input %></span><br>
-                        <% for(var j=0; j<content[i].choices.length; j++) { %>
-                            <input type="radio" name="<%= 'answer_' + i %>" value="<%= content[i].choices[j] %>">
-                            <span><%= content[i].choices[j] %></span>
-                            <% } %>
-                    </div>
-                    <% } else if(content[i].type == 'dropdown') { %>
-                        <div class="blockDiv">
-                            <span><%= content[i].input %></span><br>
-                            <select name="<%= 'answer_' + i %>">
-                    <% for(var j=0; j<content[i].choices.length; j++) { %>
-                        <option value="<%= content[i].choices[j] %>"><%= content[i].choices[j] %></option>        
-                    <% } %>
+        <% } else if(content[i].type == 'checkbox') { %>
+            <div class="blockDiv">
+                <span><%= content[i].input %></span><br>
+                <% for(var j=0; j<content[i].choices.length; j++) { %>
+                    <input type="checkbox" id="<%= 'checkbox_' + i + '_' + j %>" value="<%= content[i].choices[j] %>">
+                    <span><%= content[i].choices[j] %></span>
+                <% } %>
+                <input type="hidden" name="<%= 'answer_' + i %>" id="<%= 'check_' + i %>" value="">
+            </div>
+        <% } else if(content[i].type == 'radio') { %>
+            <div class="blockDiv">
+                <span><%= content[i].input %></span><br>
+                <% for(var j=0; j<content[i].choices.length; j++) { %>
+                    <input type="radio" name="<%= 'answer_' + i %>" value="<%= content[i].choices[j] %>">
+                    <span><%= content[i].choices[j] %></span>
+                <% } %>
+            </div>
+        <% } else if(content[i].type == 'dropdown') { %>
+            <div class="blockDiv">
+                <span><%= content[i].input %></span><br>
+                <select name="<%= 'answer_' + i %>">
+                <% for(var j=0; j<content[i].choices.length; j++) { %>
+                    <option value="<%= content[i].choices[j] %>"><%= content[i].choices[j] %></option>        
+                <% } %>
                 </select>
-                        </div>
-                        <% } %>
-                            <% } %>
+            </div>
+        <% } %>
+    <% } %>
 
-                                <input id="submit" type="submit">
+    <input id="submit" type="submit">
 </form>
