@@ -35,20 +35,12 @@
 		#main-table tbody td {
 			background-color: #15B743;
 		}
-		
-		#td0_0 {
-			border-radius: 10px 0px 0px 0px;
-		}
 
-		#td0_3 {
-			border-radius: 0px 10px 0px 0px;			
-		}	
-
-		#td_last_0 {
+		#td_last_left {
 			border-radius: 0px 0px 0px 10px;			
 		}
 
-		#td_last_3 {
+		#td_last_right {
 			border-radius: 0px 0px 10px 0px;			
 		}
 	</style>
@@ -93,9 +85,9 @@
 					<tbody>
 						<tr>
 							<%if(i == content.totalTests-1) {%> 
-								<td id="td_last_0">
+								<td id="td_last_left">
 							<% } else {%>
-								<td id="td<%= i %>_0">
+								<td>
 							<% } %>
 								<button type="button" class="ul_btn">+</button> Quiz <%=i+1%><%=content.tests[i].date.toLocaleString()%>:
 								<ul class="ul_show" style="display: none">
@@ -107,17 +99,17 @@
 									</li>
 									<% } %>
 								</ul>
-							</td id="td<%= i %>_1">
+							</td>
 							<td>
 								<a href="/welcome<%= content.tests[i]._id %>">link</a>
 							</td>
-							<td id="td<%= i %>_2">
+							<td>
 								<%= content.tests[i].totalTestTaken %>
 							</td>
 							<%if(i == content.totalTests-1) {%> 
-								<td id="td_last_3">
+								<td id="td_last_right">
 							<% } else {%>
-								<td id="td<%= i %>_3">
+								<td>
 							<% } %>
 								<input type="submit" class="seeAnswer" value="Se svar" name="<%= content.tests[i]._id %>">
 								<!-- <input type="hidden" name="<%= content.tests[i]._id %>"> -->
