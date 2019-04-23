@@ -45,20 +45,22 @@ function getSidebarView(data) {
     $('#main-content').empty().append($div1, $div2); 
 
     for(var i=2; i<data.length; i++) {
-        if(data[i].type == "kursistinfo") continue; 
+        if(data[i].type != "kursistinfo") {
 
-        //add 2 buttons for expanding (+) and minimizing (-)
-        var $btn1 = $('<button>').text('+').attr('id','expandBtn'+i).css('width','30px').click(function() { showMoreStudentInfo(this.id, data); }); 
-        var $btn2 = $('<button>').text('-').attr('id', 'minimizeBtn'+i).css('width','30px').click(function() { showLessStudentInfo(this.id, data); }).hide();
-
-        var $div1 = $('<div>').append($btn1, $btn2).attr('class', 'contentDiv');
-        var $div2 = $('<div>'+data[i].type+'</div>').attr('class', 'contentDiv');
-        var time = calculateMinutesAndSeconds(data[i].time);
-        var $div3 = $('<div>Tid: '+time[0]+'min. og '+time[1]+'s.</div>').attr('class', 'contentDiv'); 
-
-        var $br = $('<br>').attr('id', 'br'+i); //add break
-
-        $('#main-content').append($div1, $div2, $div3, $br); 
+            
+            //add 2 buttons for expanding (+) and minimizing (-)
+            var $btn1 = $('<button>').text('+').attr('id','expandBtn'+i).css('width','30px').click(function() { showMoreStudentInfo(this.id, data); }); 
+            var $btn2 = $('<button>').text('-').attr('id', 'minimizeBtn'+i).css('width','30px').click(function() { showLessStudentInfo(this.id, data); }).hide();
+            
+            var $div1 = $('<div>').append($btn1, $btn2).attr('class', 'contentDiv');
+            var $div2 = $('<div>'+data[i].type+'</div>').attr('class', 'contentDiv');
+            var time = calculateMinutesAndSeconds(data[i].time);
+            var $div3 = $('<div>Tid: '+time[0]+'min. og '+time[1]+'s.</div>').attr('class', 'contentDiv'); 
+            
+            var $br = $('<br>').attr('id', 'br'+i); //add break
+            
+            $('#main-content').append($div1, $div2, $div3, $br); 
+        }
     }
 }
 
@@ -302,37 +304,39 @@ function getStudentScore(data, teacherID, ids) {
             //create a new array 
             //new array has moduletype, total points available, average score of students, and list of students
             var scoreData = []; 
-            for(var i=1; i<teacherData.length; i++) {
-                var object1 = {
-                    moduleType: teacherData[i].moduleType,
-                    totalPoints: teacherData[i].contentAnswer.length,
-                    averageScore: 0,
-                    students: []
-                }
-                
-                //for every student from the current moduletype
-                var totalScore = 0; 
-                var totalTime = 0; 
-                for(var j=0; j<studentData.length; j++) {    
-                    
-                    //calculate score for the current student and current moduletype 
-                    var score = calculateScore(teacherData[i].contentAnswer, studentData[j].modules[i].answers); 
-                    totalScore += score; 
-
-                    //add all the times together 
-                    totalTime += studentData[j].modules[i].time; 
-
-                    //every student is stored in an object with ID and score 
-                    var object2 = {
-                        student: studentData[j].studentID,
-                        totalScore: score,
-                        totalTime: studentData[j].modules[i].time
+            for(var i=0; i<teacherData.length; i++) {
+                if(teacherData[i].moduleType != "kursistinfo") {
+                    var object1 = {
+                        moduleType: teacherData[i].moduleType,
+                        totalPoints: teacherData[i].contentAnswer.length,
+                        averageScore: 0,
+                        students: []
                     }
-                    object1.students.push(object2);
-                    object1.averageScore = (totalScore/studentData.length).toFixed(2); 
-                    object1.averageTime = (totalTime/studentData.length).toFixed(2);  
+                    
+                    //for every student from the current moduletype
+                    var totalScore = 0; 
+                    var totalTime = 0; 
+                    for(var j=0; j<studentData.length; j++) {    
+                        
+                        //calculate score for the current student and current moduletype 
+                        var score = calculateScore(teacherData[i].contentAnswer, studentData[j].modules[i].answers); 
+                        totalScore += score; 
+    
+                        //add all the times together 
+                        totalTime += studentData[j].modules[i].time; 
+    
+                        //every student is stored in an object with ID and score 
+                        var object2 = {
+                            student: studentData[j].studentID,
+                            totalScore: score,
+                            totalTime: studentData[j].modules[i].time
+                        }
+                        object1.students.push(object2);
+                        object1.averageScore = (totalScore/studentData.length).toFixed(2); 
+                        object1.averageTime = (totalTime/studentData.length).toFixed(2);  
+                    }
+                    scoreData.push(object1);
                 }
-                scoreData.push(object1);
             }
             return setView(scoreData, ids); //return a callback function that populates the view with content
         });

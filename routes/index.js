@@ -2055,6 +2055,9 @@ function evaluateScore(testIndex, student, teacher) {
     for (var j = 0; j < student.modules.length; j++) {
         var module_score = {};
         var module_type = student.modules[j].moduleType;
+
+        module_score.time = student.modules[j].time; 
+        
         module_score.type = module_type;
         var module_answers = [];
 
@@ -2085,7 +2088,8 @@ function evaluateScore(testIndex, student, teacher) {
             });
         }
         module_score.answers = module_answers;
-          
+        
+
         final_score.push(module_score);
     }
     return final_score;
