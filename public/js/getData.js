@@ -121,11 +121,13 @@ function readyNavbar(studentIDs, teacherID) {
         
         console.log("hej", data); 
 
-        for(var i=1; i<data.length; i++) {
-            $div1 = $('<div>'+data[i].moduleType+'</div>').attr({class: 'nav', id: 'n'+i}).click(function() {
-                getNavbarView(data, ids, teacherID, this.id); 
-            }); 
-            $('#navbar').append($div1); 
+        for(var i=0; i<data.length; i++) {
+            if(data[i].moduleType != "kursistinfo") {
+                $div1 = $('<div>'+data[i].moduleType+'</div>').attr({class: 'nav', id: 'n'+i}).click(function() {
+                    getNavbarView(data, ids, teacherID, this.id); 
+                }); 
+                $('#navbar').append($div1); 
+            }
         }
     }); 
 }
