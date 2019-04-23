@@ -107,13 +107,14 @@
             name: 'file' + lineCount, //[file]
             accept: 'audio/*',
             onchange: 'readURL(this)',
+            // value: './public/audio/dummy.mp3',
             required: true
         });
 
         // tilføj en lydkontroller til den givne lydfil
-        $audioControl = $('<audio controls></audio>')
+        // $audioControl = $('<audio controls></audio>')
             // .append('</source>')
-            .attr('id', 'soundSrc' + lineCount);
+            // .attr('id', 'soundSrc' + lineCount);
 
 
         // tilføj alle elementer til siden 
@@ -122,7 +123,7 @@
             .append($newLineTextAnswer)
             .append($newLineText2)
             .append($audioFile)
-            .append($audioControl);
+            // .append($audioControl);
 
 
         // tilføjer en slet knap

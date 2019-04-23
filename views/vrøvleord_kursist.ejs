@@ -23,6 +23,9 @@
         height: 30px;
     }
 
+    #stop_time:hover {
+        cursor: pointer; 
+    }
 </style>
 
 <script>
@@ -30,6 +33,19 @@
         formSetup();
     });
     var a = 0;
+
+    $(document).ready(function() {
+        var startTime = new Date().getTime(); 
+
+        $('#stop_time').click(function() {
+            var stopTime = new Date().getTime(); 
+            var time = stopTime-startTime; 
+            $('#time').val(time); 
+
+            $('#stop_time').hide();
+            $('input[type=submit]').show();  
+        }); 
+    });
 
     function playAudio(index) {
         var d = document.getElementById("d" + index);
@@ -62,7 +78,9 @@
                 <input type="text" name="<%= 'answer_'+i %>" placeholder="Skriv ordet her">
             </div>
         </div>
-        <% } %>
+    <% } %>
+    <input id="time" name="time" value="" hidden>
+    <div id="stop_time">Gem</div>
 
-            <input type="submit">
+    <input type="submit" hidden>
 </form>

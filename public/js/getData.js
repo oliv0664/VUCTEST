@@ -34,14 +34,15 @@ function getStudentData(studentIDs, teacherID, btnID) {
     })
     .done(function (dataStr) {
         var data = JSON.parse(dataStr);
-        console.log(data); 
+        console.log("YOOOO ", data); 
         getSidebarView(data); 
     });
 }
 
 function getSidebarView(data) {
     var $div1 = $('<div>'+data[1]+'</div>'); 
-    $('#main-content').empty().append($div1); 
+
+    $('#main-content').empty().append($div1, $div2); 
 
     for(var i=2; i<data.length; i++) {
         if(data[i].type == "kursistinfo") continue; 
@@ -52,12 +53,12 @@ function getSidebarView(data) {
 
         var $div1 = $('<div>').append($btn1, $btn2).attr('class', 'contentDiv');
         var $div2 = $('<div>'+data[i].type+'</div>').attr('class', 'contentDiv');
-        //CODE TO DO
-        //ved clozetest og brev skal output være i form af tid kursisten har brugt 
+        var time = calculateMinutesAndSeconds(data[i].time);
+        var $div3 = $('<div>Tid: '+time[0]+'min. og '+time[1]+'s.</div>').attr('class', 'contentDiv'); 
 
         var $br = $('<br>').attr('id', 'br'+i); //add break
 
-        $('#main-content').append($div1, $div2, $br); 
+        $('#main-content').append($div1, $div2, $div3, $br); 
     }
 }
 
@@ -70,12 +71,25 @@ function showMoreStudentInfo(btnID, data) {
     for(var i=0; i<data[id].answers.length; i++) {
         var $div1 = $('<div>').attr('id','div'+id+'-'+i); 
         var $div2 = $('<div>Kursist svar: '+data[id].answers[i].student_answer+'</div>').attr('class', 'studentData');
-        var $div3 = $('<div>Korrekt svar: '+data[id].answers[i].correct_answer+'</div>').attr('class', 'studentData');
+        var $div3 = $('<div>Korrekt svar: '+data[id].answers[i].correct_answer+'</div>').attr({class: 'studentData'});
         var $div4 = $('<div>Point: '+data[id].answers[i].point+'</div>').attr({class: 'studentData', id: 'rightContent'});
         
         if(i==0) $div1.append($div2, $div3, $div4).insertAfter($('#br'+id)); 
         else $div1.append($div2, $div3, $div4).insertAfter($('#div'+id+'-'+(i-1)));
     }
+}
+
+function calculateMinutesAndSeconds(timeInMilliseconds) {
+    var time = [];
+    var seconds = timeInMilliseconds/1000; 
+
+    var minutes = Math.floor(seconds/60);
+    time.push(minutes); 
+
+    var secondsLeft = Math.floor(((seconds/60) % 1) * 60);
+    time.push(secondsLeft);  
+
+    return time; 
 }
 
 //this function minimizes the - button and the student info 
@@ -161,7 +175,7 @@ function setWorddictateView(data, studentData, id) {
         var totalScore = calculateCorrectAnswers(data, studentData, id, i); 
 
         var $div5 = $('<div>'+totalScore+' ud af '+studentData.length+'</div>').attr({class: 'studentData', id: 'rightContent'});
-        
+
         if(i==0) $div1.append($div2, $div3, $div4, $div5).insertAfter($('#br'+id)); 
         else $div1.append($div2, $div3, $div4, $div5).insertAfter($('#div'+id+'-'+(i-1)));
     }
@@ -188,9 +202,7 @@ function setClozetestView(data, studentData, id) {
         var $div3 = $('<div> _____ </div>').attr('class', 'studentData');
         var $div4 = $('<div>'+data[id].content[i].lineText2+'</div>').attr('class', 'studentData');
         
-        var totalScore = calculateCorrectAnswers(data, studentData, id, i); 
-
-        var $div5 = $('<div>'+totalScore+' ud af '+studentData.length+'</div>').attr({class: 'studentData', id: 'rightContent'});
+        var $div5 = $('<div>Ingen point</div>').attr({class: 'studentData', id: 'rightContent'});
         
         if(i==0) $div1.append($div2, $div3, $div4, $div5).insertAfter($('#br'+id)); 
         else $div1.append($div2, $div3, $div4, $div5).insertAfter($('#div'+id+'-'+(i-1)));
@@ -283,6 +295,7 @@ function getStudentScore(data, teacherID, ids) {
         })
         .done(function (dataStr) {
             studentData = JSON.parse(dataStr); //parse and store data from all students
+
             //for every moduletype from teacher data 
             //create a new array 
             //new array has moduletype, total points available, average score of students, and list of students
@@ -297,21 +310,27 @@ function getStudentScore(data, teacherID, ids) {
                 
                 //for every student from the current moduletype
                 var totalScore = 0; 
+                var totalTime = 0; 
                 for(var j=0; j<studentData.length; j++) {    
                     
                     //calculate score for the current student and current moduletype 
                     var score = calculateScore(teacherData[i].contentAnswer, studentData[j].modules[i].answers); 
                     totalScore += score; 
 
+                    //add all the times together 
+                    totalTime += studentData[j].modules[i].time; 
+
                     //every student is stored in an object with ID and score 
                     var object2 = {
                         student: studentData[j].studentID,
-                        totalScore: score
+                        totalScore: score,
+                        totalTime: studentData[j].modules[i].time
                     }
                     object1.students.push(object2);
-                    object1.averageScore = (totalScore/studentData.length).toFixed(2);  
+                    object1.averageScore = (totalScore/studentData.length).toFixed(2); 
+                    object1.averageTime = (totalTime/studentData.length).toFixed(2);  
                 }
-                scoreData.push(object1); 
+                scoreData.push(object1);
             }
             return setView(scoreData, ids); //return a callback function that populates the view with content
         });
@@ -330,13 +349,13 @@ function setView(scoreData, ids) {
         //add moduletype and average
         var $div1 = $('<div>').append($btn1, $btn2).attr('class', 'contentDiv'); 
         var $div2 = $('<div>'+scoreData[i].moduleType+'</div>').attr('class', 'contentDiv');
-        //CODE TO DO
-        //ved clozetest og brev skal output være i form af hvor lang tid kursisten har brugt 
-        var $div3 = $('<td>Gennemsnit: '+scoreData[i].averageScore+' ud af '+scoreData[i].totalPoints+'</td>').attr({class: 'contentDiv', id: 'rightContent'});
+        var $div3 = $('<div>Gennemsnits point: '+scoreData[i].averageScore+' ud af '+scoreData[i].totalPoints+'</div>').attr({class: 'contentDiv', id: 'rightContent'});
+        var time = calculateMinutesAndSeconds(scoreData[i].averageTime); 
+        var $div4 = $('<div>Gennemsnits tid: '+time[0]+'min. og '+time[1]+'s.</div>').attr({class: 'contentDiv', id: 'rightContent'}); 
 
         var $br = $('<br>').attr('id', 'br'+i); //add break
 
-        $('#main-content').append($div1, $div2, $div3, $br); //append data to content div 
+        $('#main-content').append($div1, $div2, $div3, $div4, $br); //append data to content div 
         
     }
 }
@@ -363,9 +382,11 @@ function showMoreInfo(btnID, scoreData) {
         var $div1 = $('<div>').attr('id','div'+id+'-'+i); 
         var $div2 = $('<div>'+scoreData[id].students[i].student+'</div>').attr('class', 'studentData'); 
         var $div3 = $('<div>'+scoreData[id].students[i].totalScore+' ud af '+scoreData[id].totalPoints+'</div>').attr({class: 'studentData', id: 'rightContent'}); 
+        var time = calculateMinutesAndSeconds(scoreData[id].students[i].totalTime); 
+        var $div4 = $('<div>Tid: '+time[0]+'min. og '+time[1]+'s.</div>').attr({class: 'studentData', id: 'rightcontent'}); 
         
-        if(i==0) $div1.append($div2, $div3).insertAfter($('#br'+id)); 
-        else $div1.append($div2, $div3).insertAfter($('#div'+id+'-'+(i-1)));
+        if(i==0) $div1.append($div2, $div3, $div4).insertAfter($('#br'+id)); 
+        else $div1.append($div2, $div3, $div4).insertAfter($('#div'+id+'-'+(i-1)));
     }
 }
 

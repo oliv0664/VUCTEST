@@ -9,7 +9,8 @@ var studentSchema = new Schema({
     studentInfo: { type: Object, default: {}},
     modules: [{
         moduleType: String,
-        answers: { type: Array, default: [] }
+        answers: { type: Array, default: [] },
+        time: Number 
     }]
    
 },{usePushEach: true}); 

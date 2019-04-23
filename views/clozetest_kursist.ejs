@@ -23,29 +23,45 @@
         height: 30px;
     }
 
+    #stop_time:hover {
+        cursor: pointer; 
+    }
 </style>
 
 <script>
-    var a = 0;
     $(function() {
         formSetup();
     });
+    var a = 0;
 
-    function playAudio(index) {
-        var d = document.getElementById("d" + index);
-        var audBut = document.getElementById("audBut" + index);
-        var sound = document.getElementById("file" + index);
-        if (sound.paused) {
-            sound.load();
-            sound.play();
-            if (a > 0) {
-                d.removeChild(audBut);
-                a = 0;
-            } else {
-                a++;
-            }
-        }
-    }
+    $(document).ready(function() {
+        var startTime = new Date().getTime(); 
+
+        $('#stop_time').click(function() {
+            var stopTime = new Date().getTime(); 
+            var time = stopTime-startTime; 
+            $('#time').val(time); 
+
+            $('#stop_time').hide();
+            $('input[type=submit]').show();  
+        }); 
+    });
+
+//    function playAudio(index) {
+//        var d = document.getElementById("d" + index);
+//        var audBut = document.getElementById("audBut" + index);
+//        var sound = document.getElementById("file" + index);
+//        if (sound.paused) {
+//            sound.load();
+//            sound.play();
+//            if (a > 0) {
+//                d.removeChild(audBut);
+//                a = 0;
+//            } else {
+//                a++;
+//            }
+//        }
+//    }
 
 </script>
 
@@ -53,18 +69,22 @@
 
     <% for(var i=0; i<content.length; i++) { %>
         <div class="blockDiv">
+<!--
             <div id="<%= 'd'+i %>" class="audDiv">
                 <input class="aud" id="<%= 'audBut'+i %>" type="button" onclick="playAudio(<%= i %>">
             </div>
+-->
 
             <div class="contentDiv">
-                <audio id="<%= 'file'+i %>" src="<%= audioFiles[i] %>"></audio>
+<!--                <audio id="<%= 'file'+i %>" src="<%= audioFiles[i] %>"></audio>-->
                 <span><%= content[i].lineText %></span>
                 <input type="text" name="<%= 'answer_'+i %>" placeholder="Skriv ordet her">
                 <span><%= content[i].lineText2 %></span>
             </div>
         </div>
-        <% } %>
+    <% } %>
+    <input id="time" name="time" value="" hidden>
+    <div id="stop_time">Gem</div>
 
-            <input type="submit">
+    <input type="submit" hidden>
 </form>

@@ -108,14 +108,14 @@
             name: 'file' + textCount,
             accept: 'audio/*',
             onchange: 'readURL(this)',
-            required: true
-        });
+            // required: true
+        }).hide();
 
 
         // tilføj en lydkontroller til den givne lydfil
-        $audioControl = $('<audio controls></audio>')
-            .append('</source>')
-            .attr('id', 'soundSrc' + textCount);
+        // $audioControl = $('<audio controls></audio>')
+        //     .append('</source>')
+        //     .attr('id', 'soundSrc' + textCount);
 
 
 
@@ -123,7 +123,7 @@
         $('#textDiv' + textCount)
             .append($newText)
             .append($audioFile)
-            .append($audioControl);
+            // .append($audioControl);
 
 
 

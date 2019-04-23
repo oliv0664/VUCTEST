@@ -15,6 +15,7 @@
         "ejs": "^2.5.8",
         "empty-folder": "^2.0.1",
         "express": "^4.16.2",
+        "express-session": "^1.16.1",
         "formidable": "^1.1.1",
         "generate-password": "^1.4.1",
         "gridfs-stream": "^1.1.1",

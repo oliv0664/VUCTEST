@@ -21,13 +21,30 @@
         width: 50px; 
         height: 30px;
     }
+
+    #stop_time:hover {
+        cursor: pointer; 
+    }
 </style>
 
 <script>
     $(function(){     
-    formSetup();
+        formSetup();
     });
     var a = 0; 
+
+    $(document).ready(function() {
+        var startTime = new Date().getTime(); 
+
+        $('#stop_time').click(function() {
+            var stopTime = new Date().getTime(); 
+            var time = stopTime-startTime; 
+            $('#time').val(time); 
+
+            $('#stop_time').hide();
+            $('input[type=submit]').show();  
+        }); 
+    });
 
     //TO DO
     //knapper må kun kunne trykkes på 2 gange
@@ -65,9 +82,10 @@
                 <span><%= content[i].line2 %></span>
             </div>
         </div>
-        
     <% } %> 
-    
-    <input type="submit">
+    <input id="time" name="time" value="" hidden>
+    <div id="stop_time">Gem</div>
+
+    <input type="submit" hidden>
 
 </form>

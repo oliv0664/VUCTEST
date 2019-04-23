@@ -7,29 +7,44 @@
 
     <script>
         $(function() {
-
-
+ 
             $('#form').bind('submit', function(event) {
                 event.preventDefault();
 
-                var user = sessionStorage.getItem('currentUser');
-                user = JSON.parse(user);
+                var modules_temp = '<%= modules %>';
+                var modules = modules_temp.split(',');  
+
+                var user = { 
+                    username: '<%= username %>',
+                    teacherModules: modules
+                };
 
                 var testID = $('#hidden').val();
+                user.testID = testID;
                 $('#hidden').val("");
-
-                var username = user.username;
                 $('#hidden').val(JSON.stringify(testID));
 
                 var studentID = $('#studentID').val();
                 user.studentID = studentID;
-                user.testID = testID;
 
                 sessionStorage.setItem('currentUser', JSON.stringify(user));
+
+                // window.history.replaceState({}, 'welcome', '/welcome'); 
 
                 $(this).unbind('submit').submit();
             });
         });
+
+        // function w_redirect() {
+        //     var url = window.location.pathname; 
+        //     var user = sessionStorage.getItem('currentUser'); 
+        //     user = JSON.parse(user); 
+        //     if(user) {
+        //         if(url.slice(1) != user.teacherModules[0]) {
+        //             location.replace(user.teacherModules[0]); 
+        //         } 
+        //     }
+        // }
     </script>
 </head>
 
@@ -62,7 +77,7 @@
 
 
         <div id="bottom">
-            <input type="hidden" id="hidden" name="data" value="<%= username %>">
+            <input type="hidden" id="hidden" name="data" value="<%= userid %>">
             <input class="h3size" type="submit" value="NÆSTE">
         </div>
 

@@ -19,12 +19,7 @@ var mongoose = require('mongoose');
 // %%% Skal gemmes i sessionStorage
 var teacherID;
 var studentID;
-var initials;
-var teacherModules = [];
-var studentModules = [];
 var kursistModules = [];
-// denne variabel er navngivet dårligt, men den holder på samme data som initials. 
-var tjek;
 
 /* GET home page. */
 
@@ -81,7 +76,7 @@ router.post('/signin', function(req, res, next) {
                         //ved get start skal der laves
                         // var user = req.query.user;
 
-                        res.cookie('username', user);
+                        res.cookie('teacher', user);
                         res.redirect('start');
                     }
 
@@ -223,6 +218,10 @@ function setupStudentModules(modulesArray) {
     return tempArray;
 }
 
+router.setupModules = function(array) {
+    return setupStudentModules(array); 
+}
+
 function getId() {
     var id = '5a785e4b3867e72b94b2baba';
     console.log('getID is running');
@@ -271,7 +270,7 @@ router.post('/welcome_addinfo', function(req, res) {
                 var id_db = JSON.stringify(teacher[0].tests[i]._id);
                 if (id_db == id_serv) {
 
-                    kursistModules = setupStudentModules(teacher[0].tests[i].modules);
+                    //kursistModules = setupStudentModules(teacher[0].tests[i].modules);
 
                     studentClass.findOneAndUpdate({
                         studentID: studentID
@@ -287,15 +286,17 @@ router.post('/welcome_addinfo', function(req, res) {
                                     studentinfo: {},
                                     modules: []
                                 });
-                                console.log("STUDENT: ", kursistModules);
+                                //console.log("STUDENT: ", kursistModules);
 
                                 student.save(function(err) {
                                     if (err) {
                                         console.log(err);
                                     }
 
-                                    res.redirect(kursistModules[0]);
-                                    kursistModules.shift();
+                                    var modulesArray = req.cookies.user.modules; 
+                                    var progression = req.cookies.user.progression;  
+                                    res.redirect(modulesArray[progression]);
+                                    //kursistModules.shift();
                                 });
                             } else {
                                 res.send('ID ER TAGET!');
@@ -481,6 +482,7 @@ router.post(encodeURI('/kursistinfo'), function(req, res) {
 //henter hjemmesiden 'worddictate_teacher' 
 
 router.get(encodeURI('/orddiktat_lærer'), function(req, res) {
+    // var aud = new File('./public/audio/dummy.mp3');
     res.render('orddiktat_lærer', {
         title: 'Orddiktat'
     });
@@ -1061,9 +1063,10 @@ router.get(encodeURI('/kursistinfo_kursist'), function(req, res) {
                 var id_db = JSON.stringify(teacher[0].tests[i]._id);
 
                 if (id_db == id_serv) {
-                    var totalLen = teacher[0].tests[i].totalModules;
-                    var currentLen = kursistModules.length;
-                    var index = totalLen - currentLen;
+                    //var totalLen = teacher[0].tests[i].totalModules;
+                    //var currentLen = kursistModules.length;
+                    //var index = totalLen - currentLen;
+                    var index = req.cookies.user.progression; 
                     var content = teacher[0].tests[i].modules[index].content; //0 = orddiktat
                     var moduleType = teacher[0].tests[i].modules[index].moduleType;
 
@@ -1085,9 +1088,9 @@ router.get(encodeURI('/kursistinfo_kursist'), function(req, res) {
 
 router.post(encodeURI('/kursistinfo_answer'), function(req, res) {
 
-
+    console.log("TEEEST"); 
     // %%% Skal hentes fra sessionStorage
-    HandleTestCounter(teacherID);
+    HandleTestCounter(teacherID, req.cookies.user);
 
 
 
@@ -1123,13 +1126,22 @@ router.post(encodeURI('/kursistinfo_answer'), function(req, res) {
             if (err) {
                 res.send(err);
             } else {
-                console.log("STUDENT: " + student);
+                //console.log("STUDENT LÆÆÆÆR: ", kursistModules);
                 student.modules.push(mod);
+
+                var progression = req.cookies.user.progression;
+                progression++; 
+                var modulesArray = req.cookies.user.modules;  
+                var user = {
+                    modules: modulesArray,
+                    progression: progression
+                }
+                res.cookie('user', user); 
 
                 student.save(function(err) {
                     if (err) console.log(err);
-                    res.redirect(kursistModules[0]);
-                    kursistModules.shift();
+                    res.redirect(modulesArray[progression]); 
+                    // kursistModules.shift();
                 });
             }
         });
@@ -1145,6 +1157,8 @@ router.get(encodeURI('/orddiktat_kursist'), function(req, res) {
 
     // teacherID = JSON.stringify(teacherID); 
     // %%% Skal hentes fra sessionStorage
+
+
     console.log("TEACHER ID: " + typeof JSON.stringify(teacherID));
 
 
@@ -1171,10 +1185,11 @@ router.get(encodeURI('/orddiktat_kursist'), function(req, res) {
                 if (id_db == id_serv) {
                     var audio_files = [];
                     var promises = [];
-                    var totalLen = teacher[0].tests[i].totalModules;
-                    var currentLen = kursistModules.length;
-                    console.log("TOTAL LEN: " + totalLen + ", CURR LEN: " + currentLen);
-                    var index = totalLen - currentLen;
+                    // var totalLen = teacher[0].tests[i].totalModules;
+                    // var currentLen = kursistModules.length;
+                    // console.log("TOTAL LEN: " + totalLen + ", CURR LEN: " + currentLen);
+                    // var index = totalLen - currentLen;
+                    var index = req.cookies.user.progression;
                     var content = teacher[0].tests[i].modules[index].content; //0 = orddiktat
                     var moduleType = teacher[0].tests[i].modules[index].moduleType;
 
@@ -1187,6 +1202,8 @@ router.get(encodeURI('/orddiktat_kursist'), function(req, res) {
                         for (var k = 0; k < result.length; k++) {
                             result[k] = result[k].slice(2);
                         }
+
+                        console.log("###### ", result); 
 
                         res.render('template', {
                             content: content,
@@ -1214,8 +1231,7 @@ router.post(encodeURI('/orddiktat_answer'), function(req, res) {
 
     //update teacher test counter.
     // %%% Skal hentes fra sessionStorage
-    HandleTestCounter(teacherID);
-
+    HandleTestCounter(teacherID, req.cookies.user);
 
     //det første der sker, er at 'writeTo' mappen tømmes 
     folderHandler();
@@ -1231,15 +1247,18 @@ router.post(encodeURI('/orddiktat_answer'), function(req, res) {
     // parse the request and handle fields data
 
     form.parse(req, function(err, fields, files) {
-
+        
         inputAnswers = [];
         var temp = Object.keys(fields);
-        for (i = 0; i < temp.length; i++) {
+        console.log("OLIVER TESTER HER ALTSÅ: ", fields[temp[temp.length-1]]);
+        var time = fields[temp[temp.length-1]]; 
+        for (i = 0; i < temp.length-1; i++) {
             inputAnswers.push(fields[temp[i]]);
         }
         var mod = {
             moduleType: 'Orddiktat',
-            answers: inputAnswers
+            answers: inputAnswers,
+            time: time
         }
 
         studentClass.findOneAndUpdate({
@@ -1252,14 +1271,23 @@ router.post(encodeURI('/orddiktat_answer'), function(req, res) {
             if (err) {
                 res.send(err);
             } else {
-                console.log("STUDENT: " + student);
+                console.log("STUDENT OP: " + student);
+                
                 student.modules.push(mod);
+
+                var progression = req.cookies.user.progression;
+                progression++;  
+                var modulesArray = req.cookies.user.modules; 
+                var user = {
+                    progression: progression,
+                    modules: modulesArray 
+                }
+                res.cookie('user', user); 
 
                 student.save(function(err) {
                     if (err) console.log(err);
-                    //					isThisLastModule(kursistModules);
-                    res.redirect(kursistModules[0]);
-                    kursistModules.shift();
+                    res.redirect(modulesArray[progression]); 
+                    // kursistModules.shift();
                 });
             }
         });
@@ -1294,10 +1322,11 @@ router.get(encodeURI('/vrøvleord_kursist'), function(req, res) {
                 if (id_db == id_serv) {
                     var audio_files = [];
                     var promises = [];
-                    var totalLen = teacher[0].tests[i].totalModules;
-                    var currentLen = kursistModules.length;
-                    console.log("TOTAL LEN: " + totalLen + ", CURR LEN: " + currentLen);
-                    var index = totalLen - currentLen;
+                    // var totalLen = teacher[0].tests[i].totalModules;
+                    // var currentLen = kursistModules.length;
+                    // console.log("TOTAL LEN: " + totalLen + ", CURR LEN: " + currentLen);
+                    // var index = totalLen - currentLen;
+                    var index = req.cookies.user.progression; 
                     var content = teacher[0].tests[i].modules[index].content; //0 = orddiktat
                     var moduleType = teacher[0].tests[i].modules[index].moduleType;
 
@@ -1335,7 +1364,7 @@ router.get(encodeURI('/vrøvleord_kursist'), function(req, res) {
 router.post(encodeURI('/vrøvleord_answer'), function(req, res) {
 
     // %%% Skal hentes fra sessionStorage
-    HandleTestCounter(teacherID);
+    HandleTestCounter(teacherID, req.cookies.user);
 
 
     //det første der sker, er at 'writeTo' mappen tømmes 
@@ -1354,12 +1383,14 @@ router.post(encodeURI('/vrøvleord_answer'), function(req, res) {
 
         inputAnswers = [];
         var temp = Object.keys(fields);
-        for (i = 0; i < temp.length; i++) {
+        var time = fields[temp[temp.length-1]];
+        for (i = 0; i < temp.length-1; i++) {
             inputAnswers.push(fields[temp[i]]);
         }
         var mod = {
             moduleType: 'Vrølveord',
-            answers: inputAnswers
+            answers: inputAnswers,
+            time: time
         }
 
         studentClass.findOneAndUpdate({
@@ -1375,11 +1406,20 @@ router.post(encodeURI('/vrøvleord_answer'), function(req, res) {
                 console.log("STUDENT: " + student);
                 student.modules.push(mod);
 
+                var progression = req.cookies.user.progression;
+                progression++;  
+                var modulesArray = req.cookies.user.modules;
+                var user = {
+                    modules: modulesArray,
+                    progression: progression
+                } 
+                res.cookie('user', user); 
+
                 student.save(function(err) {
                     if (err) console.log(err);
                     //					isThisLastModule(kursistModules);
-                    res.redirect(kursistModules[0]);
-                    kursistModules.shift();
+                    res.redirect(modulesArray[progression]);
+                    // kursistModules.shift();
                 });
             }
         });
@@ -1415,10 +1455,11 @@ router.get(encodeURI('/clozetest_kursist'), function(req, res) {
                 if (id_db == id_serv) {
                     var audio_files = [];
                     var promises = [];
-                    var totalLen = teacher[0].tests[i].totalModules;
-                    var currentLen = kursistModules.length;
-                    console.log("TOTAL LEN: " + totalLen + ", CURR LEN: " + currentLen);
-                    var index = totalLen - currentLen;
+                    // var totalLen = teacher[0].tests[i].totalModules;
+                    // var currentLen = kursistModules.length;
+                    // console.log("TOTAL LEN: " + totalLen + ", CURR LEN: " + currentLen);
+                    // var index = totalLen - currentLen;
+                    var index = req.cookies.user.progression; 
                     var content = teacher[0].tests[i].modules[index].content; //0 = orddiktat
                     var moduleType = teacher[0].tests[i].modules[index].moduleType;
 
@@ -1458,7 +1499,7 @@ router.post(encodeURI('/clozetest_answer'), function(req, res) {
 
 
     // %%% Skal hentes fra sessionStorage
-    HandleTestCounter(teacherID);
+    HandleTestCounter(teacherID, req.cookies.user);
 
 
     folderHandler();
@@ -1476,12 +1517,14 @@ router.post(encodeURI('/clozetest_answer'), function(req, res) {
 
         inputAnswers = [];
         var temp = Object.keys(fields);
-        for (i = 0; i < temp.length; i++) {
+        var time = fields[temp[temp.length-1]];
+        for (i = 0; i < temp.length-1; i++) {
             inputAnswers.push(fields[temp[i]]);
         }
         var mod = {
             moduleType: 'Clozetest',
-            answers: inputAnswers
+            answers: inputAnswers,
+            time: time
         }
 
         studentClass.findOneAndUpdate({
@@ -1497,10 +1540,19 @@ router.post(encodeURI('/clozetest_answer'), function(req, res) {
                 console.log("STUDENT: " + student);
                 student.modules.push(mod);
 
+                var progression = req.cookies.user.progression; 
+                progression++; 
+                var modulesArray = req.cookies.user.modules; 
+                var user = {
+                    modules: modulesArray,
+                    progression: progression
+                }
+                res.cookie('user', user); 
+
                 student.save(function(err) {
                     if (err) console.log(err);
-                    res.redirect(kursistModules[0]);
-                    kursistModules.shift();
+                    res.redirect(modulesArray[progression]);
+                    // kursistModules.shift();
                 });
             }
         });
@@ -1535,10 +1587,11 @@ router.get(encodeURI('/tekstforståelse_kursist'), function(req, res) {
                 if (id_db == id_serv) {
                     var audio_files = [];
                     var promises = [];
-                    var totalLen = teacher[0].tests[i].totalModules;
-                    var currentLen = kursistModules.length;
-                    console.log("TOTAL LEN: " + totalLen + ", CURR LEN: " + currentLen);
-                    var index = totalLen - currentLen;
+                    // var totalLen = teacher[0].tests[i].totalModules;
+                    // var currentLen = kursistModules.length;
+                    // console.log("TOTAL LEN: " + totalLen + ", CURR LEN: " + currentLen);
+                    // var index = totalLen - currentLen;
+                    var index = req.cookies.user.progression; 
                     var content = teacher[0].tests[i].modules[index].content; //0 = orddiktat
                     var inputQuestions = teacher[0].tests[i].modules[index].inputQuestions;
                     var moduleType = teacher[0].tests[i].modules[index].moduleType;
@@ -1578,7 +1631,7 @@ router.post(encodeURI('/tekstforståelse_answer'), function(req, res) {
     //det første der sker, er at 'writeTo' mappen tømmes 
 
     // %%% Skal hentes fra sessionStorage
-    HandleTestCounter(teacherID);
+    HandleTestCounter(teacherID, req.cookies.user);
 
 
     folderHandler();
@@ -1596,13 +1649,15 @@ router.post(encodeURI('/tekstforståelse_answer'), function(req, res) {
 
         inputAnswers = [];
         var temp = Object.keys(fields);
-        for (i = 0; i < temp.length; i++) {
+        var time = fields[temp[temp.length-1]]; 
+        for (i = 0; i < temp.length-1; i++) {
             inputAnswers.push(fields[temp[i]]);
         }
 
         var mod = {
             moduleType: 'Tekstforståelse',
-            answers: inputAnswers
+            answers: inputAnswers,
+            time: time
         }
 
         studentClass.findOneAndUpdate({
@@ -1618,10 +1673,19 @@ router.post(encodeURI('/tekstforståelse_answer'), function(req, res) {
                 console.log("STUDENT: " + student);
                 student.modules.push(mod);
 
+                var progression = req.cookies.user.progression; 
+                progression++; 
+                var modulesArray = req.cookies.user.modules; 
+                var user = {
+                    modules: modulesArray,
+                    progression: progression
+                }
+                res.cookie('user', user); 
+
                 student.save(function(err) {
                     if (err) console.log(err);
-                    res.redirect(kursistModules[0]);
-                    kursistModules.shift();
+                    res.redirect(modulesArray[progression]);
+                    // kursistModules.shift();
                 });
             }
         });
@@ -1654,10 +1718,11 @@ router.get('/brev_kursist', function(req, res) {
                 if (id_db == id_serv) {
                     var audio_files = [];
                     var promises = [];
-                    var totalLen = teacher[0].tests[i].totalModules;
-                    var currentLen = kursistModules.length;
-                    console.log("TOTAL LEN: " + totalLen + ", CURR LEN: " + currentLen);
-                    var index = totalLen - currentLen;
+                    // var totalLen = teacher[0].tests[i].totalModules;
+                    // var currentLen = kursistModules.length;
+                    // console.log("TOTAL LEN: " + totalLen + ", CURR LEN: " + currentLen);
+                    // var index = totalLen - currentLen;
+                    var index = req.cookies.user.progression; 
                     var moduleType = teacher[0].tests[i].modules[index].moduleType;
 
                     promises.push(mongo.readFromDB('descriptionAudio.mp3', teacher[0].tests[i].modules[index].audio.file_id));
@@ -1692,7 +1757,7 @@ router.post('/brev_answer', function(req, res) {
 
     //det første der sker, er at 'writeTo' mappen tømmes 
     // %%% Skal hentes fra sessionStorage
-    HandleTestCounter(teacherID);
+    HandleTestCounter(teacherID, req.cookies.user);
 
 
     folderHandler();
@@ -1710,12 +1775,14 @@ router.post('/brev_answer', function(req, res) {
 
         inputAnswers = [];
         var temp = Object.keys(fields);
-        for (i = 0; i < temp.length; i++) {
+        var time = fields[temp[temp.length-1]]; 
+        for (i = 0; i < temp.length-1; i++) {
             inputAnswers.push(fields[temp[i]]);
         }
         var mod = {
             moduleType: 'Brev',
-            answers: inputAnswers
+            answers: inputAnswers,
+            time: time
         }
 
         studentClass.findOneAndUpdate({
@@ -1731,10 +1798,19 @@ router.post('/brev_answer', function(req, res) {
                 console.log("STUDENT: " + student);
                 student.modules.push(mod);
 
+                var progression = req.cookies.user.progression; 
+                progression++; 
+                var modulesArray = req.cookies.user.modules; 
+                var user = {
+                    modules: modulesArray,
+                    progression: progression
+                }
+                res.cookie('user', user); 
+
                 student.save(function(err) {
                     if (err) console.log(err);
-                    res.redirect(kursistModules[0]);
-                    kursistModules.shift();
+                    res.redirect(modulesArray[progression]);
+                    // kursistModules.shift();
                 });
             }
         });
@@ -1982,6 +2058,8 @@ function evaluateScore(testIndex, student, teacher) {
         module_score.type = module_type;
         var module_answers = [];
 
+        if(j>0) module_score.time = student.modules[j].time; 
+
         for (var k = 0; k < student.modules[j].answers.length; k++) {
             var point = 0;
             var student_answer = student.modules[j].answers[k];
@@ -2007,6 +2085,7 @@ function evaluateScore(testIndex, student, teacher) {
             });
         }
         module_score.answers = module_answers;
+          
         final_score.push(module_score);
     }
     return final_score;
@@ -2083,7 +2162,7 @@ function formHandler(url, incForm, inputCont, inputContAns, callback) {
     });
 
     incForm.on('fileBegin', function(name, file) {
-        console.log("1");
+        console.log("1", file);
         //check if there is audio file
         if (file.name != '') {
             file.path = 'public/readFrom/' + file.name;
@@ -2106,13 +2185,13 @@ function formHandler(url, incForm, inputCont, inputContAns, callback) {
                     // files.map(function (item) {
 
                     var fileUpload = files[i][0].name;
-                    console.log("4 " + fileUpload);
+                    console.log("45 ", fileUpload.slice(0,3));
 
                     var mongo = require('../public/js/mongoHandler');
                     //when MongoHandler is done with upload to MongoDB return result
                     //check if there is audiofile
                     if (fileUpload != '') {
-                        console.log("NOT EMPTY FILE");
+                        console.log("DUBI SDUBI DUBI");
                         return mongo.writeToDB(fileUpload, fileUpload)
                             .then(function(result) {
                                 console.log("FILEUPLOAD " + i + " FINISHED ", result);
@@ -2122,7 +2201,15 @@ function formHandler(url, incForm, inputCont, inputContAns, callback) {
                                 console.log(err);
                             });
                     } else {
-                        console.log("EMPTY FGILEEEE");
+                        console.log("FIGLEEE EMPTY");
+                        return mongo.writeToDB('dummy.mp3', 'dummy.mp3')
+                            .then(function(result) {
+                                console.log("FILEUPLOAD " + i + " FINISHED ", result);
+                                // file_data[i] = result;
+                                resolve(result);
+                            }, function(err) {
+                                console.log(err);
+                            });
                     }
                 })
             );
@@ -2206,10 +2293,13 @@ function folderHandler() {
 }
 
 
-function HandleTestCounter(testId) {
+function HandleTestCounter(testId, user) {
     console.log(testId);
-    var isThisLastModule = kursistModules.length === 1;
-    if (isThisLastModule) {
+
+    console.log("#¤#¤#¤#¤#¤#¤ ", typeof user.modules.length);
+    console.log("#¤#¤#¤#¤#¤#¤ ", typeof user.progression); 
+
+    if (user.modules.length-2 == user.progression) {
         console.log('this is the last module, now we update the test counter');
 
         teacherClass.findOneAndUpdate({

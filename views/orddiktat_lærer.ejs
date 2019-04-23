@@ -44,8 +44,9 @@
     <form id="form" method="post" action="/orddiktat" enctype="multipart/form-data">
         <div id="section">
             <h1 class="title" id="h1_1">ORDDIKTAT</h1>
-            Indsæt lydfil der beskriver opgaven
-            <input type="file" name="up" accept="audio/*" required>
+            <!-- Indsæt lydfil der beskriver opgaven -->
+            <!-- <input type="file" name="up" accept="audio/*" required> -->
+            <input type="file" name="up" accept="audio/*" hidden>
             <!-- <input type="file" name="upup"> -->
 
             <audio controls id="soundSrc_"></audio>
