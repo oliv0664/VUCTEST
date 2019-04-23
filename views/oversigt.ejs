@@ -73,10 +73,10 @@
 						</td>
 					</tr>
 					<tr>
-						<td> Dato for oprindelse</td>
-						<td> Links </td>
-						<td> Antal svar</td>
-						<td> Quiz data</td>
+						<td>Dato for oprettelse</td>
+						<td>Link til quiz</td>
+						<td>Antal besvarelser</td>
+						<td>Resultater</td>
 					</tr>
 				</thead>
 					
@@ -89,7 +89,7 @@
 							<% } else {%>
 								<td>
 							<% } %>
-								<button type="button" class="ul_btn">+</button> Quiz <%=i+1%><%=content.tests[i].date.toLocaleString()%>:
+								<button type="button" class="ul_btn">+</button> Quiz <%=i+1%>: <%=content.tests[i].date.toLocaleString()%>:
 								<ul class="ul_show" style="display: none">
 									<% for(var j=0; j < content.tests[i].totalModules; j++) { %>
 									<li>
