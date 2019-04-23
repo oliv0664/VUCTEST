@@ -76,7 +76,7 @@ router.post('/signin', function(req, res, next) {
                         //ved get start skal der laves
                         // var user = req.query.user;
 
-                        // res.cookie('username', user);
+                        res.cookie('teacher', user);
                         res.redirect('start');
                     }
 
