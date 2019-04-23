@@ -40,14 +40,18 @@ function getStudentData(studentIDs, teacherID, btnID) {
 }
 
 function getSidebarView(data) {
-    var $div1 = $('<div>'+data[1]+'</div>'); 
+    var $div1 = $('<div>Kursist ID: '+data[1]+'</div>'); 
 
     $('#main-content').empty().append($div1, $div2); 
 
     for(var i=2; i<data.length; i++) {
-        if(data[i].type != "kursistinfo") {
-
-            
+        if(data[i].type == "kursistinfo") {
+            for(var j=0; j<data[i].answers.length; j++) {
+                var $div2 = $('<div>'+data[i].answers[j].correct_answer+': '+data[i].answers[j].student_answer+'</div>').attr('class', 'contentDiv');
+                var $br = $('<br>'); 
+                $('#main-content').append($div2, $br); 
+            }
+        } else {
             //add 2 buttons for expanding (+) and minimizing (-)
             var $btn1 = $('<button>').text('+').attr('id','expandBtn'+i).css('width','30px').click(function() { showMoreStudentInfo(this.id, data); }); 
             var $btn2 = $('<button>').text('-').attr('id', 'minimizeBtn'+i).css('width','30px').click(function() { showLessStudentInfo(this.id, data); }).hide();
@@ -55,8 +59,7 @@ function getSidebarView(data) {
             var $div1 = $('<div>').append($btn1, $btn2).attr('class', 'contentDiv');
             var $div2 = $('<div>'+data[i].type+'</div>').attr('class', 'contentDiv');
             var time = calculateMinutesAndSeconds(data[i].time);
-            var $div3 = $('<div>Tid: '+time[0]+'min. og '+time[1]+'s.</div>').attr('class', 'contentDiv'); 
-            
+            var $div3 = $('<div>Tid: '+time[0]+'min. og '+time[1]+'s.</div>').attr('class', 'contentDiv');     
             var $br = $('<br>').attr('id', 'br'+i); //add break
             
             $('#main-content').append($div1, $div2, $div3, $br); 

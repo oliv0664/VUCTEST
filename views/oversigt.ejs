@@ -7,12 +7,57 @@
 	<link rel="stylesheet" type="text/css" href="stylesheets/style.css">
 	<link rel="stylesheet" type="text/css" href="stylesheets/oversigt.css">
 
+	<style>
+		* {
+			font-family: Arial; 
+		}
+
+		#main-content {
+			text-align: center; 
+			width: 100%;
+		}
+
+		#main-table {
+			display: inline-block;
+			border-radius: 10px 10px 10px 10px;
+			background-color: #117F44; 
+			color: white; 
+		}
+
+		#main-table td {
+			padding: 20px;
+		}
+
+		#main-table thead {
+			font-size: large; 
+		}
+
+		#main-table tbody td {
+			background-color: #15B743;
+		}
+		
+		#td0_0 {
+			border-radius: 10px 0px 0px 0px;
+		}
+
+		#td0_3 {
+			border-radius: 0px 10px 0px 0px;			
+		}	
+
+		#td_last_0 {
+			border-radius: 0px 0px 0px 10px;			
+		}
+
+		#td_last_3 {
+			border-radius: 0px 0px 10px 0px;			
+		}
+	</style>
 </head>
 
 <body>
 
 	
-		<header>
+	<header>
         <% include header %>
     </header>
 
@@ -27,53 +72,62 @@
 	<h2>Velkommen <%=content.initials%></h2>
 
 	<form id="form" method="post" action="/show_answers">
-	<table border="1" cellpadding="30">
-		<thead>
-			<tr>
-				<td colspan="4">
-					<h3>Du har<%= content.totalTests %> quiz(zer). Her kan du se en oversigt over dine quizzer: </h4>
-				</td>
-			</tr>
-			<tr>
-				<td> Dato for oprindelse</td>
-				<td> Links </td>
-				<td> Antal svar</td>
-				<td> Quiz data</td>
-			</tr>
-		</thead>
-
-		<% for(var i=0; i < content.totalTests; i++) { %>
-        <%if(content.tests[i]) {%>
-		<tbody>
-		<tr>
-			<td>
-				<button type="button" class="ul_btn">+</button> Quiz <%=i+1%><%=content.tests[i].date.toLocaleString()%>:
-				<ul class="ul_show" style="display: none">
-					<% for(var j=0; j < content.tests[i].totalModules; j++) { %>
-						<li>
-                            <%if(content.tests[i].modules[j]){%>
-							<%=content.tests[i].modules[j].moduleType %>
-                            <%}%>
-						</li>
-						<% } %>
-					</ul>
-				</td>
-				<td>
-					<a href="/welcome<%= content.tests[i]._id %>">link</a>
-				</td>
-				<td>
-					<%= content.tests[i].totalTestTaken %>
-				</td>
-				<td>
-					<input type="submit" class="seeAnswer" value="Se svar" name="<%= content.tests[i]._id %>">
-					<!-- <input type="hidden" name="<%= content.tests[i]._id %>"> -->
-				</td>
-			</tr>
-		</tbody>
-       <% }%>
-		<% } %>
-
-	</table>
+		<div id="main-content">
+			<table id="main-table">
+				<thead>
+					<tr>
+						<td colspan="4">
+							<h3>Du har <%= content.totalTests %> quiz(zer). Her kan du se en oversigt over dine quizzer: </h4>
+						</td>
+					</tr>
+					<tr>
+						<td> Dato for oprindelse</td>
+						<td> Links </td>
+						<td> Antal svar</td>
+						<td> Quiz data</td>
+					</tr>
+				</thead>
+					
+				<% for(var i=0; i < content.totalTests; i++) { %>
+					<%if(content.tests[i]) {%>
+					<tbody>
+						<tr>
+							<%if(i == content.totalTests-1) {%> 
+								<td id="td_last_0">
+							<% } else {%>
+								<td id="td<%= i %>_0">
+							<% } %>
+								<button type="button" class="ul_btn">+</button> Quiz <%=i+1%><%=content.tests[i].date.toLocaleString()%>:
+								<ul class="ul_show" style="display: none">
+									<% for(var j=0; j < content.tests[i].totalModules; j++) { %>
+									<li>
+										<%if(content.tests[i].modules[j]){%>
+										<%=content.tests[i].modules[j].moduleType %>
+										<%}%>
+									</li>
+									<% } %>
+								</ul>
+							</td id="td<%= i %>_1">
+							<td>
+								<a href="/welcome<%= content.tests[i]._id %>">link</a>
+							</td>
+							<td id="td<%= i %>_2">
+								<%= content.tests[i].totalTestTaken %>
+							</td>
+							<%if(i == content.totalTests-1) {%> 
+								<td id="td_last_3">
+							<% } else {%>
+								<td id="td<%= i %>_3">
+							<% } %>
+								<input type="submit" class="seeAnswer" value="Se svar" name="<%= content.tests[i]._id %>">
+								<!-- <input type="hidden" name="<%= content.tests[i]._id %>"> -->
+							</td>
+						</tr>
+					</tbody>
+					<% }%>
+				<% } %>
+			</table>
+		</div>
 	</form>
 
 </body>
