@@ -76,14 +76,14 @@
             name: 'file'+lineCount, //[file]
             accept: 'audio/*',
             onchange: 'readURL(this)',
-            required: true
-        });
+            // required: true
+        }).hide();
 
 
         // tilføj en lydkontroller til den givne lydfil
-        $audioControl = $('<audio controls></audio>')
-            .append('</source>')
-            .attr('id', 'soundSrc' + lineCount);
+        // $audioControl = $('<audio controls></audio>')
+        //     .append('</source>')
+        //     .attr('id', 'soundSrc' + lineCount);
 
 
 
@@ -93,7 +93,7 @@
             .append($newField)
             .append($newLineText2)
             .append($audioFile)
-            .append($audioControl);
+            // .append($audioControl);
 
 
 

@@ -35,20 +35,20 @@
             });
         });
 
-        function w_redirect() {
-            var url = window.location.pathname; 
-            var user = sessionStorage.getItem('currentUser'); 
-            user = JSON.parse(user); 
-            if(user) {
-                if(url.slice(1) != user.teacherModules[0]) {
-                    location.replace(user.teacherModules[0]); 
-                } 
-            }
-        }
+        // function w_redirect() {
+        //     var url = window.location.pathname; 
+        //     var user = sessionStorage.getItem('currentUser'); 
+        //     user = JSON.parse(user); 
+        //     if(user) {
+        //         if(url.slice(1) != user.teacherModules[0]) {
+        //             location.replace(user.teacherModules[0]); 
+        //         } 
+        //     }
+        // }
     </script>
 </head>
 
-<body onload="w_redirect()">
+<body>
 
 	<header>
         <% include header %>

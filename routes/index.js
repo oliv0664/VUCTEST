@@ -482,6 +482,7 @@ router.post(encodeURI('/kursistinfo'), function(req, res) {
 //henter hjemmesiden 'worddictate_teacher' 
 
 router.get(encodeURI('/orddiktat_lærer'), function(req, res) {
+    // var aud = new File('./public/audio/dummy.mp3');
     res.render('orddiktat_lærer', {
         title: 'Orddiktat'
     });
@@ -1089,7 +1090,7 @@ router.post(encodeURI('/kursistinfo_answer'), function(req, res) {
 
     console.log("TEEEST"); 
     // %%% Skal hentes fra sessionStorage
-    HandleTestCounter(teacherID);
+    HandleTestCounter(teacherID, req.cookies.user);
 
 
 
@@ -1202,6 +1203,8 @@ router.get(encodeURI('/orddiktat_kursist'), function(req, res) {
                             result[k] = result[k].slice(2);
                         }
 
+                        console.log("###### ", result); 
+
                         res.render('template', {
                             content: content,
                             'title': moduleType,
@@ -1228,7 +1231,7 @@ router.post(encodeURI('/orddiktat_answer'), function(req, res) {
 
     //update teacher test counter.
     // %%% Skal hentes fra sessionStorage
-    HandleTestCounter(teacherID);
+    HandleTestCounter(teacherID, req.cookies.user);
 
     //det første der sker, er at 'writeTo' mappen tømmes 
     folderHandler();
@@ -1361,7 +1364,7 @@ router.get(encodeURI('/vrøvleord_kursist'), function(req, res) {
 router.post(encodeURI('/vrøvleord_answer'), function(req, res) {
 
     // %%% Skal hentes fra sessionStorage
-    HandleTestCounter(teacherID);
+    HandleTestCounter(teacherID, req.cookies.user);
 
 
     //det første der sker, er at 'writeTo' mappen tømmes 
@@ -1496,7 +1499,7 @@ router.post(encodeURI('/clozetest_answer'), function(req, res) {
 
 
     // %%% Skal hentes fra sessionStorage
-    HandleTestCounter(teacherID);
+    HandleTestCounter(teacherID, req.cookies.user);
 
 
     folderHandler();
@@ -1628,7 +1631,7 @@ router.post(encodeURI('/tekstforståelse_answer'), function(req, res) {
     //det første der sker, er at 'writeTo' mappen tømmes 
 
     // %%% Skal hentes fra sessionStorage
-    HandleTestCounter(teacherID);
+    HandleTestCounter(teacherID, req.cookies.user);
 
 
     folderHandler();
@@ -1754,7 +1757,7 @@ router.post('/brev_answer', function(req, res) {
 
     //det første der sker, er at 'writeTo' mappen tømmes 
     // %%% Skal hentes fra sessionStorage
-    HandleTestCounter(teacherID);
+    HandleTestCounter(teacherID, req.cookies.user);
 
 
     folderHandler();
@@ -2159,7 +2162,7 @@ function formHandler(url, incForm, inputCont, inputContAns, callback) {
     });
 
     incForm.on('fileBegin', function(name, file) {
-        console.log("1");
+        console.log("1", file);
         //check if there is audio file
         if (file.name != '') {
             file.path = 'public/readFrom/' + file.name;
@@ -2182,13 +2185,13 @@ function formHandler(url, incForm, inputCont, inputContAns, callback) {
                     // files.map(function (item) {
 
                     var fileUpload = files[i][0].name;
-                    console.log("4 " + fileUpload);
+                    console.log("45 ", fileUpload.slice(0,3));
 
                     var mongo = require('../public/js/mongoHandler');
                     //when MongoHandler is done with upload to MongoDB return result
                     //check if there is audiofile
                     if (fileUpload != '') {
-                        console.log("NOT EMPTY FILE");
+                        console.log("DUBI SDUBI DUBI");
                         return mongo.writeToDB(fileUpload, fileUpload)
                             .then(function(result) {
                                 console.log("FILEUPLOAD " + i + " FINISHED ", result);
@@ -2198,7 +2201,15 @@ function formHandler(url, incForm, inputCont, inputContAns, callback) {
                                 console.log(err);
                             });
                     } else {
-                        console.log("EMPTY FGILEEEE");
+                        console.log("FIGLEEE EMPTY");
+                        return mongo.writeToDB('dummy.mp3', 'dummy.mp3')
+                            .then(function(result) {
+                                console.log("FILEUPLOAD " + i + " FINISHED ", result);
+                                // file_data[i] = result;
+                                resolve(result);
+                            }, function(err) {
+                                console.log(err);
+                            });
                     }
                 })
             );
@@ -2282,10 +2293,13 @@ function folderHandler() {
 }
 
 
-function HandleTestCounter(testId) {
+function HandleTestCounter(testId, user) {
     console.log(testId);
-    var isThisLastModule = kursistModules.length === 1;
-    if (isThisLastModule) {
+
+    console.log("#¤#¤#¤#¤#¤#¤ ", typeof user.modules.length);
+    console.log("#¤#¤#¤#¤#¤#¤ ", typeof user.progression); 
+
+    if (user.modules.length-2 == user.progression) {
         console.log('this is the last module, now we update the test counter');
 
         teacherClass.findOneAndUpdate({

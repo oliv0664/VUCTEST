@@ -33,7 +33,12 @@ module.exports = {
             console.log('- Connection Open -');
             var gfs = Grid(db.db);
             
-            var filePath = path.join(__dirname, '../readFrom/' + nameInFolder);
+            var filePath; 
+            if(nameInFolder == "dummy.mp3") {
+                filePath = path.join(__dirname, '../audio/' + nameInFolder);
+            } else {
+                filePath = path.join(__dirname, '../readFrom/' + nameInFolder);
+            }
             
             var writestream = gfs.createWriteStream({
                 filename: nameInDB
