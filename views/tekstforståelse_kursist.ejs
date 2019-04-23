@@ -40,35 +40,39 @@
         }); 
     });
 
-    function playAudio(index) {
-        var d = document.getElementById("d" + index);
-        var audBut = document.getElementById("audBut" + index);
-        var sound = document.getElementById("file" + index);
-        if (sound.paused) {
-            sound.load();
-            sound.play();
-            if (a > 0) {
-                d.removeChild(audBut);
-                a = 0;
-            } else {
-                a++;
-            }
-        }
-    }
+//    function playAudio(index) {
+//        var d = document.getElementById("d" + index);
+//        var audBut = document.getElementById("audBut" + index);
+//        var sound = document.getElementById("file" + index);
+//        if (sound.paused) {
+//            sound.load();
+//            sound.play();
+//            if (a > 0) {
+//                d.removeChild(audBut);
+//                a = 0;
+//            } else {
+//                a++;
+//            }
+//        }
+//    }
 
 </script>
 
 <form id="form" method="post" action="/tekstforståelse_answer" enctype="multipart/form-data">
 
     <div class="textDiv">
-        <% for(var i=0; i<content.texts.length; i++) { %>
-            <div id="<%= 'd'+i %>" class="audDiv">
-                <input class="aud" id="<%= 'audBut'+i %>" type="button" onclick="playAudio(<%= i %>)">
-            </div>
-            <audio id="<%= 'file'+i %>" src="<%= audioFiles[i] %>"></audio>
-            <div><%= content.texts[i].text %></div>
-        <% } %>
-    </div>
+        <script>
+//        <% for(var i=0; i<content.texts.length; i++) { %>
+//            <div id="<%= 'd'+i %>" class="audDiv">
+//                <input class="aud" id="<%= 'audBut'+i %>" type="button" onclick="playAudio(<%= i %>)">
+//
+//            </div>
+//            <audio id="<%= 'file'+i %>" src="<%= audioFiles[i] %>"></audio>
+//            <div><%= content.texts[i].text %></div>
+//        <% } %>
+//    </div>
+
+        </script>
 
     <div class="contentDiv">
         <% for(var j=0; j<content.questions.length; j++) { %>
