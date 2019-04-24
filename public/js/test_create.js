@@ -4,13 +4,13 @@ $(function () {
         checkInput();
     });
 
-    $('#teacher_data').submit(function () {
-        var checked = $("#teacher_data input:checked").length > 0;
-        if (!checked) {
-            alert("Please check at least one checkbox");
-            return false;
-        }
-    });
+    // $('#teacher_data').submit(function () {
+    //     var checked = $("#teacher_data input:checked").length > 0;
+    //     if (!checked) {
+    //         alert("Please check at least one checkbox");
+    //         return false;
+    //     }
+    // });
 
 });
 

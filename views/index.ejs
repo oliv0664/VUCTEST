@@ -4,6 +4,7 @@
     <script src="/jquery/jquery-3.2.1.min.js"></script>
     <script src="/js/test_create.js"></script>
     <!-- <script src="/js/handleSession.js"></script> -->
+    <script src="/js/drag_element.js"></script>
 
     <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
 
@@ -16,15 +17,18 @@
                 user = JSON.parse(user);
                 var teacherModules = [];
 
-                var checkboxes = $('#teacher_data input:checkbox');
+                $('#dropbox').find('div span').each(function() {
+                    teacherModules.push(this.id); 
+                });
+                // var checkboxes = $('#teacher_data input:checkbox');
 
-                for (var i = 0; i < checkboxes.length; i++) {
-                    if (checkboxes[i].checked) {
-                        teacherModules.push(checkboxes[i].id);
-                    }
-                }
+                // for (var i = 0; i < checkboxes.length; i++) {
+                //     if (checkboxes[i].checked) {
+                //         teacherModules.push(checkboxes[i].id);
+                //     }
+                // }
+
                 teacherModules.push('nextpage');
-
                 user.teacherModules = teacherModules;
                 sessionStorage.setItem('currentUser', JSON.stringify(user));
 
@@ -35,6 +39,29 @@
 
         });
     </script>
+
+    <style>
+        #dragbox {
+            float: left;
+            height: 300px; 
+            width: 200px; 
+            border: 1px solid black; 
+        }
+
+        #dropbox {
+            margin-left: 250px;
+            height: 300px; 
+            width: 200px; 
+            border: 1px solid black; 
+        }
+
+        .drag {
+            border: 1px solid black; 
+            margin-bottom: 10px;
+            text-align: center;
+            cursor: move;
+        }
+    </style>
 </head>
 
 <body>
@@ -73,7 +100,16 @@
         </div>
 
         <div id="bottom">
-            <table>
+            <div id="dragbox" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <div id="box1" class="drag" draggable="true" ondragstart="drag(event)" ondragover="clear(event)"><span id="orddiktat_lærer">Orddiktat</span></div>
+                    <div id="box2" class="drag" draggable="true" ondragstart="drag(event)" ondragover="clear(event)"><span id="vrøvleord_lærer">Vrøvleord</span></div>
+                    <div id="box3" class="drag" draggable="true" ondragstart="drag(event)" ondragover="clear(event)"><span id="clozetest_lærer">Clozetest</span></div>
+                    <div id="box4" class="drag" draggable="true" ondragstart="drag(event)" ondragover="clear(event)"><span id="tekstforståelse_lærer">Tekstforståelse (multiple choice)</span></div>
+                    <div id="box5" class="drag" draggable="true" ondragstart="drag(event)" ondragover="clear(event)"><span id="brev_lærer">Brev</span></div>
+            </div>
+            <div id="dropbox" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+            
+            <!-- <table>
                 <tr>
                     <td>Ordblind data: </td>
                     <td><input class="test_options" type="checkbox" id="kursistinfo_lærer"></td>
@@ -99,7 +135,7 @@
                     <td><input class="test_options" type="checkbox" id="brev_lærer"></td>
                 </tr>
 
-            </table>
+            </table> -->
             <input type="hidden" id="data" name="data">
             <input class="submit" type="submit" value="Gem/Videre">
         </div>

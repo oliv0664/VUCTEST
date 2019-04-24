@@ -1340,6 +1340,9 @@ router.get(encodeURI('/clozetest_kursist'), function(req, res) {
 
             var id_serv = JSON.stringify(teacherID);
 
+            //CODE TO DO..
+            //der er noget der går galt her, den kan ikke finde teacher
+
             for (var i = 0; i < teacher[0].tests.length; i++) {
                 var id_db = JSON.stringify(teacher[0].tests[i]._id);
 
