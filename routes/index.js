@@ -16,25 +16,19 @@ var mongo = require('./../public/js/mongoHandler.js');
 var mongoose = require('mongoose');
 
 
-// %%% Skal gemmes i sessionStorage
-var teacherID;
 var studentID;
-var kursistModules = [];
 
 /* GET home page. */
 
 
 router.get('/', function(req, res, next) {
-    initials = "";
-
-    res.render('login', { //login
+    res.render('login', {
         title: 'Express'
-
     });
 });
-router.get('/start', function(req, res, next) {
 
-    res.render('start', { //login
+router.get('/start', function(req, res, next) {
+    res.render('start', { 
         title: 'Start'
     });
 });
@@ -93,7 +87,6 @@ router.get('/index', function(req, res, next) {
     res.render('index', {
         title: 'Express'
     });
-    teacherModules = [];
 });
 
 router.post('/oversigt_info', function(req, res, next) {
@@ -246,7 +239,15 @@ router.post('/welcome_addinfo', function(req, res) {
 
     // %%% Skal gemmes i Sessionstorage
     studentID = req.body.id;
-    teacherID = JSON.parse(req.body.data);
+    var teacherID = JSON.parse(req.body.data); 
+    var progression = req.cookies.user.progression;
+    var modulesArray = req.cookies.user.modules; 
+    var user = {
+        progression: progression,
+        modules: modulesArray,
+        teacherid: teacherID
+    }
+    res.cookie('user', user);
 
 
     console.log(studentID + " YNLPYPHTASCSACASC");
@@ -907,9 +908,9 @@ router.get('/nextpage', function(req, res) {
 
 
 router.post('/nextpage', function(req, res) {
-    res.redirect(kursistModules[0]);
-    kursistModules.shift();
-    console.log('next module should be ' + kursistModules[0]);
+    var modulesArray = req.cookies.user.modules; 
+    var progression = req.cookies.user.progression;  
+    res.redirect(modulesArray[progression]);
 });
 
 
@@ -922,128 +923,12 @@ router.post('/nextpage', function(req, res) {
 
 /*      HER ER ALLE PARTICIPANT SIDERNE     */
 
-
-/* ALLE FUNKTIONER DER ER TILKNYTTET STARTPAGE */
-
-//henter hjemmesiden 'startpage' 
-
-router.get(encodeURI('/startpage'), function(req, res) {
-    res.render('startpage', {
-        title: 'Startside'
-    });
-});
-
-router.post(encodeURI('/startpage_addinfo'), function(req, res) {
-
-    // var db = req.db;
-    //    console.log(req.body);
-    //    console.log("DOES THIS EXISt " + studentID);
-    //    var firstname = req.body.firstname;
-    //    var lastname = req.body.lastname;
-    //    var age = req.body.age;
-    //    var mothertong_dk = req.body.mothertong_dk;
-    //    var tong_input = req.body.tong_input;
-    //    var years_in_dk = req.body.years_in_dk;
-    //    var edu_in_dk = req.body.edu_in_dk;
-    //    var pass_test = req.body.pass_test;
-    //    var eg_test = req.body.eg_test;
-    //
-    //
-    //
-    //    var speciel_edu = req.body.speciel_edu;
-    //    var speciel_edu_adult = req.body.speciel_edu_adult;
-    //    var eg_edu = req.body.eg_edu;
-    //
-    //    var years_in_edu = req.body.years_in_edu;
-    //    var years_in_edu_home = req.body.years_in_edu_home;
-    //    var exam_finish = req.body.exam_finish;
-    //    var eg_exam = req.body.eg_exam;
-    //    var eg_exam_country = req.body.eg_exam_country;
-    //    var edu_finish = req.body.edu_finish;
-    //    var eg_edu_finish = req.body.eg_edu_finish;
-    //    var eg_edu_finish_country = req.body.eg_edu_finish_country;
-    //    var read_write_con = req.body.read_write_con;
-    //    var eg_con = req.body.eg_con;
-    //
-    //    var in_job = req.body.in_job;
-    //    var eg_job = req.body.eg_job;
-    //    var read_write_in_job = req.body.read_write_in_job;
-    //    var eg_read_write_in_job = req.body.eg_read_write_in_job;
-    //    var read_in_job = req.body.read_in_job;
-    //    var write_in_job = req.body.write_in_job;
-    //    var lang_in_job = req.body.lang_in_job;
-    //
-    //    var why_fvu = req.body.why_fvu;
-    //
-    //    var improvement = req.body.improvement;
-    //    var eg_improvement = req.body.eg_improvement;
-    //
-    ////    var collection = db.get('students');
-    //
-    //    
-    //   studentClass.find()({
-    //        "studentID": studentID
-    //    }, {
-    //        $set: {
-    //            //"id": initials,
-    //            "Fornavn": firstname,
-    //            "Efternavn": lastname,
-    //            "Alder": age,
-    //            "Har du andet end dansk som modersmål": mothertong_dk,
-    //            "Hvad er dit modersmål": tong_input,
-    //            "Hvor længe har du boet i Danmark": years_in_dk,
-    //            "Har du fået undervisning i dansk": edu_in_dk,
-    //            "Har du bestået nogen prøver": pass_test,
-    //            "Evt hvilke(n)": eg_test,
-    //            "Har du modtaget specialundervisningen i skolen": speciel_edu,
-    //            "Har du modtaget specialundervisning som voksen": speciel_edu_adult,
-    //            "Evt i hvilke(t) fag og hvor længe": eg_edu,
-    //            "Hvor længe har du gået i skole": years_in_edu,
-    //            "Hvor længe har du gået i skole i dit hjemland": years_in_edu_home,
-    //            "Har du afsluttende eksamen fra din skole": exam_finish,
-    //            "Evt i hvilke(n)": eg_exam,
-    //            "Fra hvilket land": eg_exam_country,
-    //            "Har du en uddannelse": edu_finish,
-    //            "Evt hvilken": eg_edu_finish,
-    //            "Evt fra hvilket land": eg_edu_finish_country,
-    //            "Har dine læse- og stavevanskeligheder haft betydning for skole og uddannelse": read_write_con,
-    //            "Evt på hvilken måde": eg_con,
-    //            "Er du i job": in_job,
-    //            "Evt hvilket": eg_job,
-    //            "Indgår der læsning eller skrivning i dit job": read_write_in_job,
-    //            "Evt hvordan": eg_read_write_in_job,
-    //            "Hvordan klarer du at læse på jobbet": read_in_job,
-    //            "Hvordan klarer du at skrive på jobbet": write_in_job,
-    //            "Hvilket sprog taler du mest på dit job": lang_in_job,
-    //            "Hvorfor vil du gerne gå til FVU-læsning": why_fvu,
-    //            "Hvad vil du gerne blive bedre til": improvement,
-    //            "Andet": eg_improvement,
-    //            //"time": "12:00:00",
-    //            "tests": []
-    //        }
-    //    }, function (err, doc) {
-    //        if (err) {
-    //
-    //            res.send("There was a problem adding the information to the database.");
-    //
-    //        } else {
-
-    console.log("######## student modules: " + kursistModules[0]);
-    res.redirect(kursistModules[0]);
-    kursistModules.shift();
-
-    //        }
-});
-//});
-
-
-//initials = 'tintin';
 var g_moduleCount = 0;
 
 
 router.get(encodeURI('/kursistinfo_kursist'), function(req, res) {
 
-
+    var teacherID = req.cookies.user.teacherid; 
 
     teacherClass.find({
 
@@ -1090,7 +975,7 @@ router.post(encodeURI('/kursistinfo_answer'), function(req, res) {
 
     console.log("TEEEST"); 
     // %%% Skal hentes fra sessionStorage
-    HandleTestCounter(teacherID, req.cookies.user);
+    HandleTestCounter(req.cookies.user.teacherid, req.cookies.user);
 
 
 
@@ -1158,6 +1043,7 @@ router.get(encodeURI('/orddiktat_kursist'), function(req, res) {
     // teacherID = JSON.stringify(teacherID); 
     // %%% Skal hentes fra sessionStorage
 
+    var teacherID = req.cookies.user.teacherid; 
 
     console.log("TEACHER ID: " + typeof JSON.stringify(teacherID));
 
@@ -1231,7 +1117,7 @@ router.post(encodeURI('/orddiktat_answer'), function(req, res) {
 
     //update teacher test counter.
     // %%% Skal hentes fra sessionStorage
-    HandleTestCounter(teacherID, req.cookies.user);
+    HandleTestCounter(req.cookies.user.teacherid, req.cookies.user);
 
     //det første der sker, er at 'writeTo' mappen tømmes 
     folderHandler();
@@ -1301,6 +1187,8 @@ router.post(encodeURI('/orddiktat_answer'), function(req, res) {
 //henter 'output' og finder data i databasen, svarende til de indtastede initialer
 router.get(encodeURI('/vrøvleord_kursist'), function(req, res) {
 
+    var teacherID = req.cookies.user.teacherid; 
+
     //lige nu henter den alle documenter med disse initialer, selvom den kun skal vise 1 (den første)
     //senere skal der tilføjes en hovedside hvor brugeren kan vælge hvilken test, på baggrund af sine initialer 
     teacherClass.find({
@@ -1364,7 +1252,7 @@ router.get(encodeURI('/vrøvleord_kursist'), function(req, res) {
 router.post(encodeURI('/vrøvleord_answer'), function(req, res) {
 
     // %%% Skal hentes fra sessionStorage
-    HandleTestCounter(teacherID, req.cookies.user);
+    HandleTestCounter(req.cookies.user.teacherid, req.cookies.user);
 
 
     //det første der sker, er at 'writeTo' mappen tømmes 
@@ -1433,6 +1321,9 @@ router.post(encodeURI('/vrøvleord_answer'), function(req, res) {
 //henter clozetest_participant og finder data i databasen, svarende til de indtastede initialer
 
 router.get(encodeURI('/clozetest_kursist'), function(req, res) {
+    
+    var teacherID = req.cookies.user.teacherid; 
+    
     //lige nu henter den alle documenter med disse initialer, selvom den kun skal vise 1 (den første)
     //senere skal der tilføjes en hovedside hvor brugeren kan vælge hvilken test, på baggrund af sine initialer 
     teacherClass.find({
@@ -1499,7 +1390,7 @@ router.post(encodeURI('/clozetest_answer'), function(req, res) {
 
 
     // %%% Skal hentes fra sessionStorage
-    HandleTestCounter(teacherID, req.cookies.user);
+    HandleTestCounter(req.cookies.user.teacherid, req.cookies.user);
 
 
     folderHandler();
@@ -1565,6 +1456,9 @@ router.post(encodeURI('/clozetest_answer'), function(req, res) {
 
 //henter clozetest_participant og finder data i databasen, svarende til de indtastede initialer
 router.get(encodeURI('/tekstforståelse_kursist'), function(req, res) {
+    
+    var teacherID = req.cookies.user.teacherid;
+    
     //lige nu henter den alle documenter med disse initialer, selvom den kun skal vise 1 (den første)
     //senere skal der tilføjes en hovedside hvor brugeren kan vælge hvilken test, på baggrund af sine initialer 
 
@@ -1631,7 +1525,7 @@ router.post(encodeURI('/tekstforståelse_answer'), function(req, res) {
     //det første der sker, er at 'writeTo' mappen tømmes 
 
     // %%% Skal hentes fra sessionStorage
-    HandleTestCounter(teacherID, req.cookies.user);
+    HandleTestCounter(req.cookies.user.teacherid, req.cookies.user);
 
 
     folderHandler();
@@ -1697,6 +1591,9 @@ router.post(encodeURI('/tekstforståelse_answer'), function(req, res) {
 //henter 'output' og finder data i databasen, svarende til de indtastede initialer
 
 router.get('/brev_kursist', function(req, res) {
+    
+    var teacherID = req.cookies.user.teacherid;
+    
     //lige nu henter den alle documenter med disse initialer, selvom den kun skal vise 1 (den første)
     //senere skal der tilføjes en hovedside hvor brugeren kan vælge hvilken test, på baggrund af sine initialer 
     teacherClass.find({
@@ -1757,7 +1654,7 @@ router.post('/brev_answer', function(req, res) {
 
     //det første der sker, er at 'writeTo' mappen tømmes 
     // %%% Skal hentes fra sessionStorage
-    HandleTestCounter(teacherID, req.cookies.user);
+    HandleTestCounter(req.cookies.user.teacherid, req.cookies.user);
 
 
     folderHandler();
