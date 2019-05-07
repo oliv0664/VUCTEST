@@ -1016,10 +1016,12 @@ router.post(encodeURI('/kursistinfo_answer'), function(req, res) {
 
                 var progression = req.cookies.user.progression;
                 progression++; 
-                var modulesArray = req.cookies.user.modules;  
+                var modulesArray = req.cookies.user.modules; 
+                var teacherid = req.cookies.user.teacherid; 
                 var user = {
                     modules: modulesArray,
-                    progression: progression
+                    progression: progression,
+                    teacherid: teacherid
                 }
                 res.cookie('user', user); 
 
@@ -1164,9 +1166,11 @@ router.post(encodeURI('/orddiktat_answer'), function(req, res) {
                 var progression = req.cookies.user.progression;
                 progression++;  
                 var modulesArray = req.cookies.user.modules; 
+                var teacherid = req.cookies.user.teacherid;
                 var user = {
                     progression: progression,
-                    modules: modulesArray 
+                    modules: modulesArray,
+                    teacherid: teacherid 
                 }
                 res.cookie('user', user); 
 
@@ -1297,9 +1301,11 @@ router.post(encodeURI('/vrøvleord_answer'), function(req, res) {
                 var progression = req.cookies.user.progression;
                 progression++;  
                 var modulesArray = req.cookies.user.modules;
+                var teacherid = req.cookies.user.teacherid;
                 var user = {
                     modules: modulesArray,
-                    progression: progression
+                    progression: progression,
+                    teacherid: teacherid
                 } 
                 res.cookie('user', user); 
 
@@ -1437,9 +1443,11 @@ router.post(encodeURI('/clozetest_answer'), function(req, res) {
                 var progression = req.cookies.user.progression; 
                 progression++; 
                 var modulesArray = req.cookies.user.modules; 
+                var teacherid = req.cookies.user.teacherid;
                 var user = {
                     modules: modulesArray,
-                    progression: progression
+                    progression: progression,
+                    teacherid: teacherid
                 }
                 res.cookie('user', user); 
 
@@ -1573,9 +1581,11 @@ router.post(encodeURI('/tekstforståelse_answer'), function(req, res) {
                 var progression = req.cookies.user.progression; 
                 progression++; 
                 var modulesArray = req.cookies.user.modules; 
+                var teacherid = req.cookies.user.teacherid;
                 var user = {
                     modules: modulesArray,
-                    progression: progression
+                    progression: progression,
+                    teacherid: teacherid
                 }
                 res.cookie('user', user); 
 
@@ -1701,9 +1711,11 @@ router.post('/brev_answer', function(req, res) {
                 var progression = req.cookies.user.progression; 
                 progression++; 
                 var modulesArray = req.cookies.user.modules; 
+                var teacherid = req.cookies.user.teacherid;
                 var user = {
                     modules: modulesArray,
-                    progression: progression
+                    progression: progression,
+                    teacherid: teacherid
                 }
                 res.cookie('user', user); 
 
