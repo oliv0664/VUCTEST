@@ -276,14 +276,8 @@ $(function() {
     }
 
 
-
     //remove latest input field
     $('#removeButton').click(function() {
         $('#section div').last().remove();         
     }); 
-
-
-
-
-
 }); 

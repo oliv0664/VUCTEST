@@ -39,8 +39,6 @@ $(function() {
     $('#form').bind('submit', function(event) {
         event.preventDefault(); //this will prevent the default submit
 
-
-
         var texts = [];
         for (var i = 0; i <= countT; i++) {
             var time = $('#timeText' + i).val();
@@ -58,11 +56,8 @@ $(function() {
         for (var j = 0; j < questionCount; j++) {
             var answer = $("input[name=choice" + j + "]:checked").val().trim();
 
-
             console.log('Luca tests the answer: ' + answer);
             //console.log('Luca tests test1: ' + test1Selected);
-
-
             var correct = data.content.questions[j].rightAnswer;
 
             var point = 0;
@@ -71,7 +66,6 @@ $(function() {
             }
 
             var time = $('#timeQuestion' + j).val();
-
 
             var object = {
                 "answer": answer,
@@ -91,9 +85,7 @@ $(function() {
 
         console.log('this is uploaded to the db', answers);
 
-
         $(this).unbind('submit').submit(); // continue the submit unbind preventDefault
-
     });
 });
 
@@ -105,8 +97,6 @@ function initializeTest(data) {
     console.log("only run uuh..twice!! data= ", data);
     totalTextCount = data.content.texts.length;
     totalQuestionCount = data.content.questions.length;
-    //    countT = 0;
-    //    countQ = 0;
 }
 
 
@@ -127,16 +117,6 @@ function nextText(countT) {
 		'padding': '10px'
 	});
 
-    /*$audioControl = $('<audio controls></audio>')
-        .append('</source>')
-        .attr({
-            id: 'soundSrc' + countT,
-            src: '../images/aaaah.wav'
-        }); 
-
-    $label = $('<label/>').text(data.files[countT]);*/
-
-
     $audioFile = $('<audio/>').attr({
         src: '../images/aaaah.wav'
     });
@@ -154,15 +134,13 @@ function nextText(countT) {
             audioCountT = 0;
         } else {
             audioCountT++;
-        }
-        //playAudio($audioFile);  
+        } 
     });
 
 
     $timestamp = $('<input/>').attr({
         type: 'hidden',
-        id: 'timeText' + countT,
-        //name: 'timestamp'
+        id: 'timeText' + countT
     });
 
 
@@ -170,7 +148,6 @@ function nextText(countT) {
     $('#subsection')
         .append($textP1)
         .append($audioControl)
-        //            .append($label)
         .append($timestamp)
         .append('<br>');
 
@@ -202,14 +179,6 @@ function nextText(countT) {
 }
 
 
-
-
-
-/*function playAudio(audioFile) {
-    audioFile[0].play();
-}*/
-
-
 function nextT(c) {
     setTimeText();
 
@@ -233,8 +202,6 @@ function setTimeText() {
 
 
 
-
-
 function nextQuestion(countQ) {
 
     $('#subsubsection').empty();
@@ -246,17 +213,6 @@ function nextQuestion(countQ) {
             class: 'question'
         })
         .text(data.content.questions[countQ].question);
-
-
-    /*$audioControl = $('<audio controls></audio>')
-        .append('</source>')
-        .attr({
-            id: 'soundSrc' + countQ,
-            src: '../images/aaaah.wav'
-        }); 
-
-    $label = $('<label/>').text(data.files[countQ]);*/
-
 
     $audioFile = $('<audio/>').attr({
         src: '../images/aaaah.wav'
@@ -276,7 +232,6 @@ function nextQuestion(countQ) {
         } else {
             audiocountQ++;
         }
-        //playAudio($audioFile);  
     });
 
     $('#subsection')
@@ -317,25 +272,6 @@ function nextQuestion(countQ) {
     }
 
 
-    /*for (var i = 0; i < data.content.questions[countQ].answers.length; i++) {
-        /*$answer = $('<nobr/>')
-            .attr({
-                class: 'h2size'
-            })
-            .text(data.content.questions[countQ].answers[i]);
-
-        $choice = $('<input/>').attr({
-            type: 'radio',
-            id: 'choice' + countQ,
-            name: 'choice' + countQ
-        });
-
-        $('#answerDiv' + countQ).text("hej");
-    }*/
-
-
-
-
     if (countQ < totalQuestionCount - 1) {
         $nextQuestionButton = $('<button/>').attr({
             class: 'h2size',
@@ -361,17 +297,6 @@ function nextQuestion(countQ) {
     }
 
 
-
-
-
-
-
-
-    /*function playAudio(audioFile) {
-        audioFile[0].play();
-    }*/
-
-
     function nextQ() {
         setTimeQuestion();
         $('#subsubsection').empty();
@@ -381,10 +306,7 @@ function nextQuestion(countQ) {
         countQ++;
 
         nextQuestion(countQ);
-
-
     }
-
 
     function setTimeQuestion() {
         var d = new Date();
@@ -392,6 +314,4 @@ function nextQuestion(countQ) {
         $('#timeQuestion' + countQ).val(timestamp);
         checkpoint = d.getTime();
     }
-
-
 }

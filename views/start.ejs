@@ -3,7 +3,6 @@
 <head>
     <script src="/jquery/jquery-3.2.1.min.js"></script>
     <script src="/js/handle_login.js"></script>
-    <script src="/js/test.js"></script>
     <script>
         $(function() {
 
@@ -72,9 +71,9 @@
         <li>Tekstforståelse (multiplechoice) </li>
         <li>Brev</li>
     </ul>
-
     <ol>
-        <li><button type="button" onclick="newTest()">Lav ny test</button></li>
+        
+        <li><button type="button" onclick="window.location.assign('index')">Lav ny test</button></li>
         <li>
             <form id="form" method="post" action="/oversigt_info">
                 <input type="hidden" id="data" name="data">

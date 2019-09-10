@@ -21,7 +21,8 @@ function drop(event) {
             clone.id = ("dragged_box" + clone.id.slice(3));
             element = clone;
         }
-        event.target.appendChild(element); 
+        // event.target.appendChild(element); 
+        document.getElementById('dropbox_container').appendChild(element); 
     } else if(event.target.id == "dragbox") {
         document.getElementById(data).remove(); 
     }

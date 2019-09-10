@@ -1,6 +1,5 @@
 {
 
-
     // jquery start function
     $(function () {
 
@@ -8,34 +7,6 @@
         $('#addLine').click(function () {
             addLine();
         });
-
-        // $('#form').bind('submit', function (event) {
-
-        //     event.preventDefault(); //this will prevent the default submit
-
-        //     console.log("##### ", audioFiles); 
-        //     $('#intro').val(JSON.stringify(audioFiles[0]));
-
-        //     var content = [];
-        //     for (var i = 0; i < lineCount; i++) {
-        //         var line1 = $('#line1' + i).val();
-        //         var answer = $('#answer' + i).val();
-        //         var line2 = $('#line2' + i).val();
-        //         var file = $('#file' + i).val();
-
-        //         var object = {
-        //             "line1": line1,
-        //             "answer": answer,
-        //             "line2": line2
-        //         }
-
-        //         content.push(object);
-        //     }
-
-        //     $('#content').val(JSON.stringify(content));
-
-        //     $(this).unbind('submit').submit(); // continue the submit unbind preventDefault
-        // });
     });
 
 

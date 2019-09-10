@@ -72,9 +72,6 @@
 
             $('#answers').val(JSON.stringify(answers));
 
-
-
-
             $(this).unbind('submit').submit(); // continue the submit unbind preventDefault
         });
     });
@@ -96,16 +93,6 @@
             //name: 'userinput',
             placeholder: 'Indsæt ord'
         });
-
-
-        /*$audioControl = $('<audio controls></audio>')
-            .append('</source>')
-            .attr({
-                id: 'soundSrc' + count,
-                src: '../images/aaaah.wav'
-            }); 
-
-        $label = $('<label/>').text(data.files[count]);*/
 
 
         $audioFile = $('<audio/>').attr({
@@ -181,8 +168,6 @@
 
         $('#subsubsection').empty();
     }
-
-
 
     function setTime() {
         var d = new Date();

@@ -6,34 +6,11 @@
         $('#addLine').click(function () {
             addLine();
         });
-
-//        $('#form').bind('submit', function (event) {
-//
-//            event.preventDefault(); //this will prevent the default submit
-//
-//            var content = [];
-//            for (var i = 0; i < lineCount; i++) {
-//                var answer = $('#answer' + i).val();
-//                var file = $('#file' + i).val();
-//
-//                var object = {
-//                    "answer": answer,
-//                    "file": file
-//                }
-//
-//                content.push(object);
-//            }
-//
-//            $('#content').val(JSON.stringify(content));
-//
-//            $(this).unbind('submit').submit(); // continue the submit unbind preventDefault
-//        });
     });
 
 
     // holder styr på antal linjer/sætninger
     var lineCount = 0;
-
 
     function addLine() {
 
@@ -98,7 +75,6 @@
 
             $('#subsubsection').append($removeLineButton);
         }
-
         lineCount++;
     }
 
@@ -110,8 +86,6 @@
         $('#line' + (lineCount - 1)).remove();
 
         lineCount--;
-
-
         if (lineCount == 0) {
             $('#removeLineButton').remove();
         }

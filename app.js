@@ -4,7 +4,6 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var ready = false;
 var teacherClass = require('./public/models/teacherSchema.js');
 var studentClass = require('./public/models/studentSchema.js');
 var mongo = require('mongodb');

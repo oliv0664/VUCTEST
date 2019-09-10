@@ -1,9 +1,6 @@
 {
-
-
     // jquery start function
     $(function () {
-
         // når der klikkes på denne knap
         $('#addText').click(function () {
             addText();
@@ -12,57 +9,6 @@
         $('#addQuestion').click(function () {
             addQuestion();
         });
-
-//        $('#form').bind('submit', function (event) {
-//
-//            event.preventDefault(); //this will prevent the default submit
-//
-//            var texts = [];
-//            for (var i = 0; i < textCount; i++) {
-//                var text = $('#text' + i).val();
-//                var file = $('#file' + i).val();
-//
-//                var object = {
-//                    "text": text,
-//                    "file": file
-//                }
-//
-//                texts.push(object);
-//            }
-//
-//
-//            var questions = [];
-//
-//            for (var i = 0; i < questionCount; i++) {
-//                var question = $('#question' + i).val();
-//
-//                var answers = [];
-//
-//                for (var j = 0; j < ids[i]; j++) {
-//                    var answer = $('#answer' + i + j).val();
-//                    answers.push(answer);
-//                }
-//                // rightAnswer can also have white spaces infront and at the end thus it should be trimmed with trim();
-//                var rightAnswer = $("input[name=correct" + i + "]:checked").next().val().trim();
-//                console.log(rightAnswer);
-//                var object = {
-//                    "question": question,
-//                    "answers": answers,
-//                    "rightAnswer": rightAnswer
-//                }
-//                questions.push(object);
-//            }
-//
-//            var content = {
-//                "texts": texts,
-//                "questions": questions
-//            }
-//
-//            $('#content').val(JSON.stringify(content));
-//            console.log(content);
-//            $(this).unbind('submit').submit(); // continue the submit unbind preventDefault
-//        });
-
     });
 
 
@@ -82,8 +28,6 @@
 
         // tilføjer div til body
         $('#subsection').append($newText);
-
-
 
         //størrelsen på tekst input felterne 
         var size = 25;
@@ -111,14 +55,6 @@
             // required: true
         }).hide();
 
-
-        // tilføj en lydkontroller til den givne lydfil
-        // $audioControl = $('<audio controls></audio>')
-        //     .append('</source>')
-        //     .attr('id', 'soundSrc' + textCount);
-
-
-
         // tilføj alle elementer til siden 
         $('#textDiv' + textCount)
             .append($newText)
@@ -140,11 +76,7 @@
 
 
             $('#subsubsection').append($removeTextButton);
-
         }
-
-
-
         textCount++;
     }
 
@@ -210,10 +142,6 @@
             .append($newQuestion)
             .append($newChoiceButton);
 
-
-
-
-
         // tilføjer en slet knap
         if (questionCount == 0) {
             $removeQuestionButton = $('<input/>').attr({
@@ -231,7 +159,6 @@
         }
         questionCount++;
     }
-
 
 
     // tilføj en svarmulighed
@@ -262,8 +189,6 @@
             .append($newChoice)
             .append($label);
     }
-
-
 
     // fjerner slet knap når der ikke er flere linjer 
     function removeText() {
@@ -311,80 +236,4 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
-
-
-
-    var initialsMain;
-
-    // når der trykkes submit
-
-
-    /*function submit() {
-        
-        
-        var dataArray = []; 
-        var lineText1Array = []; 
-        var lineTextExampleArray = []; 
-        var lineText2Array = []; 
-        var audioSrcArray = []; 
-        
-        // alle de indtastede elementer bliver gemt i arrays
-        for(var i=0; i<lineCount; i++) {
-            
-            lineText1Array[i] = $('#lineText1' + i).val(); 
-            lineTextExampleArray[i] = $('#lineTextExample' + i).val(); 
-            lineText2Array[i] = $('#lineText2' + i).val();
-            audioSrcArray[i] = $('#soundSrc' + i).attr('src'); 
-            
-        }
-        
-        // alle arrays bliver til sidst smidt in i et stort array 
-        dataArray[0] = lineText1Array;
-        dataArray[1] = lineTextExampleArray; 
-        dataArray[2] = lineText2Array; 
-        //audio kan ikke gemmes i localstorage, venter på opdatering med database
-        //dataArray[3] = audioSrcArray; 
-        
-        
-        // gemmer titlen på testen (obligatorisk)
-        var testTitle = $('#testTitle').val(); 
-        if(testTitle == null) {
-            alert('Du skal angive en titel til din test'); 
-        } else {
-            
-            dataArray[3] = testTitle; 
-            var output = dataArray;
-
-            
-        dette stykke gemmer til localstorage
-        *    
-        *    // spørger brugeren om deres initialer
-        *    initialsMain = prompt('Skriv dine initialer');
-        *    initialsMain = initialsMain.replace(/\s+/g, '');
-        *    
-        *    while(initialsMain.length > 3 || initialsMain.length < 3) {
-        *        initialsMain = prompt('Dine initialer skal være 3 bogstaver!'); 
-        *    } 
-        *
-        *    // gemmer testen under den angivne bruger (initialer) 
-        *    localStorage.setItem(initialsMain, JSON.stringify(output)); 
-        *
-        
-            
-            
-            
-            // åbner et nyt vindue
-            var url = "output.html";
-            var openWindow = window.open(url);
-
-            openWindow.dataFromParent = output;
-            openWindow.addEventListener('load', function(){
-                openWindow.init(); 
-            });
-            
-        }
-        
-    }*/
-
-
 }

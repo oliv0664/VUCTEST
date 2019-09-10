@@ -166,9 +166,6 @@ function getNavbarView(data, studentIDs, teacherID, btnID) {
         } else if(data[id].moduleType.toLowerCase() == "tekstforståelse") {
             setInterpretView(data, studentData, id);
         }
-        //CODE TO DO
-        //Brev skal give noget output i form af tid kursisten er om det 
-
     }); 
 }
 
@@ -213,9 +210,6 @@ function setClozetestView(data, studentData, id) {
         
         if(i==0) $div1.append($div2, $div3, $div4, $div5).insertAfter($('#br'+id)); 
         else $div1.append($div2, $div3, $div4, $div5).insertAfter($('#div'+id+'-'+(i-1)));
-
-        //CODE TO DO 
-        //Output skal være noget med hvor lang tid kursisten har brugt på testen 
     }
 }
 

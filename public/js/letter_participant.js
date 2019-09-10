@@ -63,7 +63,6 @@
 
 			var time = $('#timestamp0').val();
 
-
 			var object = {
 				"answer": answer,
 				"point": point,
@@ -71,12 +70,8 @@
 			}
 
 			answers.push(object);
-			//            }
 
 			$('#answers').val(JSON.stringify(answers));
-
-
-
 
 			$(this).unbind('submit').submit(); // continue the submit unbind preventDefault
 		});
@@ -92,9 +87,6 @@
 		count = 0;
 		timer = 900000; // 15 min.
 	}
-
-
-
 
 
 	function nextLine(count) {

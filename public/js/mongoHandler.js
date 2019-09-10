@@ -4,8 +4,6 @@ var mongoose = require('mongoose');
 // var mongoDB = 'mongodb://localhost/vucfyntest';
 var mongoDB = 'mongodb://vucfyntest:test@ds237475.mlab.com:37475/vucfyntestdb';
 
-
-
 var Grid = require('gridfs-stream');
 var fs = require('fs');
  

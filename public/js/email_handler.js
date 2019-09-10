@@ -11,9 +11,6 @@ module.exports = {
             }
         });
 
-        
-
-
         var mailOptions = {
             from: 'vucfyn.test@outlook.dk', //vucfyn.diktat.test@gmail.com
             to: mailTo, 
@@ -33,7 +30,6 @@ module.exports = {
         });
     },
 
-
     htmlBuilder: function(results) {
 
         var html; 
@@ -52,7 +48,6 @@ module.exports = {
 
         html += '</tr>'; 
 
-        
         html += '<tr><td>' + results[0] + '</td><td>' + results[1]+ '</td>';
 
         for(var i=2; i<results.length; i++) {
@@ -66,21 +61,5 @@ module.exports = {
         }
 
         return html; 
-    
     }
-}
-
-
-
-function timeConverter(milliseconds) {
-    var seconds = milliseconds / 1000; 
-    var minutes = Math.floor(seconds / 60);
-    var leftoverSeconds = Math.floor(seconds % 60);
-    seconds = leftoverSeconds; 
-
-    if(seconds.toString().length < 2) {
-        seconds = "0" + seconds; 
-    }
-
-    return minutes + ":" + seconds; 
 }

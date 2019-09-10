@@ -211,48 +211,4 @@
         $('#timestamp' + count).val(timestamp);
         checkpoint = d.getTime();
     }
-
-
-    // kan måske bruges når der skal tjekkes svar !!
-
-
-    /* $(function() {
-         
-         // når der klikkes, tjekkes svarene 
-         $('#submit').click(function() {
-             checkAnswer();     
-         });
-         
-     });
-     
-     var lineAnswerArray = []; 
-     
-     // tjekker svar
-     function checkAnswer() {
-         
-         for(var i=0; i<numberOfQuestions; i++) {
-             // alle svar bliver sat til små bogstaver, og fjerner mellemrum
-             lineAnswerArray[i] = $('#lineInput' + i).val().toLowerCase().trim();
-             
-             // de korrekte svar bliver ligeledes lavet til små bogstaver, og trimmet
-             var correctAnswer = dataFromParent[1][i].toLowerCase().trim()
-             
-             // sammenligner svar med korrekte svar, og giver feedback 
-             // VIGTIGT - skal fjernes når der kommer database 
-             if(lineAnswerArray[i] == correctAnswer) {
-                 $('#newLine' + i)
-                         .css('backgroundColor','lightGreen')
-                         .append('   : Det korrekte ord: ' + correctAnswer);
-             } else {
-                 $('#newLine' + i)
-                     .css('backgroundColor', 'lightGrey')
-                     .append('   : Det korrekte ord: ' + correctAnswer); 
-             }
-         }
-         
-         
-     }
-     */
-
-
 }

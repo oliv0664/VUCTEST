@@ -17,7 +17,7 @@
                 user = JSON.parse(user);
                 var teacherModules = [];
 
-                $('#dropbox').find('div span').each(function() {
+                $('#dropbox_container').find('div span').each(function() {
                     teacherModules.push(this.id); 
                 });
                 // var checkboxes = $('#teacher_data input:checkbox');
@@ -42,17 +42,20 @@
 
     <style>
         #dragbox {
-            float: left;
+            vertical-align: top; 
+            display: inline-block;
             height: 300px; 
             width: 200px; 
             border: 1px solid black; 
         }
 
         #dropbox {
-            margin-left: 250px;
-            height: 300px; 
+            /* margin-left: 250px; */
+            display: inline-block;
+            height: 100px; 
             width: 200px; 
             border: 1px solid black; 
+            text-align: center;
         }
 
         .drag {
@@ -60,6 +63,15 @@
             margin-bottom: 10px;
             text-align: center;
             cursor: move;
+        }
+
+        #dropbox_container {
+            /* margin-left: 500px; */
+            vertical-align: top; 
+            display: inline-block;
+            height: 300px; 
+            width: 200px; 
+            border: 1px solid black; 
         }
     </style>
 </head>
@@ -107,7 +119,8 @@
                     <div id="box4" class="drag" draggable="true" ondragstart="drag(event)" ondragover="clear(event)"><span id="tekstforståelse_lærer">Tekstforståelse (multiple choice)</span></div>
                     <div id="box5" class="drag" draggable="true" ondragstart="drag(event)" ondragover="clear(event)"><span id="brev_lærer">Brev</span></div>
             </div>
-            <div id="dropbox" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+            <div id="dropbox" ondrop="drop(event)" ondragover="allowDrop(event)">Træk elementer herover for at tilføje dem i bunden</div>
+            <div id="dropbox_container"></div>
             
             <!-- <table>
                 <tr>
@@ -137,6 +150,7 @@
 
             </table> -->
             <input type="hidden" id="data" name="data">
+            <br>
             <input class="submit" type="submit" value="Gem/Videre">
         </div>
 
