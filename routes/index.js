@@ -964,7 +964,8 @@ router.post(encodeURI('/kursistinfo_answer'), function (req, res) {
                 var user = {
                     modules: modulesArray,
                     progression: progression,
-                    teacherid: teacherid
+                    teacherid: teacherid,
+                    studentID: studentID
                 }
                 res.cookie('user', user);
 

@@ -155,7 +155,10 @@ function getNavbarView(data, studentIDs, teacherID, btnID) {
     })
     .done(function (dataStr) {
         studentData = JSON.parse(dataStr); //parse and store data from all students
-        console.log(studentData); 
+        console.log("Student data", studentData);
+        console.log("Data ", data);
+        console.log("ID ", id);  
+
 
         if(data[id].moduleType.toLowerCase() == "orddiktat") {
             setWorddictateView(data, studentData, id); 
@@ -165,6 +168,8 @@ function getNavbarView(data, studentIDs, teacherID, btnID) {
             setClozetestView(data, studentData, id); 
         } else if(data[id].moduleType.toLowerCase() == "tekstforståelse") {
             setInterpretView(data, studentData, id);
+        } else if(data[id].moduleType.toLowerCase() == "brev") {
+            setLetterView(studentData, id); 
         }
     }); 
 }
@@ -178,7 +183,7 @@ function setWorddictateView(data, studentData, id) {
         
         var totalScore = calculateCorrectAnswers(data, studentData, id, i); 
 
-        var $div5 = $('<div>'+totalScore+' ud af '+studentData.length+'</div>').attr({class: 'studentData', id: 'rightContent'});
+        var $div5 = $('<div>Kursisterne fik tilsammen '+totalScore+' ud af '+studentData.length+' points</div>').attr({class: 'studentData', id: 'rightContent'});
 
         if(i==0) $div1.append($div2, $div3, $div4, $div5).insertAfter($('#br'+id)); 
         else $div1.append($div2, $div3, $div4, $div5).insertAfter($('#div'+id+'-'+(i-1)));
@@ -192,7 +197,7 @@ function setNonsenseView(data, studentData, id) {
         
         var totalScore = calculateCorrectAnswers(data, studentData, id, i); 
 
-        var $div3 = $('<div>'+totalScore+' ud af '+studentData.length+'</div>').attr({class: 'studentData', id: 'rightContent'});
+        var $div3 = $('<div>Kursisterne fik tilsammen '+totalScore+' ud af '+studentData.length+' points</div>').attr({class: 'studentData', id: 'rightContent'});
         
         if(i==0) $div1.append($div2, $div3).insertAfter($('#br'+id)); 
         else $div1.append($div2, $div3).insertAfter($('#div'+id+'-'+(i-1)));
@@ -221,7 +226,19 @@ function setInterpretView(data, studentData, id) {
         
         var totalScore = calculateCorrectAnswers(data, studentData, id, i); 
 
-        var $div4 = $('<div>'+totalScore+' ud af '+studentData.length+'</div>').attr({class: 'studentData', id: 'rightContent'});
+        var $div4 = $('<div>Kursisterne fik tilsammen '+totalScore+' ud af '+studentData.length+' points</div>').attr({class: 'studentData', id: 'rightContent'});
+        
+        if(i==0) $div1.append($div2, $div3, $div4).insertAfter($('#br'+id)); 
+        else $div1.append($div2, $div3, $div4).insertAfter($('#div'+id+'-'+(i-1)));
+    }
+}
+
+function setLetterView(studentData, id) {
+    for(var i=0; i<studentData.length; i++) {
+        var $div1 = $('<div>').attr('id','div'+id+'-'+i); 
+        var $div2 = $('<div>'+studentData[i].studentID+':</div>').attr('class', 'studentData');
+        var $div3 = $('<div>'+studentData[i].modules[id].answers[0]+'</div>').attr('class', 'studentData');
+        var $div4 = $('<br><br>'); 
         
         if(i==0) $div1.append($div2, $div3, $div4).insertAfter($('#br'+id)); 
         else $div1.append($div2, $div3, $div4).insertAfter($('#div'+id+'-'+(i-1)));
