@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var teacherClass = require('./public/models/teacherSchema.js');
 var studentClass = require('./public/models/studentSchema.js');
 var mongo = require('mongodb');
+var cors = require('cors'); 
 
 //var monk = require('monk');
 var url = 'localhost:27017/vucfyntest'
@@ -77,11 +78,12 @@ app.use(function(req, res, next) {
     next();
 });
 
+app.use(cors()); 
 
 
 checkIdInUrl = function(req, res, next) {
     var isWelcome = req.url.slice(0, 8);
-    if (isWelcome === '/welcome' && req.url != '/welcome_addinfo') {
+    if (isWelcome === '/welcome' && req.url != '/welcome_addinfo' && req.url != '/welcome_verify') {
         // begin interception
         //        console.log('Checking url for teacher ID...')
         req.db = db;

@@ -197,7 +197,7 @@ router.post('/welcome_addinfo', function (req, res) {
 
 
     var studentID = req.body.id;
-    var teacherID = JSON.parse(req.body.data);
+    var teacherID = req.body.data;
     var progression = req.cookies.user.progression;
     var modulesArray = req.cookies.user.modules;
     var user = {
@@ -260,6 +260,7 @@ router.post('/welcome_addinfo', function (req, res) {
                                 });
                             } else {
                                 res.send('ID ER TAGET!');
+                                // res.redirect('welcome' + teacherID); 
                             }
                         }
                     });
@@ -272,6 +273,58 @@ router.post('/welcome_addinfo', function (req, res) {
 
     });
 });
+
+router.post('/welcome_verify', function (req, res) {
+
+    console.log("Verification in progess bip boop");
+    var data = req.body;
+    console.log("1");
+    var studentID = data.user.studentID; 
+    console.log("2");
+    var teacherID = data.testID;
+    console.log("3");
+
+    teacherClass.find().where({
+        'tests._id': teacherID
+    }).exec(function (err, teacher) {
+        if (err) {
+            res.send(err);
+        } else {
+            console.log("4");
+            var id_serv = JSON.stringify(teacherID);
+
+            for (var i = 0; i < teacher[0].tests.length; i++) {
+                console.log("5");
+                var id_db = JSON.stringify(teacher[0].tests[i]._id);
+                console.log("6");
+                if (id_db == id_serv) {
+                    studentClass.findOne({
+                        studentID: studentID
+                    }, 'modules', function (err, student) {
+                        if (err) {
+                            res.send(err);
+                        } else {
+
+                            console.log("Student exist?");
+                            if (student) {
+                                console.log("***** STUDENT FOUND *****");
+                               res.send(true); 
+                            } else {
+                                console.log("***** STUDENT NOT FOUND *****");
+                                res.send(false); 
+                            }
+                        }
+                    });
+
+                }
+
+            }
+
+        }
+
+    });
+});
+
 
 router.post('/index_addinfo', function (req, res) {
 

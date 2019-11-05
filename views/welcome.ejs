@@ -23,17 +23,42 @@
 
                 var testID = $('#hidden').val();
                 user.testID = testID;
-                $('#hidden').val("");
-                $('#hidden').val(JSON.stringify(testID));
 
                 var studentID = $('#studentID').val();
                 user.studentID = studentID;
+                
+                var sub = $(this); 
 
-                sessionStorage.setItem('currentUser', JSON.stringify(user));
+                $.ajax({
+                    type: 'POST',
+                    contentType: 'application/json',
+                    url: '/welcome_verify',
+                    data: JSON.stringify({
+                        user: user,
+                        testID: testID
+                    }), 
+                    success: function(resultData){
+                        user.userExists = JSON.parse(resultData);
+                        console.log("lol: " + typeof user.userExists + ", " + resultData); 
+                    },
+                    error: function(error) {
+                        console.log(error); 
+                    }
+                }).done(function() {
+                    if(user.userExists) {
+                        alert("Kusist ID er allerede taget i brug! " + user.userExists); 
+                    } else {
+                        console.log("beruger findes ikke");
+                        sessionStorage.setItem('currentUser', JSON.stringify(user));
+                        sub.unbind('submit').submit();
+                    }
+                }); 
+
+
+                
 
                 // window.history.replaceState({}, 'welcome', '/welcome'); 
 
-                $(this).unbind('submit').submit();
             });
         });
 
