@@ -1,1 +1,1 @@
-npm start
+npm test
