@@ -38,7 +38,7 @@
         // tilføj et tekststykke
         $newLineText1 = $('<input/>').attr({
             class: 'h2size',
-            id: 'line1' + lineCount,
+            id: 'line1_' + lineCount,
             type: 'text',
             name: 'lineText_' + lineCount,
             placeholder: 'Indtast tekst her',
@@ -61,7 +61,7 @@
         // tilføj endnu et tekststykke
         $newLineText2 = $('<input/>').attr({
             class: 'h2size',
-            id: 'line2' + lineCount,
+            id: 'line2_' + lineCount,
             type: 'text',
             name: 'lineText2_' + lineCount,
             placeholder: 'Indtast tekst her',
