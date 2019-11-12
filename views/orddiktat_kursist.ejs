@@ -4,8 +4,7 @@
         height: 30px;
     }
 
-    .audDiv,
-    .contentDiv {
+    .audDiv,.contentDiv {
         display: inline;
     }
 
@@ -30,18 +29,16 @@
 </style>
 
 <script>
-    var audioIsPlaying = false;
+//    var audioIsPlaying = false;
+    var count = [];
     $(function() {
         formSetup();
     });
-    var a = 0;
-    var count = [];
+   
     $(document).ready(function() {
 
-        createAudioWithDiv();
-
         var startTime = new Date().getTime();
-
+        
 
         $('#stop_time').click(function() {
             var stopTime = new Date().getTime();
@@ -57,90 +54,40 @@
     //knapper må kun kunne trykkes på 2 gange
 
     function playAudio(index) {
+        var audioIsPlaying = false;
         var ind = index.id.slice(6);
-        var d = document.getElementById("d" + ind);
         var audBut = document.getElementById("audBut" + ind);
-        var sound = document.getElementById("file" + ind);
-        if (sound.paused) {
-            sound.load();
-            sound.play();
-            if (count[ind] > 0) {
-                d.removeChild(audBut);
-            } else {
-                count[ind]++;
+        // gather all audio to check if audio is being played
+        var $audios = $('audio');
+
+        
+        
+        for (var j = 0; j < $audios.length; j++) {
+                //if any audio is playing (not paused)
+                if (!$audios[j].paused) {
+                    audioIsPlaying = true;
+                }
             }
-
-        }
+        //if no audio is playing => play sound
+            if (!audioIsPlaying) {
+                $audios[ind].play();
+            }
+        // default is false but can be set true if test needs to track clicks on sounds
+        var trackTimes;
+        // only relevant if tracking is needed
+        // not fully working yet.
+        if(trackTimes){
+         if (audBut.value == 1) {
+                    audBut.value =  0;   
+                     
+                } else {
+                    audBut.value = 1;
+                }
+            }
     }
-    var audio = [];
-    var audioIsPlaying = false;
 
-    function createAudioWithDiv(audiofilesArray) {
-
-        $('.contentDiv').each(function(i) {
-
-            //an array of audiofiles 
-            audio[i] = $('<audio/>').attr('src', audiofilesArray[i]);
-
-            // a counter for checking amount of clicked
-            var aCount = 2;
-
-            //audiocontrol for each audiofiles
-            $audioControl = $('<input/>')
-                .attr({
-                    class: 'green',
-                    type: 'button',
-                    id: 'audioControl' + i,
-                    value: 'Afspil: ' + aCount
-                })
-                .click(function() {
-
-                    if (this.value == "Afspil: 0") {
-                        return;
-                    }
-
-                    //when clicked, set boolean to false
-                    audioIsPlaying = false;
-
-                    //check every audiofiles
-                    for (var j = 0; j < audio.length; j++) {
-                        //if any audio is playing (not paused)
-                        if (!audio[j][0].paused) {
-                            audioIsPlaying = true;
-                        }
-                    }
-
-                    //if no audio is playing => play sound
-                    if (!audioIsPlaying) {
-                        audio[i][0].play();
-
-                        //check if button has been clicked
-                        if (this.value == "Afspil: 1") {
-                            this.value = "Afspil: 0";
-                            changeColor(i);
-                        } else {
-                            this.value = "Afspil: 1";
-                        }
-                    }
-                });
-            var img = $('<img>').attr({
-                src: 'images/audio.png',
-                class: 'img'
-            });
-
-            $(this)
-                .prepend($audioControl)
-                .prepend(img);
-
-
-
-
-        });
-
-    }
 
 </script>
-<% include functions %>
     <form id="form" method="post" action="/orddiktat_answer" enctype="multipart/form-data">
 
         <% for(var i=0; i<content.length; i++) { %>
@@ -151,15 +98,14 @@
                 </div>
 
                 <div class="contentDiv">
+                    <audio id="<%= 'file'+i %>" src="<%= audioFiles[i] %>"></audio>
                     <span><%= content[i].line1 %></span>
                     <input type="text" name="<%= 'answer_' + i %>" placeholder="Skriv ordet her">
                     <span><%= content[i].line2 %></span>
                 </div>
             </div>
             <% } %>
-                <input id="time" name="time" value="" hidden>
-                <div id="stop_time">Gem</div>
-
-                <input type="submit" hidden>
+        <input id="time" name="time" value="" hidden>
+        <div id="stop_time">Gem</div>
 
     </form>
