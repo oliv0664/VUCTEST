@@ -5,13 +5,22 @@
 
         // når der klikkes på denne knap
         $('#addLine').click(function () {
-            addLine();
+
+            if(lineCount >= 99) {
+                alert("du kan ikke lave flere linjer");
+            } else {
+                addLine();
+            }
+
         });
     });
 
 
     // holder styr på antal linjer/sætninger
     var lineCount = 0;
+
+    // TO DO...
+    // der må ikke oprettes over 99 (> 99) entries 
 
     // når der trykkes på knappen
     function addLine() {

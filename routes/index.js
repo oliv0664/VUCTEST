@@ -530,8 +530,11 @@ router.post(encodeURI('/orddiktat'), function (req, res) {
         teacherModules = data.teacherModules;
 
         // organize data fields into temporary arrays for reference 
-        var tempInputContent = Object.keys(fields).filter(input => input.length < 12);
+        var tempInputContent = Object.keys(fields).filter(input => input.length <= 12);
         var tempInputContentAnswers = Object.keys(fields).filter(input => input.length > 12);
+
+        console.log("TEMP INPUT CONTENT ", tempInputContent); 
+        console.log("TEMP INPUT CONTENT ANSWER ", tempInputContentAnswers); 
 
         var j = 0;
         for (i = 0; i < tempInputContentAnswers.length * 2; i = i + 2) {
