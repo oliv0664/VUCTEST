@@ -1,9 +1,10 @@
 
 
 function readyPage(studentIDs, teacherID) {
-    readySidebar(studentIDs, teacherID); 
-    readyNavbar(studentIDs, teacherID); 
-    getOverviewData(studentIDs, teacherID); 
+    // readySidebar(studentIDs, teacherID); 
+    getStudentData(JSON.parse(studentIDs), teacherID, 's0'); 
+    // readyNavbar(studentIDs, teacherID); 
+    // getOverviewData(studentIDs, teacherID); 
 }
 
 
@@ -178,7 +179,7 @@ function setWorddictateView(data, studentData, id) {
         
         var totalScore = calculateCorrectAnswers(data, studentData, id, i); 
 
-        var $div5 = $('<div>Kursisterne fik tilsammen '+totalScore+' ud af '+studentData.length+' points</div>').attr({class: 'studentData', id: 'rightContent'});
+        var $div5 = $('<div>I alt '+totalScore+' ud af '+studentData.length+' points</div>').attr({class: 'studentData', id: 'rightContent'});
 
         if(i==0) $div1.append($div2, $div3, $div4, $div5).insertAfter($('#br'+id)); 
         else $div1.append($div2, $div3, $div4, $div5).insertAfter($('#div'+id+'-'+(i-1)));
@@ -192,7 +193,7 @@ function setNonsenseView(data, studentData, id) {
         
         var totalScore = calculateCorrectAnswers(data, studentData, id, i); 
 
-        var $div3 = $('<div>Kursisterne fik tilsammen '+totalScore+' ud af '+studentData.length+' points</div>').attr({class: 'studentData', id: 'rightContent'});
+        var $div3 = $('<div>I alt '+totalScore+' ud af '+studentData.length+' points</div>').attr({class: 'studentData', id: 'rightContent'});
         
         if(i==0) $div1.append($div2, $div3).insertAfter($('#br'+id)); 
         else $div1.append($div2, $div3).insertAfter($('#div'+id+'-'+(i-1)));
@@ -221,7 +222,7 @@ function setInterpretView(data, studentData, id) {
         
         var totalScore = calculateCorrectAnswers(data, studentData, id, i); 
 
-        var $div4 = $('<div>Kursisterne fik tilsammen '+totalScore+' ud af '+studentData.length+' points</div>').attr({class: 'studentData', id: 'rightContent'});
+        var $div4 = $('<div>I alt '+totalScore+' ud af '+studentData.length+' points</div>').attr({class: 'studentData', id: 'rightContent'});
         
         if(i==0) $div1.append($div2, $div3, $div4).insertAfter($('#br'+id)); 
         else $div1.append($div2, $div3, $div4).insertAfter($('#div'+id+'-'+(i-1)));
@@ -326,6 +327,10 @@ function getStudentScore(data, teacherID, ids) {
                     var totalScore = 0; 
                     var totalTime = 0; 
                     for(var j=0; j<studentData.length; j++) {    
+                        
+                        if(studentData[j].studentID != JSON.parse(sessionStorage.getItem('currentUser')).studentID) { 
+                            continue; 
+                        }
 
                         //calculate score for the current student and current moduletype 
                         var score = calculateScore(teacherData[i].contentAnswer, studentData[j].modules[i].answers); 
