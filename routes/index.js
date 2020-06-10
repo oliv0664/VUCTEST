@@ -165,7 +165,8 @@ function setupStudentModules(modulesArray) {
         console.log("MODULETYPE " + modulesArray[i].moduleType);
         tempArray.push(modulesArray[i].moduleType + '_kursist');
     }
-    tempArray.push('finalpage');
+    // tempArray.push('finalpage');
+    tempArray.push('finalpage_with_results'); 
     return tempArray;
 }
 
@@ -1732,6 +1733,23 @@ router.get('/finalpage', function (req, res) {
         title: 'finalpage'
     });
 });
+
+
+router.get('/finalpage_with_results', function (req, res, next) {
+    var idTeacher = req.cookies.user.teacherid;
+    var studentID = req.cookies.user.studentID; 
+
+    var studentIDs = [studentID];
+    res.render('finalpage_with_results', {
+        title: 'Finalpage',
+        content: {
+            idTeacher: idTeacher,
+            studentIDs: studentIDs
+        }
+    });  
+});
+
+
 
 router.get('/getStudentData', function (req, res) {
     var idTeacher = req.query.teacherID;

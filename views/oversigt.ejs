@@ -3,6 +3,16 @@
 <head>
 	<script src="/jquery/jquery-3.2.1.min.js"></script>
 	<script src="/js/test.js"></script>
+	<script>
+		function goBack() {
+			var url = window.location.href;
+			var index = url.lastIndexOf("/"); 
+			url = url.substring(0, index+1);
+			url += "start";
+
+			window.location.replace(url); 
+		}
+	</script>
 
 	<link rel="stylesheet" type="text/css" href="stylesheets/style.css">
 	<link rel="stylesheet" type="text/css" href="stylesheets/oversigt.css">
@@ -43,6 +53,14 @@
 		#td_last_right {
 			border-radius: 0px 0px 10px 0px;			
 		}
+
+		#backBtn {
+			width: 100px;
+		}
+
+		#backBtn:hover {
+			cursor: pointer;
+		}
 	</style>
 </head>
 
@@ -50,8 +68,11 @@
 
 	
 	<header>
-        <% include header %>
+		<% include header %>
     </header>
+	<div>
+		<img src="images/back_arrow.png" id="backBtn" onclick="goBack()">
+	</div>
 
 <!--
 	<div id="header">

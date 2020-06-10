@@ -4,25 +4,17 @@
     <script src="/jquery/jquery-3.2.1.min.js"></script>
     <script src="/js/handle_login.js"></script>
     <script>
-        $(function() {
+        $(function () {
 
             var cookieValue = document.cookie;
-            console.log(cookieValue);
-
-
-
             var username = cookieValue.split(';');
-            
-            console.log(username); 
 
-            for(var i=0; i<username.length; i++) { 
+            for (var i = 0; i < username.length; i++) {
                 var key = username[i].split("=");
-                console.log(key);  
-                if(key[0].trim() == "teacher") {
+                if (key[0].trim() == "teacher") {
                     username = key[1];
-                    console.log(username);  
-                    break; 
-                } 
+                    break;
+                }
             }
 
             var obj = {
@@ -32,7 +24,7 @@
 
             var initials = handleLogin();
 
-            $('#form').bind('submit', function(event) {
+            $('#form').bind('submit', function (event) {
                 event.preventDefault();
 
                 $('#data').val(initials);
@@ -43,15 +35,70 @@
     </script>
 
     <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+    <style>
+        #navbar {
+            overflow: hidden;
+            width: 60%;
+            height: 4vh;
+            font-size: calc(5px + 1vw);
+            margin: auto;
+        }
+
+        .nav {
+            display: inline-block;
+            background-color: #117F44;
+            height: 4vh;
+            text-align: center;
+            line-height: 4vh;
+            transition: width 1s;
+            color: white;
+            border-radius: 10px 10px 0px 0px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        #main-content {
+            border-radius: 0px 10px 10px 10px;
+            overflow: hidden;
+            width: 60%;
+            background-color: #15B743;
+            color: white;
+            margin: auto;
+        }
+
+        #main-content div {
+            width: 50%;
+            float: left;
+        }
+
+        .btn {
+            height: 6vh;
+            cursor: pointer;
+        }
+
+        .input {
+            width: 80%; 
+            margin: 10px;
+        }
+
+        #main-content ul li {
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            margin-left: 20%;
+        }
+
+    </style>
 </head>
 
 <body>
 
 
-	<header>
-        <% include header %>		
-	</header>
-<!--
+    <header>
+        <% include header %>
+    </header>
+    <!--
     <div id="header">
         <img class="header" id="head_1" src="images/VUC_logo.png" height="100">
         <h3 class="header" id="head_2">Test og quizmodul
@@ -60,44 +107,57 @@
     </div>
 -->
 
-    <h4>Velkommen til HF & VUC FYNs quizmodul. Her kan du oprette en række forskellige quizzer. Du kan vælge om du vil lave enkelte quizzer, eller kombinere en række forskellige quizmoduler til en samlet quiz. Du kan vælge mellem disse moduler:
+    <h2>
+        Velkommen til HF & VUC FYNs quizmodul. <br>
+        Her kan du oprette en række forskellige quizzer. <br>
+        Du kan vælge om du vil lave enkelte quizzer, <br>
+        eller kombinere en række forskellige quizmoduler til en samlet quiz. <br>
+        Du kan vælge mellem disse moduler:
+    </h2>
 
+    <div id="navbar">
+        <div class="overview nav">Quiz moduler</div>
+    </div>
 
-    </h4>
-    <ul>
-        <li>Kursist information</li>
-        <li>Orddiktat</li>
-        <li>Vrøvlediktat</li>
-        <li>Clozetest</li>
-        <li>Multiplechoice</li>
-        <li>Brev</li>
-    </ul>
-    <ol>
-        
-        <li><button type="button" onclick="window.location.assign('index')">Lav ny test</button></li>
-        <li>
-            <form id="form" method="post" action="/oversigt_info">
-                <input type="hidden" id="data" name="data">
-                <input id="searc_init" type="submit" value="Oversigt over dine test ">
-            </form>
-        </li>
-        <li class="MMR" style="display: none;">
-            <form method="post" action="/addUser">
-                <label for="createUser">
-		<input id="createUser" name="createUser" type="text" placeholder="Initaler til ny">
-		<input type="submit" value="Opret ny bruger">
-		</label>
-            </form>
-        </li>
-        <li class="MMR" style="display: none;">
-            <form method="post" action="/sendUser">
-                <label for="sendUser">
-		<input id="sendUser" name="sendUser" type="text" placeholder="Initaler på bruger">
-		<input type="submit" value="Send mail om brugeroplysninger">
-		</label>
-            </form>
-        </li>
-    </ol>
+    <div id="main-content">
+        <div>
+            <ul>
+                <li><h3>Kursist information</h3></li>
+                <li><h3>Orddiktat</h3></li>
+                <li><h3>Vrøvlediktat</h3></li>
+                <li><h3>Clozetest</h3></li>
+                <li><h3>Multiplechoice</h3></li>
+                <li><h3>Brev</h3></li>
+            </ul>
+        </div>
+        <div>
+            <ol>
+                <li><button type="button" class="btn input" onclick="window.location.assign('index')">Lav ny test</button></li>
+                <li>
+                    <form id="form" method="post" action="/oversigt_info">
+                        <input type="hidden" id="data" name="data">
+                        <input id="searc_init" class="btn input" type="submit" value="Oversigt over dine test ">
+                    </form>
+                </li>
+                <li class="MMR" style="display: none;">
+                    <form method="post" action="/addUser">
+                        <label for="createUser">
+                            <input id="createUser"class="input"  name="createUser" type="text" placeholder="Initaler til ny">
+                            <input type="submit" class="btn input" value="Opret ny bruger">
+                        </label>
+                    </form>
+                </li>
+                <li class="MMR" style="display: none;">
+                    <form method="post" action="/sendUser">
+                        <label for="sendUser">
+                            <input id="sendUser" class="input"  name="sendUser" type="text" placeholder="Initaler på bruger">
+                            <input type="submit" class="btn input" value="Send mail om brugeroplysninger">
+                        </label>
+                    </form>
+                </li>
+            </ol>
+        </div>
+    </div>
 
 
 

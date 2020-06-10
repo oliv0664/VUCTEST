@@ -9,16 +9,16 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
 
     <script>
-        $(function() {
-            $('#teacher_data').bind('submit', function(event) {
+        $(function () {
+            $('#teacher_data').bind('submit', function (event) {
                 event.preventDefault();
 
                 var user = sessionStorage.getItem('currentUser');
                 user = JSON.parse(user);
                 var teacherModules = [];
 
-                $('#dropbox_container').find('div span').each(function() {
-                    teacherModules.push(this.id); 
+                $('#dropbox_container').find('div span').each(function () {
+                    teacherModules.push(this.id);
                 });
                 // var checkboxes = $('#teacher_data input:checkbox');
 
@@ -38,50 +38,133 @@
             });
 
         });
+
+        function goBack() {
+            var url = window.location.href;
+            var index = url.lastIndexOf("/");
+            url = url.substring(0, index + 1);
+            url += "start";
+
+            window.location.replace(url);
+        }
     </script>
 
     <style>
+        #teacher_data {
+            margin-left: 10%;
+        }
+
+        #section {
+            margin-left: 3%;
+        }
+
         #dragbox {
-            vertical-align: top; 
+            vertical-align: top;
             display: inline-block;
-            height: 300px; 
-            width: 200px; 
-            border: 1px solid black; 
+            height: 300px;
+            width: 200px;
         }
 
         #dropbox {
             /* margin-left: 250px; */
             display: inline-block;
-            height: 100px; 
-            width: 200px; 
-            border: 1px solid black; 
-            text-align: center;
+            height: 100px;
+            width: 200px;
         }
 
         .drag {
-            border: 1px solid black; 
-            margin-bottom: 10px;
+            margin: 10px;
             text-align: center;
             cursor: move;
+            background-color: #117F44;
+            border-radius: 10px;
+            padding: 10px;
         }
 
         #dropbox_container {
             /* margin-left: 500px; */
-            vertical-align: top; 
+            vertical-align: top;
             display: inline-block;
-            height: 300px; 
-            width: 200px; 
-            border: 1px solid black; 
+            height: 300px;
+            width: 200px;
+        }
+
+        #backBtn {
+            width: 100px;
+        }
+
+        #backBtn:hover {
+            cursor: pointer;
+        }
+
+        .navbar {
+            overflow: hidden;
+            height: 4vh;
+            font-size: calc(5px + 1vw);
+        }
+
+        .nav {
+            display: inline-block;
+            background-color: #117F44;
+            height: 4vh;
+            text-align: center;
+            line-height: 4vh;
+            transition: width 1s;
+            color: white;
+            border-radius: 10px 10px 0px 0px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .main-content {
+            overflow: hidden;
+            background-color: #15B743;
+            color: white;
+            padding-top: 10px;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        #bottom {
+            margin: auto;
+            height: 40%;
+        }
+
+        .content {
+            float: left;
+            margin-right: 10px;
+        }
+
+        #content1 {
+            border-radius: 0px 10px 10px 10px;
+        }
+
+        #content2 {
+            border-radius: 0px 0px 10px 10px;
+            height: 30%;
+            text-align: center;
+        }
+
+        #content3 {
+            border-radius: 10px 0px 10px 10px;
+        }
+
+        #navbar3 .nav {
+            float: right;
         }
     </style>
 </head>
 
 <body>
-	<header>
+    <header>
         <% include header %>
     </header>
 
-<!--
+    <div>
+        <img src="images/back_arrow.png" id="backBtn" onclick="goBack()">
+    </div>
+
+    <!--
     <div id="header">
         <img class="header" id="head_1" src="images/VUC_logo.png" height="100">
         <h3 class="header" id="head_2">NIVEAUAFKLARINGSTEST</h3>
@@ -94,66 +177,85 @@
 
         <div id="section">
             <h1 class="title" id="h1_1">NIVEAUAFKLARINGSTEST</h1>
-          
         </div>
 
 
         <div id="subsection">
             <h2 class="inline">
                 <ol>
-
-                    <li>TILPAS OPSÆTNING AF MODULER I DIN TEST</li>
-                    <li>TRYK VIDERE FOR AT OPRETTE EN TEST</li>
-
+                    <li>
+                        <h4>TILPAS OPSÆTNING AF MODULER I DIN TEST</h4>
+                        <h5>- TRÆK QUIZ MODULER HEN I MIDTEN</h5>
+                        <h5>- FOR AT ÆNDRE RÆKKEFØLGEN, TRÆK MODUL HEN I MIDTEN</h5>
+                        <h5>- FOR AT FJERNE MODULER, TRÆK DEM TILBAGE TIL LISTEN</h5>
+                    </li>
+                    <li>
+                        <h4>TRYK VIDERE FOR AT OPRETTE EN TEST</h4>
+                    </li>
                 </ol>
             </h2>
-            <br/>
+            <br />
             <!--            <input class="h2size" class="inline" type="text" id="initials" id="initials" placeholder="Indtast initialer" required>-->
         </div>
 
         <div id="bottom">
-            <div id="dragbox" ondrop="drop(event)" ondragover="allowDrop(event)">
-                    <div id="box1" class="drag" draggable="true" ondragstart="drag(event)" ondragover="clear(event)"><span id="kursistinfo_lærer">Kursist information</span></div>                    
-                    <div id="box2" class="drag" draggable="true" ondragstart="drag(event)" ondragover="clear(event)"><span id="orddiktat_lærer">Orddiktat</span></div>
-                    <div id="box3" class="drag" draggable="true" ondragstart="drag(event)" ondragover="clear(event)"><span id="vrøvleord_lærer">Vrøvleord</span></div>
-                    <div id="box4" class="drag" draggable="true" ondragstart="drag(event)" ondragover="clear(event)"><span id="clozetest_lærer">Clozetest</span></div>
-                    <div id="box5" class="drag" draggable="true" ondragstart="drag(event)" ondragover="clear(event)"><span id="tekstforståelse_lærer">Tekstforståelse (multiple choice)</span></div>
-                    <div id="box6" class="drag" draggable="true" ondragstart="drag(event)" ondragover="clear(event)"><span id="brev_lærer">Brev</span></div>
-            </div>
-            <div id="dropbox" ondrop="drop(event)" ondragover="allowDrop(event)">Træk elementer herover for at tilføje dem i bunden</div>
-            <div id="dropbox_container"></div>
-            
-            <!-- <table>
-                <tr>
-                    <td>Ordblind data: </td>
-                    <td><input class="test_options" type="checkbox" id="kursistinfo_lærer"></td>
-                </tr>
-                <tr>
-                    <td>Orddiktat: </td>
-                    <td><input class="test_options" type="checkbox" id="orddiktat_lærer"></td>
-                </tr>
-                <tr>
-                    <td>Vrøvlediktat: </td>
-                    <td><input class="test_options" type="checkbox" id="vrøvleord_lærer"></td>
-                </tr>
-                <tr>
-                    <td>Clozetest: </td>
-                    <td><input class="test_options" type="checkbox" id="clozetest_lærer"></td>
-                </tr>
-                <tr>
-                    <td>Tekstforståelse (multiplechoice): </td>
-                    <td><input class="test_options" type="checkbox" id="tekstforståelse_lærer"></td>
-                </tr>
-                <tr>
-                    <td>Brev: </td>
-                    <td><input class="test_options" type="checkbox" id="brev_lærer"></td>
-                </tr>
+            <div class="content">
 
-            </table> -->
-            <input type="hidden" id="data" name="data">
-            <br>
-            <input class="submit" type="submit" value="Gem/Videre">
+                <div id="navbar1" class="navbar">
+                    <div class="overview nav">Quiz moduler</div>
+                </div>
+
+                <div id="content1" class="main-content">
+                    <div id="dragbox" ondrop="drop(event)" ondragover="allowDrop(event)">
+                        <div id="box1" class="drag" draggable="true" ondragstart="drag(event)"
+                            ondragover="clear(event)">
+                            <span id="kursistinfo_lærer">Kursist information</span></div>
+                        <div id="box2" class="drag" draggable="true" ondragstart="drag(event)"
+                            ondragover="clear(event)">
+                            <span id="orddiktat_lærer">Orddiktat</span></div>
+                        <div id="box3" class="drag" draggable="true" ondragstart="drag(event)"
+                            ondragover="clear(event)">
+                            <span id="vrøvleord_lærer">Vrøvleord</span></div>
+                        <div id="box4" class="drag" draggable="true" ondragstart="drag(event)"
+                            ondragover="clear(event)">
+                            <span id="clozetest_lærer">Clozetest</span></div>
+                        <div id="box5" class="drag" draggable="true" ondragstart="drag(event)"
+                            ondragover="clear(event)">
+                            <span id="tekstforståelse_lærer">Multiple choice</span></div>
+                        <div id="box6" class="drag" draggable="true" ondragstart="drag(event)"
+                            ondragover="clear(event)">
+                            <span id="brev_lærer">Brev</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content">
+
+                <div id="navbar2" class="navbar">
+                    <div class="overview nav">Træk moduler hertil</div>
+                </div>
+                <div id="content2" class="main-content">
+                    <div id="dropbox" ondrop="drop(event)" ondragover="allowDrop(event)">
+                        Moduler bliver tilføjet i bunden af din quiz
+                    </div>
+                </div>
+            </div>
+
+            <div class="content">
+
+                <div id="navbar3" class="navbar">
+                    <div class="overview nav">Din quiz</div>
+                </div>
+                <div id="content3" class="main-content">
+                    <div id="dropbox_container"></div>
+                </div>
+            </div>
+
         </div>
+
+        <input type="hidden" id="data" name="data">
+        <br>
+        <input class="submit" type="submit" value="Gem/Videre">
 
     </form>
 
